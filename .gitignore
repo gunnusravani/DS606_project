@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# Data + outputs (keep structure via .gitkeep)
+data/raw/
+data/processed/
+outputs/
+
+# HF/Accelerate caches
+.cache/
+**/.cache/
+huggingface/
+hf_cache/
+transformers_cache/
+wandb/
+
+# OS
+.DS_Store
+Thumbs.db
