@@ -98,9 +98,9 @@ DATASETS_YAML = """# Dataset metadata (populate later)
 datasets: {}
 """
 
-JUNIORS_TASKS = """# Initial tasks for junior contributors
+JUNIORS_TASKS = """# Initial tasks for teammate contributors
 
-## Junior A — Data + prompt variants + validation (Week 1)
+## Teammate A — Data + prompt variants + validation (Week 1)
 **Goal:** Provide a validated, unified prompt dataset (JSONL) incl. Hinglish variants.
 
 ### Tasks
@@ -133,7 +133,7 @@ JUNIORS_TASKS = """# Initial tasks for junior contributors
 
 ---
 
-## Junior B — Evaluation metrics + refusal detection + stats (Week 1)
+## Teammate B — Evaluation metrics + refusal detection + stats (Week 1)
 **Goal:** Given generations, compute ASR/Refusal/CLTG/AGS with CIs.
 
 ### Tasks
