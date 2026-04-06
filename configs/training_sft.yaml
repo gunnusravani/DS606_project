@@ -1,0 +1,100 @@
+# SFT (Supervised Fine-Tuning) Configuration
+# Stage 1 of alignment training: Learn from high-quality responses
+
+stage: sft
+use_flash_attention_2: true
+
+# ============================================================================
+# Model Configuration
+# ============================================================================
+model:
+  name_or_path: meta-llama/Meta-Llama-3-8B
+  torch_dtype: bfloat16
+  device_map: cuda:0
+  trust_remote_code: true
+
+# ============================================================================
+# LoRA Configuration (Memory-efficient fine-tuning)
+# ============================================================================
+# Without LoRA: 8B params, 80GB memory
+# With LoRA: 4.2M params, 40GB memory
+lora:
+  use_lora: true
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  target_modules: ["q_proj", "v_proj"]
+  bias: none
+  task_type: CAUSAL_LM
+
+# ============================================================================
+# SFT Training Configuration
+# ============================================================================
+# Learn from HH-RLHF dataset (160K examples)
+sft:
+  # Dataset settings
+  dataset_name: Anthropic/hh-rlhf
+  dataset_split: train
+  
+  # Training duration
+  num_train_epochs: 2
+  max_steps: -1  # -1 = go until all epochs done
+  
+  # Batch sizes
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 8
+  gradient_accumulation_steps: 2  # Effective batch: 4 * 2 = 8
+  
+  # Learning rate & optimization
+  learning_rate: 2e-4
+  lr_scheduler_type: cosine
+  warmup_ratio: 0.1  # Warmup first 10% of training
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  seed: 42
+  
+  # Logging & checkpointing
+  logging_steps: 100  # Log every 100 steps
+  save_steps: 500    # Save checkpoint every 500 steps
+  eval_steps: 500    # Evaluate every 500 steps
+  save_total_limit: 3  # Keep only last 3 checkpoints
+  
+  # Data processing
+  max_seq_length: 2048
+  preprocessing_num_workers: 4
+  overwrite_cache: false
+  push_to_hub: false
+  
+  # Output
+  output_dir: outputs/models/sft
+  report_to: [wandb]  # Log to Weights & Biases
+
+# ============================================================================
+# DPO Configuration (Not used in SFT, but defined for completeness)
+# ============================================================================
+dpo:
+  dataset_name: Anthropic/hh-rlhf
+  dataset_split: train
+  num_train_epochs: 2
+  max_steps: -1
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 5e-5
+  lr_scheduler_type: cosine
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  seed: 42
+  beta: 0.1
+  label_smoothing: 0.0
+  loss_type: sigmoid
+  logging_steps: 100
+  save_steps: 500
+  eval_steps: 500
+  save_total_limit: 3
+  max_prompt_length: 512
+  max_target_length: 1024
+  preprocessing_num_workers: 4
+  output_dir: outputs/models/dpo
+  report_to: [wandb]
