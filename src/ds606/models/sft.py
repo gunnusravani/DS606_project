@@ -338,7 +338,7 @@ def train_sft(
         
         # Strategies
         save_strategy="steps",
-        evaluation_strategy="steps",
+        eval_strategy="steps",  # Changed from evaluation_strategy for newer transformers
         logging_strategy="steps",
         
         # Precision and optimization
