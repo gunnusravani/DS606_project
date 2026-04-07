@@ -391,7 +391,7 @@ def train_sft(
     
     logger.info(f"Training Results:")
     logger.info(f"  • Final training loss: {train_result.training_loss:.4f}")
-    logger.info(f"  • Training time: {train_result.training_time_hrs:.2f} hours")
+    logger.info(f"  • Training time: {train_result.training_runtime / 3600:.2f} hours")
     
     return model, trainer
 
