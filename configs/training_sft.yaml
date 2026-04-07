@@ -36,9 +36,9 @@ sft:
   dataset_name: Anthropic/hh-rlhf
   dataset_split: train
   
-  # Training duration
-  num_train_epochs: 2
-  max_steps: -1  # Full training
+  # Training duration (reduced for fast testing)
+  num_train_epochs: 5
+  max_steps: -1
   
   # Batch sizes (reduced due to GPU memory constraints)
   per_device_train_batch_size: 4

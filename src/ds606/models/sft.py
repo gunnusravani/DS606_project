@@ -270,7 +270,7 @@ def train_sft(
     
     dataset = load_hh_rlhf_dataset(
         split=sft_config.dataset_split,
-        num_samples=None,  # Use all samples
+        num_samples=5000,  # Reduced from 160K for fast testing
     )
     
     # ========== Step 4: Split into Train/Eval ==========
