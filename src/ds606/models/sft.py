@@ -119,8 +119,8 @@ def setup_model_and_tokenizer(
         torch_dtype=torch_dtype,
         device_map=model_config.device_map,  # "auto", "cuda:0", etc.
         trust_remote_code=model_config.trust_remote_code,
-        # Flash Attention 2 optimization (if available)
-        attn_implementation="flash_attention_2" if use_flash_attention_2 else None,
+        # Use SDPA (Scaled Dot Product Attention) - efficient & no extra dependencies needed
+        attn_implementation="sdpa",
     )
     
     logger.info(f"Model loaded: {model.config.model_type}")
