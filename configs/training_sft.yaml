@@ -67,7 +67,7 @@ sft:
   
   # Output
   output_dir: outputs/models/sft
-  report_to: [wandb]
+  report_to: []  # Disabled: WandB auth failed
 
 # ============================================================================
 # DPO Configuration (Not used in SFT, but defined for completeness)
