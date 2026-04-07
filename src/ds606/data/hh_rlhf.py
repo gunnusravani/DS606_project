@@ -72,57 +72,39 @@ def format_prompt_completion_for_sft(
     """
     Format HH-RLHF data for SFT training.
     
-    Logic:
-        input = prompt + chosen response
-        target = same as input (language modeling)
-        
-    This teaches the model to generate the chosen response given a prompt.
+    HH-RLHF dataset structure:
+    - "chosen": Full conversation string (human + assistant response)
+    - "rejected": Full conversation string (human + different assistant response)
+    
+    For SFT, we use only "chosen" responses.
     
     Args:
-        example: Dict with 'prompt' and 'chosen' fields
+        example: Dict with 'chosen' field (full conversation string)
         tokenizer: Tokenizer to use for encoding
         max_length: Maximum sequence length
     
     Returns:
         Dict with 'input_ids', 'attention_mask', 'labels'
-        
-    Example:
-        >>> example = {
-        ...     "prompt": "How do I...",
-        ...     "chosen": {"content": "Here's how..."}
-        ... }
-        >>> result = format_prompt_completion_for_sft(example, tokenizer)
-        >>> print(result.keys())
-        dict_keys(['input_ids', 'attention_mask', 'labels'])
     """
     
-    # Extract prompt
-    prompt = example["prompt"]
+    # HH-RLHF "chosen" is already the full conversation
+    # Format: "Human: ...\n\nAssistant: ..."
+    text = example["chosen"]
     
-    # Extract chosen response
-    # Note: In HH-RLHF, chosen/rejected might be dicts with 'content' field
-    if isinstance(example["chosen"], dict):
-        chosen = example["chosen"].get("content", example["chosen"])
-    else:
-        chosen = example["chosen"]
-    
-    # Combine prompt + response
-    full_text = f"{prompt}\n{chosen}"
-    
-    # Tokenize
+    # Tokenize the full conversation
     encoding = tokenizer(
-        full_text,
+        text,
         max_length=max_length,
         truncation=True,           # Truncate if too long
         padding="max_length",      # Pad to max_length
-        return_tensors=None,       # Return lists, not tensors (more efficient for dataset)
+        return_tensors=None,       # Return lists, not tensors
     )
     
-    # For language modeling, labels = input_ids (we predict all tokens)
+    # For causal language modeling, labels = input_ids (predict all tokens)
     return {
         "input_ids": encoding["input_ids"],
         "attention_mask": encoding["attention_mask"],
-        "labels": encoding["input_ids"].copy(),  # Same as input for CLM
+        "labels": encoding["input_ids"].copy(),
     }
 
 
@@ -141,77 +123,65 @@ def format_prompt_for_dpo(
     """
     Format HH-RLHF data for DPO training.
     
-    Logic:
-        We keep 3 separate fields:
-        - prompt: the question/instruction
-        - chosen: the preferred response
-        - rejected: the non-preferred response
-        
-    DPOTrainer will compute: log P(chosen | prompt) vs log P(rejected | prompt)
-    And optimize: log σ(β × (log P(chosen) - log P(rejected)))
+    HH-RLHF structure:
+    - "chosen": Full conversation (human + assistant response)
+    - "rejected": Full conversation (human + different assistant response)
+    
+    We extract the human prompt and keep both chosen/rejected responses separate.
+    
+    DPOTrainer computes: log P(chosen | prompt) vs log P(rejected | prompt)
+    And optimizes: log σ(β × (log P(chosen) - log P(rejected)))
     
     Args:
-        example: Dict with 'prompt', 'chosen', 'rejected' fields
+        example: Dict with 'chosen' and 'rejected' fields
         tokenizer: Tokenizer instance
         max_prompt_length: Max prompt length
         max_target_length: Max response length
     
     Returns:
-        Dict with 'prompt', 'chosen', 'rejected' (as strings, not tokens)
-        
-    Example:
-        >>> result = format_prompt_for_dpo(example, tokenizer)
-        >>> print(result)
-        {
-            'prompt': '...',
-            'chosen': '...',
-            'rejected': '...'
-        }
+        Dict with 'prompt', 'chosen', 'rejected' (as strings)
     """
     
-    # Extract and clean prompt
-    prompt = example["prompt"]
+    # HH-RLHF "chosen" is a full conversation: "Human: ...\n\nAssistant: ..."
+    # Extract the prompt (human message) by splitting on "Assistant:"
+    chosen_text = example["chosen"]
+    rejected_text = example["rejected"]
     
-    # Extract chosen response
-    if isinstance(example["chosen"], dict):
-        chosen = example["chosen"].get("content", example["chosen"])
+    # Split on "Assistant:" to get prompt and response
+    # Format is typically: "Human: <message>\n\nAssistant: <response>"
+    if "Assistant:" in chosen_text:
+        prompt, _ = chosen_text.split("Assistant:", 1)
+        prompt = prompt.strip()
     else:
-        chosen = example["chosen"]
+        # Fallback: use the whole chosen text as prompt
+        prompt = chosen_text
     
-    # Extract rejected response
-    if isinstance(example["rejected"], dict):
-        rejected = example["rejected"].get("content", example["rejected"])
+    # Extract chosen response (everything after "Assistant:")
+    if "Assistant:" in chosen_text:
+        chosen_response = "Assistant:" + chosen_text.split("Assistant:", 1)[1]
     else:
-        rejected = example["rejected"]
+        chosen_response = chosen_text
     
-    # Tokenize to check length, then decode back to string
-    # Purpose: Remove special tokens and ensure clean text
+    # Extract rejected response (everything after "Assistant:")
+    if "Assistant:" in rejected_text:
+        rejected_response = "Assistant:" + rejected_text.split("Assistant:", 1)[1]
+    else:
+        rejected_response = rejected_text
     
-    prompt_tokens = tokenizer.encode(
-        prompt,
-        max_length=max_prompt_length,
-        truncation=True,
-    )
-    prompt_text = tokenizer.decode(prompt_tokens, skip_special_tokens=True)
+    # Truncate if needed
+    prompt_tokens = tokenizer.encode(prompt, max_length=max_prompt_length, truncation=True)
+    prompt_clean = tokenizer.decode(prompt_tokens, skip_special_tokens=True)
     
-    chosen_tokens = tokenizer.encode(
-        chosen,
-        max_length=max_target_length,
-        truncation=True,
-    )
-    chosen_text = tokenizer.decode(chosen_tokens, skip_special_tokens=True)
+    chosen_tokens = tokenizer.encode(chosen_response, max_length=max_target_length, truncation=True)
+    chosen_clean = tokenizer.decode(chosen_tokens, skip_special_tokens=True)
     
-    rejected_tokens = tokenizer.encode(
-        rejected,
-        max_length=max_target_length,
-        truncation=True,
-    )
-    rejected_text = tokenizer.decode(rejected_tokens, skip_special_tokens=True)
+    rejected_tokens = tokenizer.encode(rejected_response, max_length=max_target_length, truncation=True)
+    rejected_clean = tokenizer.decode(rejected_tokens, skip_special_tokens=True)
     
     return {
-        "prompt": prompt_text,
-        "chosen": chosen_text,
-        "rejected": rejected_text,
+        "prompt": prompt_clean,
+        "chosen": chosen_clean,
+        "rejected": rejected_clean,
     }
 
 

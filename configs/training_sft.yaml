@@ -9,8 +9,8 @@ use_flash_attention_2: true
 # ============================================================================
 model:
   name_or_path: meta-llama/Meta-Llama-3-8B
-  torch_dtype: bfloat16
-  device_map: cuda:0
+  torch_dtype: bfloat16  # A100 supports bfloat16 natively
+  device_map: cuda:2  # GPU 2 has most free memory (58MiB used)
   trust_remote_code: true
 
 # ============================================================================
@@ -38,26 +38,26 @@ sft:
   
   # Training duration
   num_train_epochs: 2
-  max_steps: -1  # -1 = go until all epochs done
+  max_steps: -1  # Full training
   
-  # Batch sizes
-  per_device_train_batch_size: 4
-  per_device_eval_batch_size: 8
-  gradient_accumulation_steps: 2  # Effective batch: 4 * 2 = 8
+  # Batch sizes (optimized for A100 80GB)
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 16
+  gradient_accumulation_steps: 2
   
   # Learning rate & optimization
   learning_rate: 2e-4
   lr_scheduler_type: cosine
-  warmup_ratio: 0.1  # Warmup first 10% of training
+  warmup_ratio: 0.1
   weight_decay: 0.01
   max_grad_norm: 1.0
   seed: 42
   
   # Logging & checkpointing
-  logging_steps: 100  # Log every 100 steps
-  save_steps: 500    # Save checkpoint every 500 steps
-  eval_steps: 500    # Evaluate every 500 steps
-  save_total_limit: 3  # Keep only last 3 checkpoints
+  logging_steps: 100
+  save_steps: 500
+  eval_steps: 500
+  save_total_limit: 3
   
   # Data processing
   max_seq_length: 2048
@@ -67,7 +67,7 @@ sft:
   
   # Output
   output_dir: outputs/models/sft
-  report_to: [wandb]  # Log to Weights & Biases
+  report_to: [wandb]
 
 # ============================================================================
 # DPO Configuration (Not used in SFT, but defined for completeness)
