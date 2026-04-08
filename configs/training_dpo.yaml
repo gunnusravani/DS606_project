@@ -1,0 +1,95 @@
+# DPO (Direct Preference Optimization) Configuration
+# Stage 2 of alignment training: Learn preferences (chosen > rejected)
+
+stage: dpo
+use_flash_attention_2: false
+
+# ============================================================================
+# Model Configuration (Load SFT checkpoint as base)
+# ============================================================================
+model:
+  name_or_path: meta-llama/Meta-Llama-3-8B
+  torch_dtype: bfloat16
+  device_map: cuda:0
+  trust_remote_code: true
+
+# ============================================================================
+# LoRA Configuration (Reuse from SFT)
+# ============================================================================
+lora:
+  use_lora: true
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  target_modules: ["q_proj", "v_proj"]
+  bias: none
+  task_type: CAUSAL_LM
+
+# ============================================================================
+# DPO Training Configuration
+# ============================================================================
+# DPO learns preference pairs: prefer chosen over rejected responses
+# Beta controls how strongly we enforce preferences (0.1 = good balance)
+
+dpo:
+  # Dataset settings
+  dataset_name: Anthropic/hh-rlhf
+  dataset_split: train
+  
+  # Training duration (shorter than SFT since DPO is more sample-efficient)
+  num_train_epochs: 3
+  max_steps: -1
+  
+  # Batch sizes (smaller than SFT, DPO pairs are heavier)
+  per_device_train_batch_size: 2   # Reduced from SFT's 4
+  per_device_eval_batch_size: 4    # Reduced from SFT's 8
+  gradient_accumulation_steps: 2    # Balance memory
+  
+  # Learning rate (lower than SFT: 5e-5 vs 2e-4)
+  # DPO is more sensitive to learning rate
+  learning_rate: 0.00005  # 5e-5
+  lr_scheduler_type: cosine
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  seed: 42
+  
+  # DPO-specific: Beta parameter
+  # Controls preference strength in the loss function
+  # Range: 0.01-1.0+
+  # 0.1 = optimal balance (not too conservative, not too aggressive)
+  # <0.05: Conservative, weak preference signal
+  # >0.5: Aggressive, risk overfitting to preferences
+  beta: 0.1
+  
+  # Output
+  output_dir: outputs/models/dpo
+
+
+# ============================================================================
+# SFT Configuration (For reference, not used in DPO)
+# ============================================================================
+sft:
+  dataset_name: Anthropic/hh-rlhf
+  dataset_split: train
+  num_train_epochs: 1
+  max_steps: -1
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 8
+  gradient_accumulation_steps: 1
+  learning_rate: 0.0002
+  lr_scheduler_type: cosine
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  seed: 42
+  logging_steps: 100
+  save_steps: 500
+  eval_steps: 500
+  save_total_limit: 3
+  max_seq_length: 1024
+  preprocessing_num_workers: 4
+  overwrite_cache: false
+  push_to_hub: false
+  output_dir: outputs/models/sft
+  report_to: []
