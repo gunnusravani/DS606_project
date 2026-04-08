@@ -15,7 +15,6 @@ from tqdm import tqdm
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
-    BitsAndBytesConfig,
 )
 from peft import PeftModel
 
@@ -57,13 +56,12 @@ def setup_model_and_tokenizer(
     )
     tokenizer.pad_token = tokenizer.eos_token
     
-    # Load base model
+    # Load base model with bfloat16 (no 8-bit quantization to avoid device_map conflicts)
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         device_map=device_map,
         torch_dtype=torch_dtype_obj,
         attn_implementation="sdpa",  # Use SDPA instead of FlashAttention2
-        load_in_8bit=True,  # 8-bit quantization for memory efficiency
     )
     
     model.eval()
