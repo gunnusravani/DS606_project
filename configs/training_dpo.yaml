@@ -37,13 +37,13 @@ dpo:
   dataset_split: train
   
   # Training duration (shorter than SFT since DPO is more sample-efficient)
-  num_train_epochs: 3
+  num_train_epochs: 1
   max_steps: -1
   
-  # Batch sizes (smaller than SFT, DPO pairs are heavier)
-  per_device_train_batch_size: 2   # Reduced from SFT's 4
-  per_device_eval_batch_size: 4    # Reduced from SFT's 8
-  gradient_accumulation_steps: 2    # Balance memory
+  # Batch sizes (smaller than SFT, DPO needs model + ref_model)
+  per_device_train_batch_size: 1   # Reduced from 2
+  per_device_eval_batch_size: 2    # Reduced from 4
+  gradient_accumulation_steps: 1   # Reduced from 2
   
   # Learning rate (lower than SFT: 5e-5 vs 2e-4)
   # DPO is more sensitive to learning rate
