@@ -19,8 +19,8 @@ from pathlib import Path
 from typing import Tuple, Optional
 
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
-from trl import DPOTrainer
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from trl import DPOTrainer, DPOConfig
 from peft import LoraConfig, get_peft_model, TaskType
 
 from ds606.config import TrainingConfig, load_config_from_yaml
@@ -234,24 +234,24 @@ def train_dpo(
         num_proc=4,
     )
     
-    # ========== STEP 5: Create Training Arguments ==========
+    # ========== STEP 5: Create DPO Config ==========
     logger.info("\n" + "=" * 80)
-    logger.info("STEP 5: Creating Training Arguments")
+    logger.info("STEP 5: Creating DPO Training Config")
     logger.info("=" * 80)
     
-    training_args = TrainingArguments(
+    training_config = DPOConfig(
         output_dir=output_dir,
         
         # Training duration
         num_train_epochs=dpo_config.num_train_epochs,
-        max_steps=dpo_config.max_steps,
+        max_steps=dpo_config.max_steps if dpo_config.max_steps != -1 else -1,
         
-        # Batch sizes (DPO uses preference pairs, so smaller batches)
+        # Batch sizes
         per_device_train_batch_size=dpo_config.per_device_train_batch_size,
         per_device_eval_batch_size=dpo_config.per_device_eval_batch_size,
         gradient_accumulation_steps=dpo_config.gradient_accumulation_steps,
         
-        # Learning rate (lower than SFT, DPO is more sensitive)
+        # Learning rate
         learning_rate=dpo_config.learning_rate,
         lr_scheduler_type=dpo_config.lr_scheduler_type,
         warmup_ratio=dpo_config.warmup_ratio,
@@ -276,19 +276,22 @@ def train_dpo(
         tf32=True,
         gradient_checkpointing=True,
         
+        # DPO-specific
+        beta=dpo_config.beta,
+        
         # Other
-        report_to=[],  # Disabled WandB
+        report_to=[],
         seed=dpo_config.seed,
         dataloader_pin_memory=True,
         optim="adamw_8bit",
     )
     
-    logger.info("Training Arguments created:")
-    logger.info(f"  • Epochs: {training_args.num_train_epochs}")
-    logger.info(f"  • Batch size (eff): {training_args.per_device_train_batch_size * training_args.gradient_accumulation_steps}")
-    logger.info(f"  • Learning rate: {training_args.learning_rate}")
+    logger.info("DPO Config created:")
+    logger.info(f"  • Epochs: {training_config.num_train_epochs}")
+    logger.info(f"  • Batch size (eff): {training_config.per_device_train_batch_size * training_config.gradient_accumulation_steps}")
+    logger.info(f"  • Learning rate: {training_config.learning_rate}")
     logger.info(f"  • Beta (preference strength): {dpo_config.beta}")
-    logger.info(f"  • Saving every {training_args.save_steps} steps")
+    logger.info(f"  • Saving every {training_config.save_steps} steps")
     
     # ========== STEP 6: Create DPOTrainer ==========
     logger.info("\n" + "=" * 80)
@@ -297,14 +300,11 @@ def train_dpo(
     
     trainer = DPOTrainer(
         model=model,
-        ref_model=None,  # DPOTrainer creates ref_model internally
-        args=training_args,
+        ref_model=None,
+        args=training_config,
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
         tokenizer=tokenizer,
-        beta=dpo_config.beta,  # Preference strength (0.1 is optimal)
-        max_prompt_length=512,
-        max_target_length=1024,
     )
     
     # ========== STEP 7: Start Training ==========
