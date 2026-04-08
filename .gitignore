@@ -24,7 +24,8 @@ notebooks/.ipynb_checkpoints/
 # Data + outputs (keep structure via .gitkeep)
 data/raw/
 data/processed/
-outputs/
+outputs/models
+outputs/evaluations/.ipynb_checkpoints
 
 # HF/Accelerate caches
 .cache/
