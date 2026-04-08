@@ -122,6 +122,53 @@ def main() -> None:
         help="Batch size for generation (default: 4)",
     )
     
+    # ========== EVALUATE-MODELS SUBCOMMAND ==========
+    eval_models_parser = subparsers.add_parser(
+        "evaluate-models",
+        help="Compare base and aligned models on English and Hindi prompts"
+    )
+    
+    eval_models_parser.add_argument(
+        "--csv",
+        type=str,
+        required=True,
+        help="Path to CSV with English and hindi columns",
+    )
+    
+    eval_models_parser.add_argument(
+        "--base-model",
+        type=str,
+        default="meta-llama/Meta-Llama-3-8B",
+        help="Base model name or path (default: meta-llama/Meta-Llama-3-8B)",
+    )
+    
+    eval_models_parser.add_argument(
+        "--aligned-model",
+        type=str,
+        default="outputs/models/dpo/",
+        help="Aligned model path with LoRA adapter (default: outputs/models/dpo/)",
+    )
+    
+    eval_models_parser.add_argument(
+        "--device-map",
+        type=str,
+        default="auto",
+        help="Device mapping for models (default: auto)",
+    )
+    
+    eval_models_parser.add_argument(
+        "--output-dir",
+        type=str,
+        default="outputs/evaluations/",
+        help="Directory to save evaluation results (default: outputs/evaluations/)",
+    )
+    
+    eval_models_parser.add_argument(
+        "--max-samples",
+        type=int,
+        help="Maximum number of samples to evaluate (default: all)",
+    )
+    
     # ========== EVALUATE SUBCOMMAND ==========
     eval_parser = subparsers.add_parser(
         "evaluate",
@@ -217,6 +264,29 @@ def main() -> None:
         logger.info(f"Generating with model: {args.model}")
         logger.info("Generate command not yet implemented")
         # TODO: Implement generation
+    
+    # ========== EXECUTE EVALUATE-MODELS ==========
+    elif args.command == "evaluate-models":
+        from ds606.models.evaluate import evaluate_models
+        
+        logger.info(f"Comparing base and aligned models")
+        logger.info(f"CSV: {args.csv}")
+        logger.info(f"Base model: {args.base_model}")
+        logger.info(f"Aligned model: {args.aligned_model}")
+        
+        try:
+            evaluate_models(
+                csv_path=args.csv,
+                base_model_name=args.base_model,
+                aligned_model_path=args.aligned_model,
+                device_map=args.device_map,
+                output_path=args.output_dir,
+                max_samples=args.max_samples,
+            )
+            logger.info("✓ Model evaluation completed successfully!")
+        except Exception as e:
+            logger.error(f"✗ Model evaluation failed: {e}")
+            raise
     
     # ========== EXECUTE EVALUATE ==========
     elif args.command == "evaluate":
