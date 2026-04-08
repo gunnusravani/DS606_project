@@ -10,7 +10,7 @@ use_flash_attention_2: false
 model:
   name_or_path: meta-llama/Meta-Llama-3-8B
   torch_dtype: bfloat16
-  device_map: cuda:0
+  device_map: cuda:3  # GPU 3 (least used)
   trust_remote_code: true
 
 # ============================================================================
