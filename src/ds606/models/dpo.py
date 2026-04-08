@@ -325,9 +325,27 @@ def train_dpo(
     logger.info(f"Saving final model to {output_dir}")
     trainer.save_model(output_dir)
     
+    # Extract training metrics - DPOTrainer returns different format than standard Trainer
+    training_loss = getattr(train_result, 'training_loss', None)
+    training_runtime = None
+    
+    # Try different ways to get training_runtime depending on source
+    if hasattr(train_result, 'training_runtime'):
+        training_runtime = train_result.training_runtime
+    elif isinstance(train_result, dict) and 'train_runtime' in train_result:
+        training_runtime = train_result['train_runtime']
+    elif hasattr(trainer, 'state') and hasattr(trainer.state, 'log_history'):
+        # Look for train_runtime in log history
+        for log in reversed(trainer.state.log_history):
+            if 'train_runtime' in log:
+                training_runtime = log['train_runtime']
+                break
+    
     logger.info(f"Training Results:")
-    logger.info(f"  • Final training loss: {train_result.training_loss:.4f}")
-    logger.info(f"  • Training time: {train_result.training_runtime / 3600:.2f} hours")
+    if training_loss is not None:
+        logger.info(f"  • Final training loss: {training_loss:.4f}")
+    if training_runtime is not None:
+        logger.info(f"  • Training time: {training_runtime / 3600:.2f} hours")
     logger.info("\n✓ DPO training completed successfully!")
     
     return model, trainer
