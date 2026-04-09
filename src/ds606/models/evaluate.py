@@ -103,7 +103,7 @@ def generate_response(
     model: AutoModelForCausalLM,
     tokenizer: AutoTokenizer,
     prompt: str,
-    max_new_tokens: int = 256,
+    max_new_tokens: int = 1028,
     temperature: float = 0.7,
     top_p: float = 0.9,
 ) -> str:
@@ -114,7 +114,7 @@ def generate_response(
         model: Language model
         tokenizer: Tokenizer
         prompt: Input prompt
-        max_new_tokens: Maximum tokens to generate
+        max_new_tokens: Maximum tokens to generate (default: 1028 for comprehensive responses)
         temperature: Sampling temperature
         top_p: Nucleus sampling parameter
     
