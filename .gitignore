@@ -25,6 +25,7 @@ notebooks/.ipynb_checkpoints/
 data/raw/
 data/processed/
 outputs/models
+outputs/activations
 outputs/evaluations/.ipynb_checkpoints
 
 # HF/Accelerate caches
