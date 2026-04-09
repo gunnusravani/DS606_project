@@ -1,0 +1,12 @@
+{
+  "total_samples_evaluated": 1668,
+  "base_model": "meta-llama/Meta-Llama-3-8B",
+  "aligned_model_path": "outputs/models/dpo/",
+  "output_columns": [
+    "base_english",
+    "base_hindi",
+    "aligned_english",
+    "aligned_hindi"
+  ],
+  "csv_path": "jailbreak_just_question.csv"
+}
