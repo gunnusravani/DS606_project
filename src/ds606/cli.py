@@ -169,6 +169,20 @@ def main() -> None:
         help="Maximum number of samples to evaluate (default: all)",
     )
     
+    eval_models_parser.add_argument(
+        "--fill-missing",
+        action="store_true",
+        default=True,
+        help="Fill missing/empty predictions from previous incomplete evaluation (default: True)",
+    )
+    
+    eval_models_parser.add_argument(
+        "--no-resume",
+        dest="fill_missing",
+        action="store_false",
+        help="Force re-evaluate all samples (ignore previous incomplete results)",
+    )
+    
     # ========== EVALUATE SUBCOMMAND ==========
     eval_parser = subparsers.add_parser(
         "evaluate",
@@ -282,6 +296,7 @@ def main() -> None:
                 device_map=args.device_map,
                 output_path=args.output_dir,
                 max_samples=args.max_samples,
+                resume_from_saved=args.fill_missing,
             )
             logger.info("✓ Model evaluation completed successfully!")
         except Exception as e:

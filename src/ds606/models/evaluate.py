@@ -151,9 +151,11 @@ def evaluate_models(
     output_path: str = "outputs/evaluations/",
     max_samples: int = None,
     batch_size: int = 1,  # Process one at a time for safety
+    resume_from_saved: bool = True,  # Fill missing values from existing results
 ) -> None:
     """
     Evaluate base and aligned models on English and Hindi prompts.
+    Supports resuming from incomplete evaluations to fill missing values.
     
     Args:
         csv_path: Path to CSV with English and hindi columns
@@ -163,6 +165,7 @@ def evaluate_models(
         output_path: Directory to save results
         max_samples: Maximum samples to evaluate (None = all)
         batch_size: Batch size for generation
+        resume_from_saved: If True, detect and fill missing values from existing results
     """
     
     # Create output directory
@@ -172,13 +175,59 @@ def evaluate_models(
     logger.info("STEP 1: Loading Data")
     logger.info("=" * 80)
     
-    # Load CSV
+    # Load input CSV
     df = pd.read_csv(csv_path)
     logger.info(f"Loaded {len(df)} prompts from {csv_path}")
     
     if max_samples:
         df = df.head(max_samples)
         logger.info(f"Using first {max_samples} samples")
+    
+    # Check if previous results exist
+    output_file = os.path.join(output_path, "evaluation_results.csv")
+    prediction_cols = ["base_english", "base_hindi", "aligned_english", "aligned_hindi"]
+    
+    results_df = None
+    rows_to_evaluate = list(range(len(df)))
+    
+    if resume_from_saved and os.path.exists(output_file):
+        logger.info(f"Found existing results at {output_file}")
+        results_df = pd.read_csv(output_file)
+        logger.info(f"Loaded {len(results_df)} rows from existing results")
+        
+        # Identify rows with missing predictions
+        missing_rows = []
+        for col in prediction_cols:
+            if col not in results_df.columns:
+                missing_rows.extend(list(range(len(results_df))))
+                logger.info(f"Missing column: {col}")
+                break
+            else:
+                # Find rows where this column is empty/null/ERROR
+                missing = results_df[
+                    (results_df[col].isna()) | 
+                    (results_df[col] == "") | 
+                    (results_df[col].str.startswith("ERROR", na=False))
+                ].index.tolist()
+                missing_rows.extend(missing)
+        
+        # Deduplicate and sort
+        rows_to_evaluate = sorted(list(set(missing_rows)))
+        logger.info(f"Found {len(rows_to_evaluate)} rows with missing/empty predictions")
+        
+        if len(rows_to_evaluate) == 0:
+            logger.info("✓ All rows already have valid predictions!")
+            logger.info("=" * 80)
+            logger.info("EVALUATION COMPLETE (No updates needed)")
+            logger.info("=" * 80)
+            return
+    else:
+        if resume_from_saved:
+            logger.info(f"No existing results found. Starting fresh evaluation.")
+        # Initialize results_df as copy of input
+        results_df = df.copy()
+        for col in prediction_cols:
+            results_df[col] = ""
     
     logger.info("=" * 80)
     logger.info("STEP 2: Setting Up Models")
@@ -194,69 +243,61 @@ def evaluate_models(
     aligned_model = load_aligned_model(base_model, aligned_model_path)
     
     logger.info("=" * 80)
-    logger.info("STEP 3: Generating Predictions")
+    logger.info("STEP 3: Generating Predictions for Missing Rows")
     logger.info("=" * 80)
     
-    # Initialize result columns
-    results = {
-        "base_english": [],
-        "base_hindi": [],
-        "aligned_english": [],
-        "aligned_hindi": [],
-    }
+    total_rows = len(rows_to_evaluate)
+    logger.info(f"Evaluating {total_rows} rows...")
     
-    total_samples = len(df)
-    
-    for idx, row in tqdm(df.iterrows(), total=total_samples, desc="Evaluating"):
-        english_prompt = row["English"]
-        hindi_prompt = row["hindi"]
-        
+    for batch_idx, row_idx in tqdm(enumerate(rows_to_evaluate), total=total_rows, desc="Filling missing"):
         try:
+            # Get the row data
+            row = df.iloc[row_idx]
+            english_prompt = row["English"]
+            hindi_prompt = row["hindi"]
+            
             # Base model predictions
-            logger.debug(f"[{idx+1}/{total_samples}] Generating base model predictions")
+            logger.debug(f"[{batch_idx+1}/{total_rows}] Generating base model predictions for row {row_idx}")
             base_en = generate_response(base_model, tokenizer, english_prompt)
             base_hi = generate_response(base_model, tokenizer, hindi_prompt)
             
             # Aligned model predictions
-            logger.debug(f"[{idx+1}/{total_samples}] Generating aligned model predictions")
+            logger.debug(f"[{batch_idx+1}/{total_rows}] Generating aligned model predictions for row {row_idx}")
             aligned_en = generate_response(aligned_model, tokenizer, english_prompt)
             aligned_hi = generate_response(aligned_model, tokenizer, hindi_prompt)
             
-            results["base_english"].append(base_en)
-            results["base_hindi"].append(base_hi)
-            results["aligned_english"].append(aligned_en)
-            results["aligned_hindi"].append(aligned_hi)
+            # Update the results dataframe
+            results_df.at[row_idx, "base_english"] = base_en
+            results_df.at[row_idx, "base_hindi"] = base_hi
+            results_df.at[row_idx, "aligned_english"] = aligned_en
+            results_df.at[row_idx, "aligned_hindi"] = aligned_hi
             
         except Exception as e:
-            logger.error(f"Error processing sample {idx+1}: {e}")
+            logger.error(f"Error processing row {row_idx}: {e}")
             # Add placeholder for failed samples
-            results["base_english"].append(f"ERROR: {str(e)}")
-            results["base_hindi"].append(f"ERROR: {str(e)}")
-            results["aligned_english"].append(f"ERROR: {str(e)}")
-            results["aligned_hindi"].append(f"ERROR: {str(e)}")
+            results_df.at[row_idx, "base_english"] = f"ERROR: {str(e)}"
+            results_df.at[row_idx, "base_hindi"] = f"ERROR: {str(e)}"
+            results_df.at[row_idx, "aligned_english"] = f"ERROR: {str(e)}"
+            results_df.at[row_idx, "aligned_hindi"] = f"ERROR: {str(e)}"
     
     logger.info("=" * 80)
     logger.info("STEP 4: Saving Results")
     logger.info("=" * 80)
     
-    # Create results dataframe
-    results_df = df.copy()
-    for col, values in results.items():
-        results_df[col] = values
-    
     # Save to CSV
-    output_file = os.path.join(output_path, "evaluation_results.csv")
     results_df.to_csv(output_file, index=False)
     logger.info(f"✓ Results saved to {output_file}")
     
     # Save summary statistics
     summary_file = os.path.join(output_path, "evaluation_summary.json")
     summary = {
-        "total_samples_evaluated": len(df),
+        "total_samples_in_csv": len(df),
+        "rows_evaluated_in_this_run": len(rows_to_evaluate),
         "base_model": base_model_name,
         "aligned_model_path": aligned_model_path,
-        "output_columns": list(results.keys()),
+        "output_columns": prediction_cols,
         "csv_path": csv_path,
+        "resume_enabled": resume_from_saved,
     }
     with open(summary_file, "w") as f:
         json.dump(summary, f, indent=2)
@@ -266,7 +307,7 @@ def evaluate_models(
     logger.info("EVALUATION COMPLETE!")
     logger.info("=" * 80)
     logger.info(f"Results saved to: {output_file}")
-    logger.info(f"Columns: {list(results.keys())}")
+    logger.info(f"Prediction columns: {prediction_cols}")
 
 
 if __name__ == "__main__":
