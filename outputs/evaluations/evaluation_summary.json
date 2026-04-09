@@ -1,5 +1,5 @@
 {
-  "total_samples_evaluated": 3,
+  "total_samples_evaluated": 1668,
   "base_model": "meta-llama/Meta-Llama-3-8B",
   "aligned_model_path": "outputs/models/dpo/",
   "output_columns": [
