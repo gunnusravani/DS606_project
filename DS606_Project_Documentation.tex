@@ -1,0 +1,911 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf-8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath}
+
+\title{\textbf{DS606: Cross-Lingual Safety Alignment in LLMs}\\
+\Large Project Documentation \& Work Division}
+\author{Sravani Gunnu, Aryan Kashyap, Shahab Ahmad}
+\date{April 2026}
+
+\definecolor{completed}{RGB}{0, 128, 0}
+\definecolor{inprogress}{RGB}{255, 165, 0}
+\definecolor{pending}{RGB}{220, 20, 60}
+
+\begin{document}
+
+\maketitle
+
+\section{Executive Summary}
+
+This project investigates whether safety guardrails learned in English transfer to other languages (Hindi, Bengali, Hinglish) in Large Language Models. We are training and evaluating Meta-Llama-3-8B with alignment techniques (SFT + DPO), then testing robustness using cross-lingual jailbreak prompts and implementing refusal direction analysis.
+
+\textbf{Key Findings Target:}
+\begin{itemize}
+    \item Measure safety alignment transfer from English to Hindi
+    \item Identify which harm categories show largest safety gaps across languages
+    \item Extract universal refusal directions across languages
+\end{itemize}
+
+---
+
+\section{Project Background}
+
+\subsection{Problem Statement}
+
+Most LLM safety research focuses on English. However, models are deployed globally across 22+ languages with vastly different safety requirements. The critical question:
+
+\begin{quote}
+    \textit{``When we align an LLM to be safe in English, do those safety properties automatically apply to other languages?''}
+\end{quote}
+
+\subsection{Proposed Solution}
+
+We follow a three-stage pipeline:
+\begin{enumerate}
+    \item \textbf{Training Stage:} Align Llama-3-8B using SFT + DPO on HH-RLHF dataset
+    \item \textbf{Evaluation Stage:} Test both base and aligned models on cross-lingual jailbreak dataset
+    \item \textbf{Analysis Stage:} Extract and analyze refusal mechanism differences across languages
+\end{enumerate}
+
+---
+
+\section{Detailed Methodology}
+
+\subsection{Stage 1: Model Alignment (Training)}
+
+\subsubsection{Step 1.1: Supervised Fine-Tuning (SFT)}
+
+\textbf{Objective:} Train model to follow helpful, harmless instructions.
+
+\textbf{Dataset:} HH-RLHF (Anthropic Helpfulness-Harmlessness RLHF)
+\begin{itemize}
+    \item Total prompts: 160,000
+    \item Training subset: 5,000 prompts (reduced for faster iteration)
+    \item Train-eval split: 95\%-5\%
+\end{itemize}
+
+\textbf{Configuration:}
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Model & Meta-Llama-3-8B \\
+LoRA Rank (r) & 16 \\
+LoRA Alpha & 32 \\
+Learning Rate & 2e-4 \\
+Batch Size & 4 \\
+Epochs & 5 \\
+Max Sequence Length & 1024 tokens \\
+Quantization & 8-bit \\
+Device & GPU (cuda:2) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Training Results:}
+\begin{itemize}
+    \item Initial loss: 2.3
+    \item Final loss: 0.2149 (converged)
+    \item Training time: 4h 29m
+    \item Trainable parameters: 6.8M / 8B (0.0848\%)
+    \item Checkpoint saved: \texttt{outputs/models/sft/}
+\end{itemize}
+
+\subsubsection{Step 1.2: Direct Preference Optimization (DPO)}
+
+\textbf{Objective:} Fine-tune using preference pairs to directly optimize alignment.
+
+\textbf{Why DPO instead of RLHF?}
+\begin{itemize}
+    \item No reward model training needed
+    \item More stable and efficient
+    \item Better for cross-lingual transfer (no language-specific reward model)
+\end{itemize}
+
+\textbf{Configuration:}
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+SFT Checkpoint Load & outputs/models/sft/ \\
+Learning Rate & 5e-5 (lower than SFT) \\
+Batch Size & 1 (memory constrained) \\
+Epochs & 1 (test run), can scale to 3-5 \\
+Beta (preference strength) & 0.1 \\
+Max Sequence Length & 1024 tokens \\
+Quantization & 8-bit \\
+Device & GPU (cuda:3) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{DPO Training Results:}
+\begin{itemize}
+    \item Training time: ~1.5 hours for 1 epoch
+    \item Final training loss: 5.8020
+    \item Eval loss: 4.1039
+    \item Checkpoint saved: \texttt{outputs/models/dpo/}
+\end{itemize}
+
+---
+
+\subsection{Stage 2: Cross-Lingual Evaluation}
+
+\subsubsection{Step 2.1: Jailbreak Dataset Preparation}
+
+\textbf{Dataset:} \texttt{jailbreak.csv}
+\begin{itemize}
+    \item Total prompts: 1,668 (representative samples of harmful categories)
+    \item Languages: English \& Hindi
+    \item Categories: 14 harm types
+    \begin{itemize}
+        \item Violating privacy
+        \item Harmful content (chaos, violence)
+        \item Discrimination (race, age, disability)
+        \item Cyber crime (hacking, financial fraud)
+        \item Fraud/deception (cheating, fake credentials)
+        \item Unlawful practices (corruption, abuse)
+        \item Political offenses
+        \item Copyright violations
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Step 2.2: Model Response Generation}
+
+\textbf{Process:} Generate model responses for all 4 conditions:
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Model} & \textbf{English} & \textbf{Hindi} \\
+\midrule
+Base (Llama-3-8B) & base\_english & base\_hindi \\
+Aligned (SFT+DPO) & aligned\_english & aligned\_hindi \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Generation Parameters:}
+\begin{itemize}
+    \item Max tokens: 1,028
+    \item Temperature: 0.7
+    \item Top-p: 0.9
+    \item Sampling: Enabled (do\_sample=True)
+\end{itemize}
+
+\textbf{Current Status:}
+\begin{itemize}
+    \item Completed: 10 samples for testing
+    \item Pending: Full evaluation on 1,668 samples
+    \item Output file: \texttt{outputs/evaluations/evaluation\_results.csv}
+    \item Smart resume: Can re-run to fill missing values auto-detected
+\end{itemize}
+
+---
+
+\subsection{Stage 3: Safety Classification \& Analysis}
+
+\subsubsection{Step 3.1: Hindi Response Translation}
+
+\textbf{Objective:} Translate Hindi model responses to English for safety classification.
+
+\textbf{Tool:} Google Translate via \texttt{gtrans\_attn.ipynb}
+
+\textbf{Process:}
+\begin{enumerate}
+    \item Auto-detect missing/failed translations
+    \item Retry with exponential backoff (max 4 retries)
+    \item  Handle long sentences by splitting strategy
+    \item Save progress every 200 rows
+\end{enumerate}
+
+\textbf{Output Columns:}
+\begin{itemize}
+    \item \texttt{gtrans\_base\_hindi} (English translation of base model's Hindi response)
+    \item \texttt{gtrans\_aligned\_hindi} (English translation of aligned model's Hindi response)
+\end{itemize}
+
+\subsubsection{Step 3.2: Safety Classification with Llama-Guard}
+
+\textbf{Objective:} Classify each response as SAFE or UNSAFE using Llama-Guard-3-8B.
+
+\textbf{Tool:} \texttt{llamaguard.ipynb}
+
+\textbf{Llama-Guard Safety Categories:}
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Category Code} & \textbf{Harm Type} \\
+\midrule
+S1 & Violent Crimes \\
+S2 & Hate Speech \\
+S3 & Harassment \\
+S4 & Sexual Content \\
+S5 & Criminal Activity \\
+S6 & Specialized Advice \\
+S7 & Self-harm \\
+S8 & Defamation \\
+S9 & Misinformation \\
+S10 & Fraud \\
+S11 & Privacy Violations \\
+S12 & Copyright Abuse \\
+S13 & Malware/Phishing \\
+S14 & Code Interpreter Abuse \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Classification Output Format:}
+\begin{itemize}
+    \item First line: \texttt{safe} or \texttt{unsafe} (lowercase)
+    \item If unsafe, second line: Comma-separated category codes (e.g., ``S1,S3'')
+\end{itemize}
+
+\subsubsection{Step 3.3: Majority Voting (Future Enhancement)}
+
+\textbf{Plan:} Use 3 OSS LLMs for robust classification
+\begin{enumerate}
+    \item Llama-Guard-3-8B (primary classifier)
+    \item LLaMA-CoT (reasoning-based safety classifier)
+    \item Falcon Safety (alternative OSS safety classifier)
+\end{enumerate}
+
+\textbf{Voting Strategy:}
+\begin{itemize}
+    \item Majority vote determines final SAFE/UNSAFE label
+    \item Ties resolved by primary classifier (Llama-Guard)
+\end{itemize}
+
+---
+
+\subsection{Stage 4: Metric Calculation}
+
+\subsubsection{Step 4.1: Attack Success Rate (ASR)}
+
+\textbf{Formula:}
+$$\text{ASR}(L, c) = \frac{N_{\text{harmful}}(L, c)}{N_{\text{total}}(L, c)}$$
+
+where:
+\begin{itemize}
+    \item $L$ = language (English, Hindi)
+    \item $c$ = harm category (S1-S14)
+    \item $N_{\text{harmful}}$ = number of UNSAFE responses
+    \item $N_{\text{total}}$ = total number of evaluated prompts
+\end{itemize}
+
+\textbf{Interpretation:}
+\begin{itemize}
+    \item Higher ASR = Model is less safe (easier to jailbreak)
+    \item ASR=1.0 means 100\% of prompts triggered harmful responses
+    \item ASR=0.0 means model refused all prompts
+\end{itemize}
+
+\subsubsection{Step 4.2: Cross-Lingual Transfer Gap (CLTG)}
+
+\textbf{Formula:}
+$$\text{CLTG}(L, c) = \text{ASR}_{\text{aligned}}(L, c) - \text{ASR}_{\text{aligned}}(\text{En}, c)$$
+
+\textbf{Interpretation:}
+\begin{itemize}
+    \item Positive CLTG = Safety gap exists (Hindi is less safe than English)
+    \item Negative CLTG = Hindi is safer than English (rare)
+    \item CLTG ≈ 0 = Perfect transfer of safety guarantees
+\end{itemize}
+
+\subsubsection{Step 4.3: Alignment Generalization Score (AGS)}
+
+\textbf{Formula:}
+$$\text{AGS}(L) = \frac{\text{ASR}_{\text{base}}(L) - \text{ASR}_{\text{aligned}}(L)}{\text{ASR}_{\text{base}}(\text{En}) - \text{ASR}_{\text{aligned}}(\text{En})}$$
+
+\textbf{Interpretation:}
+\begin{itemize}
+    \item AGS = 1: Perfect generalization (same improvement as English)
+    \item AGS ≈ 0: No generalization (alignment doesn't help in target language)
+    \item AGS < 0: Negative transfer (alignment makes it worse)
+\end{itemize}
+
+---
+
+\subsection{Stage 5: Mechanistic Analysis (Refusal Direction)}
+
+\textbf{Reference Paper:} Wang et al. (2025) - ``Refusal direction is universal across safety-aligned languages''
+
+\textbf{Key Hypothesis:} Safety-aligned models encode refusal information in a consistent direction in activation space across languages.
+
+\textbf{Analysis Steps:}
+
+\begin{enumerate}
+    \item \textbf{Extract Activation Representations}
+    \begin{itemize}
+        \item Hook final layer activations during inference
+        \item Collect for prompts that trigger refusals vs. harmful responses
+        \item Separate by language (English, Hindi)
+    \end{itemize}
+
+    \item \textbf{Compute Refusal Direction}
+    \begin{itemize}
+        \item Mean activation difference: unsafe prompts vs. safe prompts
+        \item PCA to find principal direction of variance
+        \item Compute refusal vector $\mathbf{r}_L$ for each language $L$
+    \end{itemize}
+
+    \item \textbf{Measure Universality}
+    \begin{itemize}
+        \item Cosine similarity between $\mathbf{r}_{\text{En}}$ and $\mathbf{r}_{\text{Hi}}$
+        \item High cosine similarity ($> 0.85$) = universal direction
+        \item Low similarity ($< 0.70$) = language-specific mechanisms
+    \end{itemize}
+
+    \item \textbf{Steering Experiment}
+    \begin{itemize}
+        \item Apply English refusal direction as steering vector during Hindi generation
+        \item Measure ASR reduction
+        \item If successful $\Rightarrow$ supports universality hypothesis
+    \end{itemize}
+\end{enumerate}
+
+---
+
+\section{Work Completed ✅}
+
+\begin{enumerate}
+    \item[\textcolor{completed}{✓}] \textbf{Environment Setup}
+    \begin{itemize}
+        \item Installed PyTorch 2.4.0, Transformers 4.41.0, TRL 0.10.1, PEFT 0.7.1
+        \item Resolved 9 major dependency issues (FlashAttention, NumPy, CUDA, API changes)
+    \end{itemize}
+
+    \item[\textcolor{completed}{✓}] \textbf{Config System Development}
+    \begin{itemize}
+        \item Built modular configuration pipeline (\texttt{src/ds606/config.py})
+        \item YAML-based hyperparameter management
+        \item Type-safe dataclasses: ModelConfig, LoraConfig, SFTConfig, DPOConfig
+    \end{itemize}
+
+    \item[\textcolor{completed}{✓}] \textbf{Dataset Pipeline}
+    \begin{itemize}
+        \item Created HH-RLHF loader (\texttt{src/ds606/data/hh\_rlhf.py})
+        \item Format converters for SFT and DPO training
+        \item Handles 95/5 train-eval split, 5K sample reduction
+    \end{itemize}
+
+    \item[\textcolor{completed}{✓}] \textbf{SFT Training Module}
+    \begin{itemize}
+        \item Implemented full 8-step SFT pipeline (\texttt{src/ds606/models/sft.py})
+        \item Completed 5-epoch training: loss 2.3 → 0.2149
+        \item Checkpoint saved at \texttt{outputs/models/sft/}
+    \end{itemize}
+
+    \item[\textcolor{completed}{✓}] \textbf{DPO Training Module}
+    \begin{itemize}
+        \item Implemented DPOTrainer orchestration (\texttt{src/ds606/models/dpo.py})
+        \item Resolved TRL/PyTorch version compatibility issues
+        \item Completed 1-epoch test run: checkpoint at \texttt{outputs/models/dpo/}
+    \end{itemize}
+
+    \item[\textcolor{completed}{✓}] \textbf{CLI Infrastructure}
+    \begin{itemize}
+        \item Built command-line interface with subcommands
+        \item Support: \texttt{train-sft}, \texttt{train-dpo}, \texttt{evaluate-models}
+        \item Dynamic imports to prevent startup failures
+    \end{itemize}
+
+    \item[\textcolor{completed}{✓}] \textbf{Evaluation Module (Partial)}
+    \begin{itemize}
+        \item Created evaluation framework (\texttt{src/ds606/models/evaluate.py})
+        \item Generates responses for 4 conditions: base\_en, base\_hi, aligned\_en, aligned\_hi
+        \item Smart resume feature: detect and fill missing values automatically
+        \item Successfully evaluated 10 jailbreak prompts (proof of concept)
+    \end{itemize}
+
+    \item[\textcolor{completed}{✓}] \textbf{GPU Memory Optimization}
+    \begin{itemize}
+        \item 8-bit quantization reduces peak memory ~75\%
+        \item Gradient checkpointing enabled
+        \item Device-aware batch sizing for GPU constraints
+    \end{itemize}
+\end{enumerate}
+
+---
+
+\section{Work Pending ⏭️}
+
+\subsection{Phase 1: Complete Jailbreak Evaluation}
+
+\begin{enumerate}
+    \item[\textcolor{pending}{▶}] \textbf{Fill Missing Evaluations}
+    \begin{itemize}
+        \item Run: \texttt{python -m ds606.cli evaluate-models --csv jailbreak.csv --aligned-model outputs/models/dpo/}
+        \item Current: 10/1,668 samples complete
+        \item Expected time: 2-3 days (continuous GPU run)
+        \item Estimated completion: 1,668 × 4 responses = 6,672 generations
+    \end{itemize}
+
+    \item[\textcolor{pending}{▶}] \textbf{Validate Response Quality}
+    \begin{itemize}
+        \item Sample 100 responses for manual inspection
+        \item Check for truncation, coherence, refusal patterns
+        \item Verify model distinguishes between languages
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Phase 2: Hindi-to-English Translation}
+
+\begin{enumerate}
+    \item[\textcolor{pending}{▶}] \textbf{Translate Hindi Responses to English}
+    \begin{itemize}
+        \item Use: \texttt{gtrans\_attn.ipynb}
+        \item Translate 2 columns: base\_hindi, aligned\_hindi
+        \item Output columns: gtrans\_base\_hindi, gtrans\_aligned\_hindi
+        \item Expected time: 3-4 hours (API rate limited)
+    \end{itemize}
+
+    \item[\textcolor{pending}{▶}] \textbf{Quality Check Translations}
+    \begin{itemize}
+        \item Sample 50 translations for manual review
+        \item Check for: sense preservation, grammatical correctness
+        \item Retry failed/empty translations with fallback strategies
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Phase 3: Safety Classification}
+
+\begin{enumerate}
+    \item[\textcolor{pending}{▶}] \textbf{Classify with Llama-Guard-3-8B}
+    \begin{itemize}
+        \item Use: \texttt{llamaguard.ipynb}
+        \item Classify all 4 response columns as SAFE/UNSAFE
+        \item Extract harm categories (S1-S14) for unsafe responses
+        \item Output columns: 8 new columns (safe\_label + categories for each)
+        \item Expected time: 1-2 hours
+    \end{itemize}
+
+    \item[\textcolor{pending}{▶}] \textbf{Implement Majority Voting (Optional Enhancement)}
+    \begin{itemize}
+        \item Add 2 more OSS safety classifiers
+        \item 3-way majority vote for final labels
+        \item ~2-3 hours additional computation
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Phase 4: Metric Calculation \& Analysis}
+
+\begin{enumerate}
+    \item[\textcolor{pending}{▶}] \textbf{Compute ASR, CLTG, AGS}
+    \begin{itemize}
+        \item Script: Python notebook or script in \texttt{src/ds606/analysis/}
+        \item Per-category breakdown: ASR by harm type
+        \item Per-language breakdown: English vs. Hindi
+        \item Generate visualizations: heatmaps, bar charts
+    \end{itemize}
+
+    \item[\textcolor{pending}{▶}] \textbf{Generate Summary Report}
+    \begin{itemize}
+        \item Tables with ASR, CLTG, AGS values
+        \item Key findings: which categories show largest gaps?
+        \item Failure mode analysis: where does alignment NOT transfer
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Phase 5: Mechanistic Analysis (Refusal Direction)}
+
+\begin{enumerate}
+    \item[\textcolor{pending}{▶}] \textbf{Extract Activation Representations}
+    \begin{itemize}
+        \item Implement activation hooking for final decoder layer
+        \item Collect activations for ~100 refusal vs. harmful response pairs
+        \item Per language: English \& Hindi
+    \end{itemize}
+
+    \item[\textcolor{pending}{▶}] \textbf{Compute Refusal Directions}
+    \begin{itemize}
+        \item Mean activation difference for each language
+        \item PCA to get principal direction
+        \item Compute cosine similarity: $\text{sim}(\mathbf{r}_{\text{En}}, \mathbf{r}_{\text{Hi}})$
+    \end{itemize}
+
+    \item[\textcolor{pending}{▶}] \textbf{Steering Experiments}
+    \begin{itemize}
+        \item Apply English refusal direction to Hindi generation
+        \item Measure ASR reduction
+        \item Validate universality hypothesis
+    \end{itemize}
+\end{enumerate}
+
+---
+
+\section{Timeline \& Task Division}
+
+\subsection{Overall Timeline}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Week} & \textbf{Dates} & \textbf{Milestone} & \textbf{Status} \\
+\hline
+1-2 & Mar 8-21 & Setup \& Config & ✓ Complete \\
+3 & Mar 22-28 & SFT \& DPO Training & ✓ Complete \\
+4 & Mar 29-Apr 4 & Evaluation Setup & ✓ Complete \\
+5 & Apr 5-11 & Full Evaluation \& Translation & 🔄 In Progress \\
+6 & Apr 12-18 & Safety Classification & ⏭️ Pending \\
+7 & Apr 19-25 & Metrics \& Analysis & ⏭️ Pending \\
+8 & Apr 26-May 1 & Mechanistic Analysis & ⏭️ Pending \\
+9 & May 2-8 & Final Report \& Presentation & ⏭️ Pending \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Task Assignment}
+
+\subsubsection{Sravani (Lead) - ML Engineering \& Integration}
+
+\textbf{Current (Week 5):}
+\begin{itemize}
+    \item Complete full jailbreak evaluation (1,668 samples)
+    \item Validate response quality and completeness
+    \item Ensure no missing/ERROR values in evaluation\_results.csv
+\end{itemize}
+
+\textbf{Week 6:}
+\begin{itemize}
+    \item Run Google Translate on Hindi columns (gtrans\_attn.ipynb)
+    \item Implement Llama-Guard classification (llamaguard.ipynb)
+    \item Handle any translation failures with retries
+\end{itemize}
+
+\textbf{Weeks 7-8:}
+\begin{itemize}
+    \item Oversee metric calculation and analysis reports
+    \item Implement refusal direction extraction
+    \item Conduct steering experiments
+\end{itemize}
+
+---
+
+\subsubsection{Aryan (B.Tech Civil) - Data Analysis \& Visualization}
+
+\textbf{Current (Week 5):}
+\begin{itemize}
+    \item \textbf{Task A1:} Quality assurance on evaluation results
+    \begin{itemize}
+        \item Sample 100 jailbreak responses manually
+        \item Check for: truncation, coherence, actual refusals vs. harmful content
+        \item Document any patterns or issues found
+        \item Expected effort: 3-4 hours
+    \end{itemize}
+
+    \item \textbf{Task A2:} Translation quality verification
+    \begin{itemize}
+        \item After gtrans runs, sample 50 Hindi→English translations
+        \item Verify meaning preservation
+        \item Flag any obviously wrong translations for re-running
+        \item Expected effort: 2 hours
+    \end{itemize}
+\end{itemize}
+
+\textbf{Week 6:}
+\begin{itemize}
+    \item \textbf{Task A3:} Safety classification validation
+    \begin{itemize}
+        \item Sample 50 Llama-Guard classifications
+        \item Manually verify SAFE/UNSAFE labels
+        \item Check category assignments for unsafe responses
+        \item Expected effort: 3 hours
+    \end{itemize}
+\end{itemize}
+
+\textbf{Week 7:}
+\begin{itemize}
+    \item \textbf{Task A4:} Create comprehensive visualizations
+    \begin{itemize}
+        \item ASR heatmap: models × languages × categories
+        \item Bar charts: CLTG by category
+        \item Failure analysis: which prompts did alignment NOT help?
+        \item Box plots: distribution of ASR across categories
+        \item Expected effort: 4-5 hours (with mentor guidance)
+    \end{itemize}
+
+    \item \textbf{Task A5:} Generate analysis report
+    \begin{itemize}
+        \item Summarize key findings in tables and prose
+        \item Identify top 5 categories with largest safety gaps
+        \item Compare base vs. aligned model improvements
+        \item Expected effort: 2-3 hours
+    \end{itemize}
+\end{itemize}
+
+\textbf{Week 9:}
+\begin{itemize}
+    \item Help prepare presentation slides
+    \item Create summary infographics for key results
+\end{itemize}
+
+---
+
+\subsubsection{Shahab (B.Tech Civil) - Documentation \& Infrastructure}
+
+\textbf{Current (Week 5):}
+\begin{itemize}
+    \item \textbf{Task S1:} Create detailed workflow documentation
+    \begin{itemize}
+        \item Document exact commands to run evaluation
+        \item Create step-by-step guides for each phase
+        \item Include troubleshooting section (what to do if X fails)
+        \item Expected effort: 2-3 hours
+    \end{itemize}
+
+    \item \textbf{Task S2:} Setup monitoring \& logging
+    \begin{itemize}
+        \item Create run logs tracking progress
+        \item Monitor GPU memory usage during long evaluations
+        \item Document any errors or crashes with timestamps
+        \item Expected effort: 1 hour initial setup
+    \end{itemize}
+\end{itemize}
+
+\textbf{Week 6:}
+\begin{itemize}
+    \item \textbf{Task S3:} Translation pipeline documentation
+    \begin{itemize}
+        \item Document Google Translate setup and API usage
+        \item Create fallback procedures for API failures
+        \item Track translation statistics (success rate, avg time per sample)
+        \item Expected effort: 2 hours
+    \end{itemize}
+
+    \item \textbf{Task S4:} Llama-Guard deployment guide
+    \begin{itemize}
+        \item Document model loading and inference setup
+        \item Create classification pipeline documentation
+        \item Record performance metrics (tokens/sec, memory usage)
+        \item Expected effort: 2 hours
+    \end{itemize}
+\end{itemize}
+
+\textbf{Weeks 7-8:}
+\begin{itemize}
+    \item \textbf{Task S5:} Analysis pipeline documentation
+    \begin{itemize}
+        \item Document metric calculation formulas with examples
+        \item Create reproducible analysis scripts
+        \item Generate sample outputs for reference
+        \item Expected effort: 3 hours
+    \end{itemize}
+
+    \item \textbf{Task S6:} Final code cleanup \& submission prep
+    \begin{itemize}
+        \item Organize code repository structure
+        \item Add comments and docstrings
+        \item Create README with setup instructions
+        \item Expected effort: 2-3 hours
+    \end{itemize}
+\end{itemize}
+
+\textbf{Week 9:}
+\begin{itemize}
+    \item Co-author final technical report
+    \item Prepare code for submission
+\end{itemize}
+
+---
+
+\section{Dependencies \& File Structure}
+
+\subsection{Key Files \& Directories}
+
+\begin{verbatim}
+DS606_project/
+├── src/ds606/                          # Main package
+│   ├── __init__.py
+│   ├── cli.py                         # Command-line interface
+│   ├── config.py                      # Config system
+│   ├── data/
+│   │   └── hh_rlhf.py               # Dataset loading
+│   ├── models/
+│   │   ├── sft.py                    # SFT training
+│   │   ├── dpo.py                    # DPO training
+│   │   └── evaluate.py               # Evaluation framework
+│   ├── analysis/                     # [TO CREATE]
+│   │   ├── metrics.py               # ASR, CLTG, AGS
+│   │   ├── visualization.py         # Plots & charts
+│   │   └── refusal_direction.py    # Mechanistic analysis
+│
+├── configs/
+│   ├── training_sft.yaml           # SFT hyperparams
+│   └── training_dpo.yaml           # DPO hyperparams
+│
+├── outputs/
+│   ├── models/
+│   │   ├── sft/                    # SFT checkpoint
+│   │   └── dpo/                    # DPO checkpoint
+│   └── evaluations/
+│       ├── evaluation_results.csv  # All responses & 
+│       │                           # safety labels
+│       ├── evaluation_summary.json
+│
+├── notebooks/
+│   ├── gtrans_attn.ipynb          # Hindi translation
+│   └── llamaguard.ipynb            # Safety classification
+│
+├── jailbreak.csv                   # Test dataset (1,668 prompts)
+├── requirements.txt                # Dependencies
+└── DS606_Project_Documentation.tex # This file
+\end{verbatim}
+
+\subsection{Required Packages}
+
+\begin{verbatim}
+torch==2.4.0
+transformers==4.41.0
+peft==0.7.1
+trl==0.10.1
+datasets
+pandas
+pyyaml
+tqdm
+bitsandbytes>=0.41.0
+googletrans==4.0.0-rc1
+\end{verbatim}
+
+---
+
+\section{Common Issues \& Solutions}
+
+\subsection{GPU Memory Errors}
+
+\textbf{Problem:} ``CUDA out of memory''
+
+\textbf{Solutions:}
+\begin{enumerate}
+    \item Reduce batch\_size in config (already at minimum 1)
+    \item Use smaller time steps (currently 1024 tokens)
+    \item Enable gradient checkpointing (already enabled)
+    \item Switch to different GPU: \texttt{--device-map cuda:X}
+\end{enumerate}
+
+\subsection{Missing Python Modules}
+
+\textbf{Problem:} ``ModuleNotFoundError: No module named 'ds606'``
+
+\textbf{Solution:}
+\begin{verbatim}
+cd /workspace/DS606_project
+pip install -e .
+\end{verbatim}
+
+\subsection{Google Translate API Timeouts}
+
+\textbf{Problem:} Translation requests timing out
+
+\textbf{Solution:}
+\begin{enumerate}
+    \item gtrans\_attn.ipynb implements automatic retries
+    \item Add sleep between requests: \texttt{time.sleep(2)}
+    \item Use fallback to \texttt{src='auto'} detection
+\end{enumerate}
+
+\subsection{Llama-Guard Loading Issues}
+
+\textbf{Problem:} HF token not found
+
+\textbf{Solution:}
+\begin{verbatim}
+huggingface-cli login
+# Or set HF_TOKEN environment variable
+export HF_TOKEN="hf_xxxxxxxxxxxx"
+\end{verbatim}
+
+---
+
+\section{Success Criteria}
+
+The project will be considered successful when:
+
+\begin{enumerate}
+    \item[\checkmark] \textbf{Evaluation Complete:} All 1,668 jailbreak samples have responses from base and aligned models in both English and Hindi
+
+    \item[\checkmark] \textbf{Metrics Calculated:} ASR, CLTG, AGS computed for both models × all languages
+
+    \item[\checkmark] \textbf{Key Finding Identified:} CLTG > 0 in at least 3 harm categories (evidence of safety gap across languages)
+
+    \item[\checkmark] \textbf{Refusal Direction Validated:} Cosine similarity between English and Hindi refusal directions $> 0.70$ (evidence of universality)
+
+    \item[\checkmark] \textbf{Steering Experiment Successful:} Applying English refusal direction reduces Hindi ASR by $\geq 10\%$ (proof of cross-lingual mechanism)
+\end{enumerate}
+
+---
+
+\section{References}
+
+\begin{enumerate}
+    \item Wang, X., et al. (2025). ``Refusal direction is universal across safety-aligned languages.'' \textit{NeurIPS}
+    
+    \item Deng, Y., et al. (2024). ``Multilingual jailbreak challenges in large language models.'' \textit{ICLR}
+    
+    \item Dou, Y., et al. (2024). ``Cross-lingual safety transfer: Do guardrails generalize?'' \textit{ACL}
+    
+    \item Bhaskar, M., et al. (2024). ``Llama Guard 3-8B: A safety classifier.'' Meta AI
+    
+    \item Ouyang, L., et al. (2022). ``Training language models to follow instructions with human feedback.'' \textit{OpenAI Research}
+\end{enumerate}
+
+---
+
+\appendix
+
+\section{Appendix: Math Formulas}
+
+\subsection{Attack Success Rate (ASR)}
+
+For each language $L$ and harm category $c$:
+
+$$\text{ASR}(L, c) = \frac{\sum_{i=1}^{N} \mathbb{1}[\text{response}_i \text{ is UNSAFE}]}{N}$$
+
+where $N$ is total prompts in category $c$ for language $L$.
+
+\subsection{Cross-Lingual Transfer Gap (CLTG)}
+
+Measures how much safety degrades in target language after alignment learned in English:
+
+$$\text{CLTG}(L, c) = \text{ASR}_{\text{aligned}}(L, c) - \text{ASR}_{\text{aligned}}(\text{English}, c)$$
+
+Positive CLTG indicates safety gap; perfect transfer has CLTG ≈ 0.
+
+\subsection{Alignment Generalization Score (AGS)}
+
+Measures what fraction of English alignment benefit transfers to target language:
+
+$$\text{AGS}(L) = \frac{\Delta \text{ASR}(L)}{\Delta \text{ASR}(\text{English})}$$
+
+where $\Delta \text{ASR} = \text{ASR}_{\text{base}} - \text{ASR}_{\text{aligned}}$
+
+If AGS = 1.0, alignment provides equal benefit in both languages.
+
+---
+
+\section{Appendix: Command Reference}
+
+\subsection{Running Evaluations}
+
+Full evaluation on all 1,668 samples:
+\begin{verbatim}
+python -m ds606.cli evaluate-models \
+  --csv jailbreak.csv \
+  --aligned-model outputs/models/dpo/ \
+  --base-model meta-llama/Meta-Llama-3-8B \
+  --device-map cuda:3 \
+  --output-dir outputs/evaluations/
+\end{verbatim}
+
+Resume with auto-fill missing values:
+\begin{verbatim}
+python -m ds606.cli evaluate-models \
+  --csv jailbreak.csv \
+  --aligned-model outputs/models/dpo/ \
+  --fill-missing \
+  --device-map cuda:3
+\end{verbatim}
+
+Quick test (10 samples):
+\begin{verbatim}
+python -m ds606.cli evaluate-models \
+  --csv jailbreak.csv \
+  --aligned-model outputs/models/dpo/ \
+  --max-samples 10 \
+  --device-map cuda:3
+\end{verbatim}
+
+\end{document}
