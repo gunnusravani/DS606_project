@@ -500,18 +500,8 @@ AGS(L) = [ASR_base(L) - ASR_aligned(L)] / [ASR_base(English) - ASR_aligned(Engli
   - Expected effort: 2 hours
 
 **Weeks 7-8:**
-
-- **Task S5:** Analysis pipeline documentation
-  - Document metric calculation formulas with examples
-  - Create reproducible analysis scripts
-  - Generate sample outputs for reference
-  - Expected effort: 3 hours
-
-- **Task S6:** Final code cleanup & submission prep
-  - Organize code repository structure
-  - Add comments and docstrings
-  - Create README with setup instructions
-  - Expected effort: 2-3 hours
+- Task S5: Analysis pipeline documentation
+- Task S6: Final code cleanup & submission prep
 
 **Week 9:**
 - Co-author final technical report
@@ -519,146 +509,37 @@ AGS(L) = [ASR_base(L) - ASR_aligned(L)] / [ASR_base(English) - ASR_aligned(Engli
 
 ---
 
-## Dependencies & File Structure
+## Key File Locations
 
-### Key Files & Directories
-
-```
-DS606_project/
-├── src/ds606/                          # Main package
-│   ├── __init__.py
-│   ├── cli.py                         # Command-line interface
-│   ├── config.py                      # Config system
-│   ├── data/
-│   │   └── hh_rlhf.py               # Dataset loading
-│   ├── models/
-│   │   ├── sft.py                    # SFT training
-│   │   ├── dpo.py                    # DPO training
-│   │   └── evaluate.py               # Evaluation framework
-│   ├── analysis/                     # [TO CREATE]
-│   │   ├── metrics.py               # ASR, CLTG, AGS
-│   │   ├── visualization.py         # Plots & charts
-│   │   └── refusal_direction.py    # Mechanistic analysis
-│
-├── configs/
-│   ├── training_sft.yaml           # SFT hyperparams
-│   └── training_dpo.yaml           # DPO hyperparams
-│
-├── outputs/
-│   ├── models/
-│   │   ├── sft/                    # SFT checkpoint
-│   │   └── dpo/                    # DPO checkpoint
-│   └── evaluations/
-│       ├── evaluation_results.csv  # All responses & safety labels
-│       ├── evaluation_summary.json
-│
-├── notebooks/
-│   ├── gtrans_attn.ipynb          # Hindi translation
-│   └── llamaguard.ipynb            # Safety classification
-│
-├── jailbreak.csv                   # Test dataset (1,668 prompts)
-├── requirements.txt                # Dependencies
-└── DS606_Project_Documentation.md  # This file (Google Docs compatible)
-```
-
-### Required Packages
-
-```
-torch==2.4.0
-transformers==4.41.0
-peft==0.7.1
-trl==0.10.1
-datasets
-pandas
-pyyaml
-tqdm
-bitsandbytes>=0.41.0
-googletrans==4.0.0-rc1
-```
-
----
-
-## Common Issues & Solutions
-
-### GPU Memory Errors
-
-**Problem:** `CUDA out of memory`
-
-**Solutions:**
-1. Reduce batch_size in config (already at minimum 1)
-2. Use smaller time steps (currently 1024 tokens)
-3. Enable gradient checkpointing (already enabled)
-4. Switch to different GPU: `--device-map cuda:X`
-
-### Missing Python Modules
-
-**Problem:** `ModuleNotFoundError: No module named 'ds606'`
-
-**Solution:**
-```bash
-cd /workspace/DS606_project
-pip install -e .
-```
-
-### Google Translate API Timeouts
-
-**Problem:** Translation requests timing out
-
-**Solution:**
-1. gtrans_attn.ipynb implements automatic retries
-2. Add sleep between requests: `time.sleep(2)`
-3. Use fallback to `src='auto'` detection
-
-### Llama-Guard Loading Issues
-
-**Problem:** HF token not found
-
-**Solution:**
-```bash
-huggingface-cli login
-# Or set HF_TOKEN environment variable
-export HF_TOKEN="hf_xxxxxxxxxxxx"
-```
+| File | Purpose |
+|------|---------|
+| `src/ds606/models/evaluate.py` | Evaluation framework |
+| `src/ds606/models/sft.py` | SFT training |
+| `src/ds606/models/dpo.py` | DPO training |
+| `configs/training_*.yaml` | Hyperparameters |
+| `outputs/models/sft/` | SFT checkpoint |
+| `outputs/models/dpo/` | DPO checkpoint |
+| `outputs/evaluations/evaluation_results.csv` | All model responses |
+| `notebooks/gtrans_attn.ipynb` | Hindi translation |
+| `notebooks/llamaguard.ipynb` | Safety classification |
+| `jailbreak.csv` | 1,668 test prompts |
 
 ---
 
 ## Success Criteria
 
-The project will be considered successful when:
-
-✅ **Evaluation Complete:** All 1,668 jailbreak samples have responses from base and aligned models in both English and Hindi
-
-✅ **Metrics Calculated:** ASR, CLTG, AGS computed for both models × all languages
-
-✅ **Key Finding Identified:** CLTG > 0 in at least 3 harm categories (evidence of safety gap across languages)
-
-✅ **Refusal Direction Validated:** Cosine similarity between English and Hindi refusal directions > 0.70 (evidence of universality)
-
-✅ **Steering Experiment Successful:** Applying English refusal direction reduces Hindi ASR by ≥ 10% (proof of cross-lingual mechanism)
+✅ All 1,668 jailbreak samples evaluated (4 responses each)  
+✅ ASR, CLTG, AGS metrics computed  
+✅ CLTG > 0 in ≥3 categories (transfer gap exists)  
+✅ Refusal direction similarity > 0.70 (universality)  
+✅ Steering experiment shows ≥10% ASR reduction  
+✅ Technical report + presentation + clean code
 
 ---
 
 ## References
 
-1. Wang, X., et al. (2025). "Refusal direction is universal across safety-aligned languages." NeurIPS
-2. Deng, Y., et al. (2024). "Multilingual jailbreak challenges in large language models." ICLR
-3. Dou, Y., et al. (2024). "Cross-lingual safety transfer: Do guardrails generalize?" ACL
-4. Bhaskar, M., et al. (2024). "Llama Guard 3-8B: A safety classifier." Meta AI
-5. Ouyang, L., et al. (2022). "Training language models to follow instructions with human feedback." OpenAI Research
-
----
-
-## Questions for Your Team?
-
-### For Aryan (Data Analysis):
-1. Do you have experience with matplotlib/seaborn for data visualization?
-2. Are you comfortable writing validation scripts in Python?
-
-### For Shahab (Documentation):
-1. Can you maintain detailed logs of all pipeline runs?
-2. Are you familiar with creating GitHub-style README files?
-
-### For Everyone:
-1. Do you have access to the GPU cluster? Which GPUs are available?
-2. When can we have our first team sync meeting to discuss detailed task breakdown?
+1. Wang, X., et al. (2025). Refusal direction is universal across safety-aligned languages. NeurIPS
+2. Deng, Y., et al. (2024). Multilingual jailbreak challenges. ICLR
+3. Dou, Y., et al. (2024). Cross-lingual safety transfer. ACL
 

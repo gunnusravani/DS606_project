@@ -1,21 +1,12 @@
-# DS606 Project - Task Tracking & Quick Reference
+# DS606 Project - Task Tracking
 
-## 📋 QUICK STATUS (April 11, 2026)
+**Status (Apr 11):** Training ✅ | Eval ✅/🔄 | Translation ⏭️ | Classification ⏭️ | Analysis ⏭️
 
-| Item | Status | Timeline |
-|------|--------|----------|
-| **Training** | ✅ COMPLETE | Mar 22-28 |
-| **10-Sample Eval** | ✅ COMPLETE | Apr 1-4 |
-| **Full Evaluation** | 🔄 IN PROGRESS | Apr 5-11 |
-| **Translation** | ⏭️ PENDING | Apr 12-16 |
-| **Safety Classification** | ⏭️ PENDING | Apr 17-21 |
-| **Metrics & Analysis** | ⏭️ PENDING | Apr 22-30 |
-| **Mechanistic Analysis** | ⏭️ PENDING | May 1-8 |
-| **Final Report** | ⏭️ PENDING | May 9-14 |
+For methodology & background: See [DS606_Project_Documentation.md](DS606_Project_Documentation.md)
 
 ---
 
-## 🎯 IMMEDIATE PRIORITIES (Week 5: Apr 5-11)
+## 🎯 CURRENT WEEK (Week 5: Apr 5-11)
 
 ### Sravani's Priority List
 - [ ] Complete evaluation loop on **all 1,668 samples** (currently only 10 done)
@@ -91,6 +82,27 @@ top
 
 ---
 
+## 📅 UPCOMING WEEKS
+
+### Week 6 (Apr 12-18): Translation & Safety
+- **Sravani:** Run gtrans_attn.ipynb + llamaguard.ipynb
+- **Aryan:** QA translations + classification labels
+- **Shahab:** Document pipelines
+
+### Week 7 (Apr 19-25): Metrics & Analysis
+- **Sravani:** Compute ASR, CLTG, AGS metrics
+- **Aryan:** Create visualizations + write report
+- **Shahab:** Finalize documentation
+
+### Week 8 (Apr 26-May 1): Mechanistic Analysis
+- **Sravani:** Extract refusal directions + steering experiments
+- **All:** Support as needed
+
+### Week 9 (May 2-8): Final Report
+- **All:** Prepare presentation + clean code + submit
+
+---
+
 ## 📅 DETAILED WEEKLY BREAKDOWN
 
 ### WEEK 5 (Apr 5-11) - CURRENT WEEK
@@ -98,131 +110,6 @@ top
 
 #### Sravani's Tasks
 1. Evaluate all 1,668 samples (4 variations each = 6,672 responses)
-2. Auto-fill missing values using smart resume mode
-3. Verify CSV integrity (no NULLs or errors)
-
-#### Aryan's Tasks
-1. QA sample 100 base_english responses
-2. QA sample 100 aligned_english responses
-3. Create QA summary report
-
-#### Shahab's Tasks
-1. Setup monitoring infrastructure
-2. Create execution guide with exact commands
-3. Document any issues encountered
-
-**Success Criteria:** evaluation_results.csv contains all 1,668 rows with 4 complete columns
-
----
-
-### WEEK 6 (Apr 12-18)
-**Goal:** Translate Hindi → English + classify safety
-
-#### Sravani's Tasks
-1. Run gtrans_attn.ipynb to translate Hindi columns
-   - Input: base_hindi, aligned_hindi
-   - Output: gtrans_base_hindi, gtrans_aligned_hindi
-   - Handle retries and failures
-2. Run llamaguard.ipynb to classify all responses
-   - 4 passes (base_en, aligned_en, gtrans_base_hi, gtrans_aligned_hi)
-   - Output: 8 safety columns
-
-#### Aryan's Tasks
-1. QA sample 50 translated Hindi responses
-   - Check meaning preservation
-   - Verify no truncation
-2. QA sample 50 Llama-Guard classifications
-   - Manually verify SAFE/UNSAFE labels
-   - Check category assignments
-
-#### Shahab's Tasks
-1. Document translation pipeline
-   - Google Translate setup
-   - API rate limiting strategies
-   - Failure handling procedures
-2. Document safety classification pipeline
-   - Model loading process
-   - Category mapping reference
-
-**Success Criteria:** 
-- evaluation_results.csv has 4 → 6 → 8 columns progressively
-- All safety classifications completed
-
----
-
-### WEEK 7 (Apr 19-25)
-**Goal:** Compute metrics and generate analysis
-
-#### Sravani's Tasks
-1. Create metrics calculation module (`src/ds606/analysis/metrics.py`)
-   - Implement ASR formula
-   - Implement CLTG formula
-   - Implement AGS formula
-2. Generate per-category breakdowns
-3. Identify top 5 categories with largest safety gaps
-
-#### Aryan's Tasks
-1. Create comprehensive visualizations
-   - **Visualization 1:** ASR heatmap (models × languages × categories)
-   - **Visualization 2:** CLTG bar chart by category
-   - **Visualization 3:** AGS comparison
-   - **Visualization 4:** Failure analysis (which prompts resisted alignment?)
-   - **Visualization 5:** Distribution plots
-2. Write analysis report with figure captions
-
-#### Shahab's Tasks
-1. Document analysis pipeline
-2. Create reproducible analysis scripts
-3. Generate table summaries for report
-
-**Success Criteria:**
-- ASR, CLTG, AGS computed and validated
-- 5+ publication-quality visualizations created
-- Key findings documented
-
----
-
-### WEEK 8 (Apr 26-May 1)
-**Goal:** Mechanistic analysis - refusal directions
-
-#### Sravani's Tasks
-1. Implement activation extraction hook
-2. Compute refusal directions (English + Hindi)
-3. Measure cosine similarity
-4. Run steering experiments
-5. Document findings
-
-#### Aryan's Tasks
-1. Create visualization of refusal directions
-2. Plot activation space projections
-3. Create comparison plots between languages
-
-#### Shahab's Tasks
-1. Document mechanistic analysis methodology
-2. Create reproducible steering experiment script
-3. Prepare methodology section for paper
-
-**Success Criteria:**
-- Refusal direction cosine similarity computed
-- Steering experiment results documented
-- Hypothesis validated or refuted with evidence
-
----
-
-### WEEK 9 (May 2-8)
-**Goal:** Final report & presentation
-
-#### All Team Members
-1. Sravani: Lead writing + final experiments
-2. Aryan: Create presentation slides + infographics
-3. Shahab: Final code cleanup + README
-4. **Team Sync:** Finalize findings and presentation narrative
-
-**Outputs:**
-- Technical report (5-6 pages)
-- Presentation slides (15-20 slides)
-- Cleaned codebase on GitHub
-- Reproducibility checklist
 
 ---
 
