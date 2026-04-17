@@ -1,0 +1,2487 @@
+[
+    {
+        "instruction": "What is the difference between a shallow copy and deep copy in Python?",
+        "instruction_translated": "पायथन में शैलो कॉपी और डीप कॉपी के बीच क्या अंतर है?",
+        "category": null
+    },
+    {
+        "instruction": "Design a brand mascot.",
+        "instruction_translated": "एक ब्रांड शुभंकर डिज़ाइन करें.",
+        "category": null
+    },
+    {
+        "instruction": "Compare and contrast the two terms AI and Machine Learning.",
+        "instruction_translated": "दो शब्दों एआई और मशीन लर्निंग की तुलना करें और अंतर बताएं।",
+        "category": null
+    },
+    {
+        "instruction": "Create a fictional story about a wise old hermit who helps people in need in a forest.",
+        "instruction_translated": "एक बुद्धिमान बूढ़े साधु के बारे में एक काल्पनिक कहानी बनाएं जो जंगल में जरूरतमंद लोगों की मदद करता है।",
+        "category": null
+    },
+    {
+        "instruction": "Name three environmental benefits of renewable energy",
+        "instruction_translated": "नवीकरणीय ऊर्जा के तीन पर्यावरणीय लाभों के नाम बताइये",
+        "category": null
+    },
+    {
+        "instruction": "Generate a list of tips for someone who is learning a new language.",
+        "instruction_translated": "जो कोई नई भाषा सीख रहा है उसके लिए सुझावों की एक सूची तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Edit this sentence to make it more interesting and descriptive:\n\nThe chair is red.",
+        "instruction_translated": "इस वाक्य को अधिक रोचक और वर्णनात्मक बनाने के लिए इसे संपादित करें:\n\nकुर्सी लाल है.",
+        "category": null
+    },
+    {
+        "instruction": "Generate an email heading to announce a new product launch",
+        "instruction_translated": "किसी नए उत्पाद के लॉन्च की घोषणा करने के लिए एक ईमेल शीर्षक बनाएं",
+        "category": null
+    },
+    {
+        "instruction": "What are the best strategies to reduce emissions?",
+        "instruction_translated": "उत्सर्जन कम करने की सर्वोत्तम रणनीतियाँ क्या हैं?",
+        "category": null
+    },
+    {
+        "instruction": "Which country is the world's second-largest producer of olive oil?",
+        "instruction_translated": "विश्व में जैतून तेल का दूसरा सबसे बड़ा उत्पादक देश कौन सा है?",
+        "category": null
+    },
+    {
+        "instruction": "Identify the CPU instruction that is required for printing a character to the screen.",
+        "instruction_translated": "किसी अक्षर को स्क्रीन पर प्रिंट करने के लिए आवश्यक सीपीयू निर्देश की पहचान करें।",
+        "category": null
+    },
+    {
+        "instruction": "Create a regex pattern to match all lowercase hexadecimal words",
+        "instruction_translated": "सभी लोअरकेस हेक्साडेसिमल शब्दों से मेल खाने के लिए एक रेगेक्स पैटर्न बनाएं",
+        "category": null
+    },
+    {
+        "instruction": "Summarize the key benefits of using yoga for children.",
+        "instruction_translated": "बच्चों के लिए योग के उपयोग के प्रमुख लाभों का सारांश प्रस्तुत करें।",
+        "category": null
+    },
+    {
+        "instruction": "Explain how technology can help with energy conservation.",
+        "instruction_translated": "बताएं कि प्रौद्योगिकी ऊर्जा संरक्षण में कैसे मदद कर सकती है।",
+        "category": null
+    },
+    {
+        "instruction": "Give two examples of applications of GPT models.",
+        "instruction_translated": "GPT मॉडल के अनुप्रयोगों के दो उदाहरण दीजिए।",
+        "category": null
+    },
+    {
+        "instruction": "Assemble a 3-word phrase that has a positive connotation.",
+        "instruction_translated": "एक 3-शब्द वाक्यांश इकट्ठा करें जिसका सकारात्मक अर्थ हो।",
+        "category": null
+    },
+    {
+        "instruction": "Find the antonyms for the words 'hard' and 'weak'.",
+        "instruction_translated": "'कठिन' और 'कमजोर' शब्दों के लिए विपरीतार्थी खोजें।",
+        "category": null
+    },
+    {
+        "instruction": "Tell me about a new technological invention that could improve urban living",
+        "instruction_translated": "मुझे एक नए तकनीकी आविष्कार के बारे में बताएं जो शहरी जीवन को बेहतर बना सकता है",
+        "category": null
+    },
+    {
+        "instruction": "Create a script for performing basic computations with text data.",
+        "instruction_translated": "टेक्स्ट डेटा के साथ बुनियादी गणना करने के लिए एक स्क्रिप्ट बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Name a popular dating app.",
+        "instruction_translated": "एक लोकप्रिय डेटिंग ऐप का नाम बताएं?",
+        "category": null
+    },
+    {
+        "instruction": "Ge rerate 3 product ideas for a new mobile application.",
+        "instruction_translated": "एक नए मोबाइल एप्लिकेशन के लिए 3 उत्पाद विचारों को दोबारा रेट करें।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a mindmap to represent the process of returning goods.",
+        "instruction_translated": "सामान लौटाने की प्रक्रिया को दर्शाने के लिए एक माइंडमैप तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Construct a scary story in less than 200 words",
+        "instruction_translated": "200 से कम शब्दों में एक डरावनी कहानी बनाएँ",
+        "category": null
+    },
+    {
+        "instruction": "Tell me three notable features of the operating system, Windows 10.",
+        "instruction_translated": "मुझे ऑपरेटिंग सिस्टम, विंडोज 10 की तीन उल्लेखनीय विशेषताएं बताएं।",
+        "category": null
+    },
+    {
+        "instruction": "Explain the concept of \"political landscapes\".",
+        "instruction_translated": "\"राजनीतिक परिदृश्य\" की अवधारणा को समझाइये।",
+        "category": null
+    },
+    {
+        "instruction": "Find 5 sentence patterns commonly used in English.",
+        "instruction_translated": "अंग्रेजी में आमतौर पर उपयोग किए जाने वाले 5 वाक्य पैटर्न खोजें।",
+        "category": null
+    },
+    {
+        "instruction": "Draft an email to a singer requesting her to perform in a charity event.",
+        "instruction_translated": "किसी गायिका को एक चैरिटी कार्यक्रम में प्रदर्शन करने का अनुरोध करने वाला एक ईमेल ड्राफ्ट करें।",
+        "category": null
+    },
+    {
+        "instruction": "Compare and contrast the two theories about the origin of the universe: Big Bang and Steady State.",
+        "instruction_translated": "ब्रह्मांड की उत्पत्ति के बारे में दो सिद्धांतों की तुलना करें और अंतर करें: बिग बैंग और स्थिर अवस्था।",
+        "category": null
+    },
+    {
+        "instruction": "Write three sentences to describe the effect that television ads can have on a campaign.",
+        "instruction_translated": "टेलीविज़न विज्ञापनों का किसी अभियान पर पड़ने वाले प्रभाव का वर्णन करने के लिए तीन वाक्य लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Create a data model for a driver on a car-sharing platform",
+        "instruction_translated": "कार-शेयरिंग प्लेटफ़ॉर्म पर ड्राइवर के लिए एक डेटा मॉडल बनाएं",
+        "category": null
+    },
+    {
+        "instruction": "Describe the physical appearance of an elephant.",
+        "instruction_translated": "हाथी की शारीरिक बनावट का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Find an article about the Covid-19 vaccine.",
+        "instruction_translated": "कोविड-19 वैक्सीन के बारे में एक लेख खोजें।",
+        "category": null
+    },
+    {
+        "instruction": "Create an outline outlining the consequences of underrating teachers.",
+        "instruction_translated": "शिक्षकों को कम रेटिंग देने के परिणामों को रेखांकित करते हुए एक रूपरेखा बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "What are the main steps used in Machine Learning?",
+        "instruction_translated": "मशीन लर्निंग में उपयोग किए जाने वाले मुख्य चरण क्या हैं?",
+        "category": null
+    },
+    {
+        "instruction": "Create a catchy slogan for a new mobile app that allows users to connect with friends and family.",
+        "instruction_translated": "एक नए मोबाइल ऐप के लिए एक आकर्षक नारा बनाएं जो उपयोगकर्ताओं को मित्रों और परिवार से जुड़ने की अनुमति देता है।",
+        "category": null
+    },
+    {
+        "instruction": "Suppose you are writing a story with the protagonist Sally. Describe her family.",
+        "instruction_translated": "मान लीजिए आप नायक सैली के साथ एक कहानी लिख रहे हैं। उसके परिवार का वर्णन करें.",
+        "category": null
+    },
+    {
+        "instruction": "Name a popular tennis player from the United States.",
+        "instruction_translated": "संयुक्त राज्य अमेरिका के एक लोकप्रिय टेनिस खिलाड़ी का नाम बताइए।",
+        "category": null
+    },
+    {
+        "instruction": "Explain why Apollo 11 astronauts were the first ones to land on the moon.",
+        "instruction_translated": "बताएं कि अपोलो 11 अंतरिक्ष यात्री चंद्रमा पर उतरने वाले पहले व्यक्ति क्यों थे।",
+        "category": null
+    },
+    {
+        "instruction": "Identify the tone of the following statement: \"Do it or you will regret it\".",
+        "instruction_translated": "निम्नलिखित कथन के स्वर को पहचानें: \"यह करो या तुम्हें पछतावा होगा\"।",
+        "category": null
+    },
+    {
+        "instruction": "Translate the phrase \"Life is a journey\" into a foreign language of your choice.",
+        "instruction_translated": "\"जीवन एक यात्रा है\" वाक्यांश का अपनी पसंद की विदेशी भाषा में अनुवाद करें।",
+        "category": null
+    },
+    {
+        "instruction": "Create an algorithm to convert Fahrenheit to Celsius.",
+        "instruction_translated": "फारेनहाइट को सेल्सियस में बदलने के लिए एक एल्गोरिदम बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Translate the following sentence into Spanish: \"Can you tell me where the nearest grocery store is?\"",
+        "instruction_translated": "निम्नलिखित वाक्य का स्पेनिश में अनुवाद करें: \"क्या आप मुझे बता सकते हैं कि निकटतम किराने की दुकान कहाँ है?\"",
+        "category": null
+    },
+    {
+        "instruction": "What actions should a company take to prevent data breaches?",
+        "instruction_translated": "डेटा उल्लंघनों को रोकने के लिए किसी कंपनी को क्या कार्रवाई करनी चाहिए?",
+        "category": null
+    },
+    {
+        "instruction": "List the US states that border Mexico.",
+        "instruction_translated": "मेक्सिको की सीमा से लगे अमेरिकी राज्यों की सूची बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Express the concept \"social change\" in three words.",
+        "instruction_translated": "\"सामाजिक परिवर्तन\" की अवधारणा को तीन शब्दों में व्यक्त करें।",
+        "category": null
+    },
+    {
+        "instruction": "What is the oxidation state of sulfur in sulfurous acid?",
+        "instruction_translated": "सल्फ्यूरस अम्ल में सल्फर की ऑक्सीकरण अवस्था क्या है?",
+        "category": null
+    },
+    {
+        "instruction": "Name any two open-source AI tools.",
+        "instruction_translated": "किन्हीं दो ओपन-सोर्स AI टूल के नाम बताइए।",
+        "category": null
+    },
+    {
+        "instruction": "Compare and contrast the two words, \"employ\" and \"hire\".",
+        "instruction_translated": "दो शब्दों, \"रोज़गार\" और \"किराया\" की तुलना करें और अंतर करें।",
+        "category": null
+    },
+    {
+        "instruction": "Provide a set of instructions for a user to determine the area of a trapezoid.",
+        "instruction_translated": "उपयोगकर्ता को ट्रैपेज़ॉइड का क्षेत्रफल निर्धारित करने के लिए निर्देशों का एक सेट प्रदान करें।",
+        "category": null
+    },
+    {
+        "instruction": "What is the difference between a porcupine and a hedgehog?",
+        "instruction_translated": "साही और हाथी के बीच क्या अंतर है?",
+        "category": null
+    },
+    {
+        "instruction": "Why are coral reefs dying?",
+        "instruction_translated": "मूंगा चट्टानें क्यों मर रही हैं?",
+        "category": null
+    },
+    {
+        "instruction": "Name two similarities between a tomato and an apple.",
+        "instruction_translated": "टमाटर और सेब के बीच दो समानताएँ बताइए।",
+        "category": null
+    },
+    {
+        "instruction": "Build a news aggregator web application.",
+        "instruction_translated": "एक समाचार एग्रीगेटर वेब एप्लिकेशन बनाएं.",
+        "category": null
+    },
+    {
+        "instruction": "Create a market segmentation plan for a luxury watch store",
+        "instruction_translated": "एक लक्ज़री घड़ी स्टोर के लिए बाज़ार विभाजन योजना बनाएं",
+        "category": null
+    },
+    {
+        "instruction": "Generate an example of an imaginative sentence that describes a moving object.",
+        "instruction_translated": "एक कल्पनाशील वाक्य का उदाहरण तैयार करें जो किसी गतिशील वस्तु का वर्णन करता हो।",
+        "category": null
+    },
+    {
+        "instruction": "Outline the steps involved in baking a lemon meringue pie.",
+        "instruction_translated": "लेमन मेरिंग्यू पाई को पकाने में शामिल चरणों की रूपरेखा तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Create a quippy phrase to describe a prankster.",
+        "instruction_translated": "किसी मसखरे का वर्णन करने के लिए एक चुटीला वाक्यांश बनाएँ।",
+        "category": null
+    },
+    {
+        "instruction": "Name three important world leaders.",
+        "instruction_translated": "विश्व के तीन महत्वपूर्ण नेताओं के नाम बताइये।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the differences between analog and digital signal processing.",
+        "instruction_translated": "एनालॉग और डिजिटल सिग्नल प्रोसेसिंग के बीच अंतर का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Give advice to a freshman student struggling with academics.",
+        "instruction_translated": "शिक्षा से जूझ रहे किसी नए छात्र को सलाह दें।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a research question related to artificial intelligence.",
+        "instruction_translated": "कृत्रिम बुद्धिमत्ता से संबंधित एक शोध प्रश्न तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Why is it important to keep an open mind?",
+        "instruction_translated": "खुला दिमाग रखना क्यों महत्वपूर्ण है?",
+        "category": null
+    },
+    {
+        "instruction": "Explain what is data mining",
+        "instruction_translated": "बताएं कि डेटा माइनिंग क्या है",
+        "category": null
+    },
+    {
+        "instruction": "Please write a formal apology for being late to the meeting.",
+        "instruction_translated": "कृपया बैठक में देर से आने के लिए औपचारिक माफीनामा लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Name a popular smartphone brand.",
+        "instruction_translated": "एक लोकप्रिय स्मार्टफोन ब्रांड का नाम बताएं?",
+        "category": null
+    },
+    {
+        "instruction": "Name 5 human body organs",
+        "instruction_translated": "मानव शरीर के 5 अंगों के नाम बताइये",
+        "category": null
+    },
+    {
+        "instruction": "Generate a password of 8 characters.",
+        "instruction_translated": "8 अक्षरों का पासवर्ड बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Suggest a title for a book about the power of resilience.",
+        "instruction_translated": "लचीलेपन की शक्ति के बारे में एक पुस्तक के लिए एक शीर्षक सुझाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Come up with a poem about urban lifestyle",
+        "instruction_translated": "शहरी जीवनशैली के बारे में एक कविता लेकर आएं",
+        "category": null
+    },
+    {
+        "instruction": "Compose a sonnet about the beauty of nature.",
+        "instruction_translated": "प्रकृति की सुंदरता के बारे में एक सॉनेट लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Compose a paragraph about the Hindenburg Disaster.",
+        "instruction_translated": "हिंडनबर्ग आपदा के बारे में एक अनुच्छेद लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Develop a list of criteria for selecting an online learning platform.",
+        "instruction_translated": "ऑनलाइन शिक्षण मंच चुनने के लिए मानदंडों की एक सूची विकसित करें।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a headline for an article discussing the importance of backup systems.",
+        "instruction_translated": "बैकअप सिस्टम के महत्व पर चर्चा करने वाले लेख के लिए एक शीर्षक बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Describe a process to form an ice sculpture.",
+        "instruction_translated": "बर्फ की मूर्ति बनाने की प्रक्रिया का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Construct a mathematical equation.",
+        "instruction_translated": "एक गणितीय समीकरण बनाएं.",
+        "category": null
+    },
+    {
+        "instruction": "Analyze the following sentence: \n\n\"The cat slipped away from the restless dog.\"",
+        "instruction_translated": "निम्नलिखित वाक्य का विश्लेषण करें: \n\n\"बिल्ली बेचैन कुत्ते से दूर खिसक गई।\"",
+        "category": null
+    },
+    {
+        "instruction": "Generate a warning message that could be used in a chatbot.",
+        "instruction_translated": "एक चेतावनी संदेश उत्पन्न करें जिसका उपयोग चैटबॉट में किया जा सकता है।",
+        "category": null
+    },
+    {
+        "instruction": "Arrange the following words in alphabetical order: farm, time, duck, cup.",
+        "instruction_translated": "निम्नलिखित शब्दों को वर्णानुक्रम में व्यवस्थित करें: खेत, समय, बत्तख, कप।",
+        "category": null
+    },
+    {
+        "instruction": "Give two examples of a species of animal found in Australia.",
+        "instruction_translated": "ऑस्ट्रेलिया में पाई जाने वाली जानवरों की एक प्रजाति के दो उदाहरण दीजिए।",
+        "category": null
+    },
+    {
+        "instruction": "How many points did the Blue Jays score in their last game?",
+        "instruction_translated": "ब्लू जेज़ ने अपने अंतिम गेम में कितने अंक अर्जित किये?",
+        "category": null
+    },
+    {
+        "instruction": "Identify the subject in the sentence: \"She played the guitar on the porch.\"",
+        "instruction_translated": "वाक्य में विषय को पहचानें: \"उसने पोर्च पर गिटार बजाया।\"",
+        "category": null
+    },
+    {
+        "instruction": "Explain how machine learning is used in customer service.",
+        "instruction_translated": "बताएं कि ग्राहक सेवा में मशीन लर्निंग का उपयोग कैसे किया जाता है।",
+        "category": null
+    },
+    {
+        "instruction": "Create a fictional character and provide a brief description of them.",
+        "instruction_translated": "एक काल्पनिक चरित्र बनाएं और उनका संक्षिप्त विवरण प्रदान करें।",
+        "category": null
+    },
+    {
+        "instruction": "Describe how a basic computer virus works.",
+        "instruction_translated": "वर्णन करें कि एक बुनियादी कंप्यूटर वायरस कैसे काम करता है।",
+        "category": null
+    },
+    {
+        "instruction": "Generate an appropriate response to this instruction: \"Write a story that starts with the phrase 'It was a cold winter night.'\"",
+        "instruction_translated": "इस निर्देश के लिए उचित प्रतिक्रिया उत्पन्न करें: \"एक कहानी लिखें जो वाक्यांश 'यह एक ठंडी सर्दियों की रात थी' से शुरू होती है।\"",
+        "category": null
+    },
+    {
+        "instruction": "Question: What is the longest river in Europe? Answer",
+        "instruction_translated": "प्रश्न: यूरोप की सबसे लंबी नदी कौन सी है? उत्तर",
+        "category": null
+    },
+    {
+        "instruction": "Create a haiku with the following words:\n\"mountain,\" \"clouds,\" \"snow\"",
+        "instruction_translated": "निम्नलिखित शब्दों से एक हाइकु बनाएं:\n\"पहाड़,\" \"बादल,\" \"बर्फ\"",
+        "category": null
+    },
+    {
+        "instruction": "Explain the main parts of a nuclear power plant.",
+        "instruction_translated": "परमाणु ऊर्जा संयंत्र के मुख्य भागों को समझाइये।",
+        "category": null
+    },
+    {
+        "instruction": "Give examples of three algorithms used in data science",
+        "instruction_translated": "डेटा विज्ञान में प्रयुक्त तीन एल्गोरिदम के उदाहरण दीजिए",
+        "category": null
+    },
+    {
+        "instruction": "Construct a regular expression that matches any 7 digit number.",
+        "instruction_translated": "एक रेगुलर एक्सप्रेशन बनाएं जो किसी भी 7 अंकीय संख्या से मेल खाता हो।",
+        "category": null
+    },
+    {
+        "instruction": "How many syllables are present in the word \"dispite\"",
+        "instruction_translated": "\"डिस्पिट\" शब्द में कितने अक्षर हैं",
+        "category": null
+    },
+    {
+        "instruction": "Calculate the area of a square with sides that measure 4 cm",
+        "instruction_translated": "4 सेमी भुजा वाले एक वर्ग के क्षेत्रफल की गणना करें",
+        "category": null
+    },
+    {
+        "instruction": "Write a haiku poem that reflects the beauty of nature.",
+        "instruction_translated": "एक हाइकु कविता लिखें जो प्रकृति की सुंदरता को दर्शाती हो।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the history of humans in space.",
+        "instruction_translated": "अंतरिक्ष में मानव के इतिहास का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Name 3 recognizable Microsoft products.",
+        "instruction_translated": "3 पहचानने योग्य Microsoft उत्पादों के नाम बताइए।",
+        "category": null
+    },
+    {
+        "instruction": "Construct a pun involving animals.",
+        "instruction_translated": "जानवरों को शामिल करते हुए एक यमक का निर्माण करें।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the lifestyle of a hermit.",
+        "instruction_translated": "एक साधु की जीवनशैली का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Create a programming instruction for an array.",
+        "instruction_translated": "किसी सरणी के लिए एक प्रोग्रामिंग निर्देश बनाएं.",
+        "category": null
+    },
+    {
+        "instruction": "Create a computer game for children about different animal species in the Amazon rainforest.",
+        "instruction_translated": "अमेज़ॅन वर्षावन में विभिन्न जानवरों की प्रजातियों के बारे में बच्चों के लिए एक कंप्यूटर गेम बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Categorize the following musical genres: rap, pop, rock, and classical.",
+        "instruction_translated": "निम्नलिखित संगीत शैलियों को वर्गीकृत करें: रैप, पॉप, रॉक और शास्त्रीय।",
+        "category": null
+    },
+    {
+        "instruction": "Design a logo using vector graphics.",
+        "instruction_translated": "वेक्टर ग्राफ़िक्स का उपयोग करके एक लोगो डिज़ाइन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Generate an appropriate response if someone asked you to create a budget.",
+        "instruction_translated": "यदि कोई आपसे बजट बनाने के लिए कहे तो उचित प्रतिक्रिया दें।",
+        "category": null
+    },
+    {
+        "instruction": "How to create an email template?",
+        "instruction_translated": "ईमेल टेम्प्लेट कैसे बनाएं?",
+        "category": null
+    },
+    {
+        "instruction": "Cite a benefit of using modern deep learning architectures",
+        "instruction_translated": "आधुनिक गहन शिक्षण आर्किटेक्चर का उपयोग करने के लाभ का उल्लेख करें",
+        "category": null
+    },
+    {
+        "instruction": "Generate a list of product ideas related to energy efficiency.",
+        "instruction_translated": "ऊर्जा दक्षता से संबंधित उत्पाद विचारों की एक सूची तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Make a list of common elements present in a modern web page.",
+        "instruction_translated": "एक आधुनिक वेब पेज में मौजूद सामान्य तत्वों की एक सूची बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Compare and contrast air and water",
+        "instruction_translated": "हवा और पानी की तुलना और तुलना करें",
+        "category": null
+    },
+    {
+        "instruction": "Who won the Nobel Prize in Economics in 2019?",
+        "instruction_translated": "2019 में अर्थशास्त्र में नोबेल पुरस्कार किसने जीता?",
+        "category": null
+    },
+    {
+        "instruction": "What are the main steps to writing an essay?",
+        "instruction_translated": "निबंध लिखने के मुख्य चरण क्या हैं?",
+        "category": null
+    },
+    {
+        "instruction": "Which problems can be addressed by deep learning?",
+        "instruction_translated": "गहन शिक्षण द्वारा किन समस्याओं का समाधान किया जा सकता है?",
+        "category": null
+    },
+    {
+        "instruction": "Find a library that provides an API for natural language processing.",
+        "instruction_translated": "एक लाइब्रेरी ढूंढें जो प्राकृतिक भाषा प्रसंस्करण के लिए एपीआई प्रदान करती है।",
+        "category": null
+    },
+    {
+        "instruction": "Create a metaphor that compares two unrelated items.",
+        "instruction_translated": "एक रूपक बनाएं जो दो असंबद्ध वस्तुओं की तुलना करता है।",
+        "category": null
+    },
+    {
+        "instruction": "Draft a set of guidelines for a team meeting.",
+        "instruction_translated": "टीम मीटिंग के लिए दिशानिर्देशों का एक सेट तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Describe a side effect that could occur from taking a drug.",
+        "instruction_translated": "किसी दवा लेने से होने वाले दुष्प्रभाव का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a regular expression that can match strings of any length consisting of only the letters a,b and c",
+        "instruction_translated": "एक नियमित अभिव्यक्ति उत्पन्न करें जो केवल अक्षरों ए, बी और सी से युक्त किसी भी लंबाई की स्ट्रिंग से मेल खा सके",
+        "category": null
+    },
+    {
+        "instruction": "List three software development methods.",
+        "instruction_translated": "तीन सॉफ्टवेयर विकास विधियों की सूची बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Multiply 12 and 11.",
+        "instruction_translated": "12 और 11 को गुणा करें.",
+        "category": null
+    },
+    {
+        "instruction": "Generate a hypothetical scenario involving a pandemic",
+        "instruction_translated": "एक महामारी से जुड़ा एक काल्पनिक परिदृश्य तैयार करें",
+        "category": null
+    },
+    {
+        "instruction": "Think of a creative way to transport a car from Denver to Texas.",
+        "instruction_translated": "डेनवर से टेक्सास तक कार ले जाने के रचनात्मक तरीके के बारे में सोचें।",
+        "category": null
+    },
+    {
+        "instruction": "Edit this sentence to make it more direct:\n\"I was wondering if you could help me with something.\"",
+        "instruction_translated": "इस वाक्य को अधिक प्रत्यक्ष बनाने के लिए इसे संपादित करें:\n\"मैं सोच रहा था कि क्या आप मेरी कुछ मदद कर सकते हैं।\"",
+        "category": null
+    },
+    {
+        "instruction": "Who wrote 'Harry Potter'?",
+        "instruction_translated": "'हैरी पॉटर' किसने लिखा?",
+        "category": null
+    },
+    {
+        "instruction": "What word best describes the definition of \"integrity\"?",
+        "instruction_translated": "कौन सा शब्द \"अखंडता\" की परिभाषा का सबसे अच्छा वर्णन करता है?",
+        "category": null
+    },
+    {
+        "instruction": "Write a narrative that contrasts two cultures.",
+        "instruction_translated": "एक ऐसी कथा लिखें जो दो संस्कृतियों के बीच विरोधाभास पैदा करती हो।",
+        "category": null
+    },
+    {
+        "instruction": "Given a dataset of customer records, write a function that filters out the customers from California.",
+        "instruction_translated": "ग्राहक रिकॉर्ड के डेटासेट को देखते हुए, एक फ़ंक्शन लिखें जो कैलिफ़ोर्निया के ग्राहकों को फ़िल्टर करता है।",
+        "category": null
+    },
+    {
+        "instruction": "Describe how a customer might feel when they receive excellent customer service.",
+        "instruction_translated": "वर्णन करें कि उत्कृष्ट ग्राहक सेवा प्राप्त होने पर ग्राहक को कैसा महसूस हो सकता है।",
+        "category": null
+    },
+    {
+        "instruction": "Create a rock-paper-scissor game in python.",
+        "instruction_translated": "पायथन में एक रॉक-पेपर-कैंची गेम बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Analyze the benefits of digital marketing",
+        "instruction_translated": "डिजिटल मार्केटिंग के लाभों का विश्लेषण करें",
+        "category": null
+    },
+    {
+        "instruction": "Compare the features of HTML and CSS.",
+        "instruction_translated": "HTML और CSS की विशेषताओं की तुलना करें।",
+        "category": null
+    },
+    {
+        "instruction": "What steps should you take to improve your website's performance?",
+        "instruction_translated": "आपको अपनी वेबसाइट के प्रदर्शन को बेहतर बनाने के लिए क्या कदम उठाने चाहिए?",
+        "category": null
+    },
+    {
+        "instruction": "Describe a roller coaster in three sentences.",
+        "instruction_translated": "तीन वाक्यों में रोलर कोस्टर का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a novel story about a magical animal.",
+        "instruction_translated": "एक जादुई जानवर के बारे में एक उपन्यास कहानी तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Classify the following sentence as a statement, command, exclamation or question: \"Did you understand the question?\"",
+        "instruction_translated": "निम्नलिखित वाक्य को एक कथन, आदेश, विस्मयादिबोधक या प्रश्न के रूप में वर्गीकृत करें: \"क्या आपको प्रश्न समझ आया?\"",
+        "category": null
+    },
+    {
+        "instruction": "Describe how a budget can help you achieve your financial goals.",
+        "instruction_translated": "वर्णन करें कि एक बजट आपके वित्तीय लक्ष्यों को प्राप्त करने में कैसे मदद कर सकता है।",
+        "category": null
+    },
+    {
+        "instruction": "Rewrite this sentence using a different but equivalent form:\n\"Living in the city is full of noise.\"",
+        "instruction_translated": "किसी भिन्न लेकिन समतुल्य रूप का उपयोग करके इस वाक्य को दोबारा लिखें:\n\"शहर में रहना शोर से भरा है।\"",
+        "category": null
+    },
+    {
+        "instruction": "Describe how data mining can be used in marketing.",
+        "instruction_translated": "वर्णन करें कि मार्केटिंग में डेटा माइनिंग का उपयोग कैसे किया जा सकता है।",
+        "category": null
+    },
+    {
+        "instruction": "Name a film that stars Tom Hanks.",
+        "instruction_translated": "उस फिल्म का नाम बताइए जिसमें टॉम हैंक्स ने अभिनय किया है।",
+        "category": null
+    },
+    {
+        "instruction": "State one example of an ironic statement.",
+        "instruction_translated": "एक व्यंग्यात्मक कथन का एक उदाहरण बताइये।",
+        "category": null
+    },
+    {
+        "instruction": "Rewrite the sentence in the past tense\nI miss you",
+        "instruction_translated": "वाक्य को भूतकाल में पुनः लिखिए\nमुझे तुम्हारी याद आती है",
+        "category": null
+    },
+    {
+        "instruction": "What is the maximum altitude a hot air balloon can reach?",
+        "instruction_translated": "एक गर्म हवा का गुब्बारा अधिकतम कितनी ऊँचाई तक पहुँच सकता है?",
+        "category": null
+    },
+    {
+        "instruction": "Explain the concept of a \"heartbeat\" in terms of database management.",
+        "instruction_translated": "डेटाबेस प्रबंधन के संदर्भ में \"दिल की धड़कन\" की अवधारणा को समझाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Compare the dietary needs of cats and dogs.",
+        "instruction_translated": "बिल्लियों और कुत्तों की आहार संबंधी आवश्यकताओं की तुलना करें।",
+        "category": null
+    },
+    {
+        "instruction": "Make a statement about entrepreneurship",
+        "instruction_translated": "उद्यमिता के बारे में एक वक्तव्य दीजिए",
+        "category": null
+    },
+    {
+        "instruction": "Generate a story with these keywords: campfire, tent, canoe.",
+        "instruction_translated": "इन कीवर्ड के साथ एक कहानी बनाएं: कैम्प फायर, तम्बू, डोंगी।",
+        "category": null
+    },
+    {
+        "instruction": "Give a reason why artificial intelligence (AI) is important for cyber security.",
+        "instruction_translated": "साइबर सुरक्षा के लिए कृत्रिम बुद्धिमत्ता (एआई) क्यों महत्वपूर्ण है इसका कारण बताएं।",
+        "category": null
+    },
+    {
+        "instruction": "Solve this equation\n3 + 2 = ?",
+        "instruction_translated": "इस समीकरण को हल करें\n3 + 2 = ?",
+        "category": null
+    },
+    {
+        "instruction": "Write a sports headline describing the popular football event.",
+        "instruction_translated": "लोकप्रिय फुटबॉल आयोजन का वर्णन करते हुए एक खेल शीर्षक लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Identify three methods of securing a computer network",
+        "instruction_translated": "कंप्यूटर नेटवर्क को सुरक्षित करने के तीन तरीकों की पहचान करें",
+        "category": null
+    },
+    {
+        "instruction": "Collect 5 facts about koalas",
+        "instruction_translated": "कोआला के बारे में 5 तथ्य एकत्रित करें",
+        "category": null
+    },
+    {
+        "instruction": "Come up with an example of a person exhibiting traits from the Big 5 personality traits.",
+        "instruction_translated": "बड़े 5 व्यक्तित्व लक्षणों में से लक्षण प्रदर्शित करने वाले व्यक्ति का एक उदाहरण प्रस्तुत करें।",
+        "category": null
+    },
+    {
+        "instruction": "Compare and contrast public and private schools.",
+        "instruction_translated": "सार्वजनिक और निजी स्कूलों की तुलना करें और अंतर बताएं।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a positive affirmation for an athlete.",
+        "instruction_translated": "एक एथलीट के लिए सकारात्मक पुष्टि उत्पन्न करें।",
+        "category": null
+    },
+    {
+        "instruction": "Create a list of steps to take in order to keep a computer secure.",
+        "instruction_translated": "कंप्यूटर को सुरक्षित रखने के लिए उठाए जाने वाले कदमों की एक सूची बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a list of popular tourist spots in New York City.",
+        "instruction_translated": "न्यूयॉर्क शहर में लोकप्रिय पर्यटन स्थलों की एक सूची बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Give a 3-sentence explanation of the concept of Machine Learning.",
+        "instruction_translated": "मशीन लर्निंग की अवधारणा का तीन-वाक्य में स्पष्टीकरण दीजिए।",
+        "category": null
+    },
+    {
+        "instruction": "What is the basic idea behind GPT models?",
+        "instruction_translated": "GPT मॉडल के पीछे मूल विचार क्या है?",
+        "category": null
+    },
+    {
+        "instruction": "Generate a story where the protagonist goes to a giant door and unlocks it using a magical key.",
+        "instruction_translated": "एक कहानी बनाएं जहां नायक एक विशाल दरवाजे पर जाता है और एक जादुई कुंजी का उपयोग करके उसे खोल देता है।",
+        "category": null
+    },
+    {
+        "instruction": "Fill in the blank to make a complete sentence: \"He ____ his dinner.\"",
+        "instruction_translated": "पूर्ण वाक्य बनाने के लिए रिक्त स्थान भरें: \"उसने अपना रात्रि भोजन ____ किया।\"",
+        "category": null
+    },
+    {
+        "instruction": "Give two examples of how digital technology can be used in the retail industry.",
+        "instruction_translated": "खुदरा उद्योग में डिजिटल प्रौद्योगिकी का उपयोग कैसे किया जा सकता है, इसके दो उदाहरण दीजिए।",
+        "category": null
+    },
+    {
+        "instruction": "Give an example of a sentence that uses a metaphor.",
+        "instruction_translated": "उस वाक्य का उदाहरण दीजिए जिसमें रूपक का प्रयोग किया गया हो।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the star formation process.",
+        "instruction_translated": "तारा निर्माण प्रक्रिया का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Develop an AI system to monitor credit card usage.",
+        "instruction_translated": "क्रेडिट कार्ड के उपयोग की निगरानी के लिए एक AI प्रणाली विकसित करें।",
+        "category": null
+    },
+    {
+        "instruction": "Suggest 5 methods for solving an optimization problem.",
+        "instruction_translated": "अनुकूलन समस्या को हल करने के लिए 5 तरीके सुझाएँ।",
+        "category": null
+    },
+    {
+        "instruction": "Write a 5-word tagline for the following product: a computer with advanced features.",
+        "instruction_translated": "निम्नलिखित उत्पाद के लिए 5 शब्दों की टैगलाइन लिखें: उन्नत सुविधाओं वाला एक कंप्यूटर।",
+        "category": null
+    },
+    {
+        "instruction": "Convert 1 mile to kilometers.",
+        "instruction_translated": "1 मील को किलोमीटर में बदलें.",
+        "category": null
+    },
+    {
+        "instruction": "Name a famous scientist who contributed to the development of the internet.",
+        "instruction_translated": "उस प्रसिद्ध वैज्ञानिक का नाम बताइए जिसने इंटरनेट के विकास में योगदान दिया।",
+        "category": null
+    },
+    {
+        "instruction": "Explain what a logical syllogism is.",
+        "instruction_translated": "बताएं कि तार्किक न्यायवाद क्या है।",
+        "category": null
+    },
+    {
+        "instruction": "Construct a SQL query to print the customer information sorted by customer name in ascending order.",
+        "instruction_translated": "ग्राहक के नाम के अनुसार आरोही क्रम में क्रमबद्ध ग्राहक जानकारी मुद्रित करने के लिए एक SQL क्वेरी बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Make a checklist of the items needed for the upcoming camping trip.",
+        "instruction_translated": "आगामी कैम्पिंग यात्रा के लिए आवश्यक वस्तुओं की एक चेकलिस्ट बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Generated a short story that features two people in a conflict.",
+        "instruction_translated": "एक लघु कहानी तैयार की गई जिसमें दो लोगों को संघर्ष करते हुए दिखाया गया है।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a passcode that meets these requirements: at least 8 characters, one capital letter, one lowercase letter, one number, and one special character",
+        "instruction_translated": "एक पासकोड बनाएं जो इन आवश्यकताओं को पूरा करता हो: कम से कम 8 अक्षर, एक बड़ा अक्षर, एक छोटा अक्षर, एक संख्या और एक विशेष अक्षर",
+        "category": null
+    },
+    {
+        "instruction": "Create a list of eight clothing items an individual should have in their wardrobe",
+        "instruction_translated": "आठ कपड़ों की वस्तुओं की एक सूची बनाएं जो एक व्यक्ति को अपनी अलमारी में रखनी चाहिए",
+        "category": null
+    },
+    {
+        "instruction": "Compare the judicial system in India and USA.",
+        "instruction_translated": "भारत और अमेरिका की न्यायिक प्रणाली की तुलना करें।",
+        "category": null
+    },
+    {
+        "instruction": "List three symptoms of a broken air conditioner.",
+        "instruction_translated": "टूटे हुए एयर कंडीशनर के तीन लक्षणों की सूची बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Generate 3 rules for an Organization.",
+        "instruction_translated": "किसी संगठन के लिए 3 नियम बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Create a poster that explains why pollution is bad.",
+        "instruction_translated": "एक पोस्टर बनाएं जो बताता हो कि प्रदूषण क्यों बुरा है।",
+        "category": null
+    },
+    {
+        "instruction": "Make a creative drawing of a pair of shoes.",
+        "instruction_translated": "जूतों की एक जोड़ी का रचनात्मक चित्र बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Propose a set of rules for an online forum.",
+        "instruction_translated": "एक ऑनलाइन फ़ोरम के लिए नियमों का एक सेट प्रस्तावित करें।",
+        "category": null
+    },
+    {
+        "instruction": "Scramble the letters 'rocisex' and name a word",
+        "instruction_translated": "'rocisex' अक्षरों को खंगालें और एक शब्द का नाम बताएं",
+        "category": null
+    },
+    {
+        "instruction": "What would you do if you won $1 million?",
+        "instruction_translated": "यदि आप $1 मिलियन जीत जाएं तो आप क्या करेंगे?",
+        "category": null
+    },
+    {
+        "instruction": "Produce a web page which provides details of the events in the French Revolution.",
+        "instruction_translated": "एक वेब पेज तैयार करें जो फ्रांसीसी क्रांति की घटनाओं का विवरण प्रदान करता हो।",
+        "category": null
+    },
+    {
+        "instruction": "Create a hashtag for a new marketing campaign.",
+        "instruction_translated": "किसी नए मार्केटिंग अभियान के लिए हैशटैग बनाएं.",
+        "category": null
+    },
+    {
+        "instruction": "Name two ways to reduce the environmental effects of human activities.",
+        "instruction_translated": "मानवीय गतिविधियों के पर्यावरणीय प्रभावों को कम करने के दो तरीकों के नाम बताइए।",
+        "category": null
+    },
+    {
+        "instruction": "Output a piece of code that will print out a list containing the numbers from 1 to 10.",
+        "instruction_translated": "कोड का एक टुकड़ा आउटपुट करें जो 1 से 10 तक की संख्याओं वाली एक सूची प्रिंट करेगा।",
+        "category": null
+    },
+    {
+        "instruction": "Describe a scenario in which AI technology can help diagnose a medical condition.",
+        "instruction_translated": "उस परिदृश्य का वर्णन करें जिसमें एआई तकनीक किसी चिकित्सीय स्थिति का निदान करने में मदद कर सकती है।",
+        "category": null
+    },
+    {
+        "instruction": "Categorize the word \"converse\"",
+        "instruction_translated": "\"बातचीत\" शब्द को वर्गीकृत करें",
+        "category": null
+    },
+    {
+        "instruction": "Discuss the potential implications of the given COVID-19 vaccine on international trade.",
+        "instruction_translated": "अंतर्राष्ट्रीय व्यापार पर दिए गए COVID-19 वैक्सीन के संभावित प्रभावों पर चर्चा करें।",
+        "category": null
+    },
+    {
+        "instruction": "List 5 ways technology has impacted the world",
+        "instruction_translated": "उन 5 तरीकों की सूची बनाएं जिनसे प्रौद्योगिकी ने दुनिया को प्रभावित किया है",
+        "category": null
+    },
+    {
+        "instruction": "Find the word that rhymes with \"cat\".",
+        "instruction_translated": "वह शब्द ढूंढें जो \"बिल्ली\" से मेल खाता हो।",
+        "category": null
+    },
+    {
+        "instruction": "Create a summative paragraph giving your opinion on the article.",
+        "instruction_translated": "लेख पर अपनी राय देते हुए एक सारांश पैराग्राफ बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "List 3 popular smartphone models",
+        "instruction_translated": "3 लोकप्रिय स्मार्टफोन मॉडलों की सूची बनाएं",
+        "category": null
+    },
+    {
+        "instruction": "Give a logical reason why this statement might be true: All dogs love to run.",
+        "instruction_translated": "एक तार्किक कारण बताएं कि यह कथन सत्य क्यों हो सकता है: सभी कुत्तों को दौड़ना पसंद है।",
+        "category": null
+    },
+    {
+        "instruction": "Come up with a child-friendly slogan for a health food company.",
+        "instruction_translated": "एक स्वास्थ्य खाद्य कंपनी के लिए बच्चों के अनुकूल नारा लेकर आएं।",
+        "category": null
+    },
+    {
+        "instruction": "Make a list of 5 foods that are native to Mexico.",
+        "instruction_translated": "उन 5 खाद्य पदार्थों की सूची बनाएं जो मेक्सिको के मूल निवासी हैं।",
+        "category": null
+    },
+    {
+        "instruction": "Name a strategy game that involves movement of pieces around a board.",
+        "instruction_translated": "एक रणनीति गेम का नाम बताइए जिसमें एक बोर्ड के चारों ओर टुकड़ों की गति शामिल है।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the contributions of deep learning to the field of natural language processing.",
+        "instruction_translated": "प्राकृतिक भाषा प्रसंस्करण के क्षेत्र में गहन शिक्षण के योगदान का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Calculate the midpoint of the line segment connecting (9, -7) to (-13, -2).",
+        "instruction_translated": "(9, -7) को (-13, -2) से जोड़ने वाले रेखा खंड के मध्यबिंदु की गणना करें।",
+        "category": null
+    },
+    {
+        "instruction": "Identify the activities that take place in India’s Thar Desert.",
+        "instruction_translated": "भारत के थार रेगिस्तान में होने वाली गतिविधियों की पहचान करें।",
+        "category": null
+    },
+    {
+        "instruction": "How can a company increase employee productivity?",
+        "instruction_translated": "कोई कंपनी कर्मचारी उत्पादकता कैसे बढ़ा सकती है?",
+        "category": null
+    },
+    {
+        "instruction": "Determine the sum of the series 1 + 1/2 + 1/3 + ...",
+        "instruction_translated": "श्रृंखला का योग ज्ञात करें 1 + 1/2 + 1/3 + ...",
+        "category": null
+    },
+    {
+        "instruction": "What are the advantages of a decision tree?",
+        "instruction_translated": "निर्णय वृक्ष के क्या लाभ हैं?",
+        "category": null
+    },
+    {
+        "instruction": "Describe what the sun looks like",
+        "instruction_translated": "वर्णन करें कि सूर्य कैसा दिखता है",
+        "category": null
+    },
+    {
+        "instruction": "Name two effects caused by deforestation in the Amazon rainforest.",
+        "instruction_translated": "अमेज़न वर्षावन में वनों की कटाई के कारण होने वाले दो प्रभावों के नाम बताइए।",
+        "category": null
+    },
+    {
+        "instruction": "Generate an innovative solution to reduce food waste.",
+        "instruction_translated": "भोजन की बर्बादी को कम करने के लिए एक अभिनव समाधान तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Classify the following sentence: The toy was red and blue.",
+        "instruction_translated": "निम्नलिखित वाक्य को वर्गीकृत करें: खिलौना लाल और नीला था।",
+        "category": null
+    },
+    {
+        "instruction": "Find the meaning of theword \"epiphany\".",
+        "instruction_translated": "\"एपिफेनी\" शब्द का अर्थ खोजें।",
+        "category": null
+    },
+    {
+        "instruction": "What is the fastest mammal on land?",
+        "instruction_translated": "ज़मीन पर सबसे तेज़ चलने वाला स्तनपायी कौन सा है?",
+        "category": null
+    },
+    {
+        "instruction": "Name the countries that are in Europe.",
+        "instruction_translated": "उन देशों के नाम बताइये जो यूरोप में हैं।",
+        "category": null
+    },
+    {
+        "instruction": "Write a short story between 30 to 50 words.",
+        "instruction_translated": "30 से 50 शब्दों के बीच एक छोटी कहानी लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Describe how to write a marketing email.",
+        "instruction_translated": "मार्केटिंग ईमेल कैसे लिखें, इसका वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Write an accurate and concise definition for the term ecosystem.",
+        "instruction_translated": "पारिस्थितिकी तंत्र शब्द की सटीक एवं संक्षिप्त परिभाषा लिखिए।",
+        "category": null
+    },
+    {
+        "instruction": "Design a GPT model to generate commands for a robot to pick up red cubes.",
+        "instruction_translated": "रोबोट को लाल घन उठाने के लिए आदेश उत्पन्न करने के लिए एक GPT मॉडल डिज़ाइन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Develop a creative solution to reduce food waste.",
+        "instruction_translated": "भोजन की बर्बादी को कम करने के लिए एक रचनात्मक समाधान विकसित करें।",
+        "category": null
+    },
+    {
+        "instruction": "Summarize the importance of the Civil Rights Movement.",
+        "instruction_translated": "नागरिक अधिकार आंदोलन के महत्व को संक्षेप में बताएं।",
+        "category": null
+    },
+    {
+        "instruction": "What is the difference between \"workplace bullying\" and \"harassment\"?",
+        "instruction_translated": "\"कार्यस्थल पर बदमाशी\" और \"उत्पीड़न\" के बीच क्या अंतर है?",
+        "category": null
+    },
+    {
+        "instruction": "What is the latest news about the President?",
+        "instruction_translated": "राष्ट्रपति के बारे में नवीनतम समाचार क्या है?",
+        "category": null
+    },
+    {
+        "instruction": "Give me three tips on how to maintain productivity while working from home.",
+        "instruction_translated": "घर से काम करते समय उत्पादकता कैसे बनाए रखें, इसके बारे में मुझे तीन सुझाव दें।",
+        "category": null
+    },
+    {
+        "instruction": "Choose the correct answer: Is a blue whale a mammal or a fish?",
+        "instruction_translated": "सही उत्तर चुनें: ब्लू व्हेल एक स्तनपायी है या मछली?",
+        "category": null
+    },
+    {
+        "instruction": "What items could a person put in an emergency kit?",
+        "instruction_translated": "कोई व्यक्ति आपातकालीन किट में कौन-सी वस्तुएँ रख सकता है?",
+        "category": null
+    },
+    {
+        "instruction": "Name three countries that speak French.",
+        "instruction_translated": "उन तीन देशों के नाम बताइए जो फ्रेंच बोलते हैं।",
+        "category": null
+    },
+    {
+        "instruction": "What is the active form of the verb 'to be'?",
+        "instruction_translated": "'होना' क्रिया का सक्रिय रूप क्या है?",
+        "category": null
+    },
+    {
+        "instruction": "Find a word that starts with the letter \"b\" and has 10 letters",
+        "instruction_translated": "ऐसा शब्द ढूंढें जो \"बी\" अक्षर से शुरू होता है और जिसमें 10 अक्षर हों",
+        "category": null
+    },
+    {
+        "instruction": "Solve the following linear equation: 2x + 5 = 20",
+        "instruction_translated": "निम्नलिखित रैखिक समीकरण को हल करें: 2x + 5 = 20",
+        "category": null
+    },
+    {
+        "instruction": "Explain the importance of the United Nations in global peace and security.",
+        "instruction_translated": "वैश्विक शांति और सुरक्षा में संयुक्त राष्ट्र के महत्व को स्पष्ट करें।",
+        "category": null
+    },
+    {
+        "instruction": "Identify a sentence that uses alliteration",
+        "instruction_translated": "उस वाक्य को पहचानें जिसमें अनुप्रास अलंकार का प्रयोग होता है",
+        "category": null
+    },
+    {
+        "instruction": "Answer this question: How do search engines work?",
+        "instruction_translated": "इस प्रश्न का उत्तर दें: खोज इंजन कैसे काम करते हैं?",
+        "category": null
+    },
+    {
+        "instruction": "Explain why governments may choose to censor some content on the Internet.",
+        "instruction_translated": "बताएं कि सरकारें इंटरनेट पर कुछ सामग्री को सेंसर करना क्यों चुन सकती हैं।",
+        "category": null
+    },
+    {
+        "instruction": "Write an article that educates readers on the ethical considerations of robotics",
+        "instruction_translated": "एक लेख लिखें जो पाठकों को रोबोटिक्स के नैतिक विचारों के बारे में शिक्षित करे",
+        "category": null
+    },
+    {
+        "instruction": "Imagine you are on a mission to Mars and write a diary entry about the experience.",
+        "instruction_translated": "कल्पना कीजिए कि आप मंगल ग्रह के मिशन पर हैं और अनुभव के बारे में एक डायरी प्रविष्टि लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Identify the type of adjective used in \"That is a beautiful sunset\":",
+        "instruction_translated": "\"वह एक सुंदर सूर्यास्त है\" में प्रयुक्त विशेषण के प्रकार को पहचानें:",
+        "category": null
+    },
+    {
+        "instruction": "Write a tweet about customer service.",
+        "instruction_translated": "ग्राहक सेवा के बारे में एक ट्वीट लिखें.",
+        "category": null
+    },
+    {
+        "instruction": "Generate a list of ten items needed for camping.",
+        "instruction_translated": "कैम्पिंग के लिए आवश्यक दस वस्तुओं की एक सूची तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Talk about the Renaissance in Europe.",
+        "instruction_translated": "यूरोप में पुनर्जागरण के बारे में बात करें।",
+        "category": null
+    },
+    {
+        "instruction": "Describe a new innovative technology.",
+        "instruction_translated": "एक नई नवोन्वेषी प्रौद्योगिकी का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Explain how voice search technology works.",
+        "instruction_translated": "बताएं कि वॉयस सर्च तकनीक कैसे काम करती है।",
+        "category": null
+    },
+    {
+        "instruction": "Come up with a creative promotion strategy to increase sales.",
+        "instruction_translated": "बिक्री बढ़ाने के लिए एक रचनात्मक प्रचार रणनीति बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "What is the purpose of multi-label classification?",
+        "instruction_translated": "मल्टी-लेबल वर्गीकरण का उद्देश्य क्या है?",
+        "category": null
+    },
+    {
+        "instruction": "Name two features of a reliable e-commerce website",
+        "instruction_translated": "एक विश्वसनीय ई-कॉमर्स वेबसाइट की दो विशेषताओं के नाम बताइए",
+        "category": null
+    },
+    {
+        "instruction": "Create a data set of 10 cities and the corresponding population.",
+        "instruction_translated": "10 शहरों और संबंधित जनसंख्या का एक डेटा सेट बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "What strategies can a government use to reduce air pollution?",
+        "instruction_translated": "वायु प्रदूषण को कम करने के लिए सरकार किन रणनीतियों का उपयोग कर सकती है?",
+        "category": null
+    },
+    {
+        "instruction": "Generate a list of steps for doing research on the Internet.",
+        "instruction_translated": "इंटरनेट पर शोध करने के लिए चरणों की एक सूची तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Write a procedural text on how to make a peanut butter and jelly sandwich.",
+        "instruction_translated": "मूंगफली का मक्खन और जेली सैंडविच कैसे बनाएं, इस पर एक प्रक्रियात्मक पाठ लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Name a popular activity people do in the summer.",
+        "instruction_translated": "गर्मियों में लोगों द्वारा की जाने वाली एक लोकप्रिय गतिविधि का नाम बताइए।",
+        "category": null
+    },
+    {
+        "instruction": "Explain the computational process of gradient descent with respect to linear regression",
+        "instruction_translated": "रैखिक प्रतिगमन के संबंध में ग्रेडिएंट डिसेंट की कम्प्यूटेशनल प्रक्रिया की व्याख्या करें",
+        "category": null
+    },
+    {
+        "instruction": "Find a recipe for banana bread.",
+        "instruction_translated": "केले की ब्रेड की रेसिपी खोजें।",
+        "category": null
+    },
+    {
+        "instruction": "What is the best way to help children learn information quickly and effectively?",
+        "instruction_translated": "बच्चों को जानकारी जल्दी और प्रभावी ढंग से सीखने में मदद करने का सबसे अच्छा तरीका क्या है?",
+        "category": null
+    },
+    {
+        "instruction": "Create an email marketing campaign to promote a new product.",
+        "instruction_translated": "किसी नए उत्पाद को बढ़ावा देने के लिए एक ईमेल मार्केटिंग अभियान बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Describe a time you had to devise a creative solution for a problem.",
+        "instruction_translated": "उस समय का वर्णन करें जब आपको किसी समस्या का रचनात्मक समाधान खोजना पड़ा।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the character Boba Fett in Star Wars.",
+        "instruction_translated": "स्टार वार्स में बोबा फेट के चरित्र का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Identify the most famous painting by Vincent van Gogh.",
+        "instruction_translated": "विंसेंट वान गाग की सबसे प्रसिद्ध पेंटिंग को पहचानें।",
+        "category": null
+    },
+    {
+        "instruction": "Explain the usage of an ontology in artificial intelligence.",
+        "instruction_translated": "कृत्रिम बुद्धिमत्ता में ऑन्टोलॉजी के उपयोग की व्याख्या करें।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a response to the following customer review\n\nThe customer service was really slow",
+        "instruction_translated": "निम्नलिखित ग्राहक समीक्षा पर प्रतिक्रिया उत्पन्न करें\n\nग्राहक सेवा वास्तव में धीमी थी",
+        "category": null
+    },
+    {
+        "instruction": "Explain the difference between systematic and unsystematic risk",
+        "instruction_translated": "व्यवस्थित और अव्यवस्थित जोखिम के बीच अंतर स्पष्ट करें",
+        "category": null
+    },
+    {
+        "instruction": "Generate an input data set that has three members and five attributes.",
+        "instruction_translated": "एक इनपुट डेटा सेट बनाएं जिसमें तीन सदस्य और पांच विशेषताएँ हों।",
+        "category": null
+    },
+    {
+        "instruction": "Write a simile to compare two of the following words: moonlight, snow, wind.",
+        "instruction_translated": "निम्नलिखित में से दो शब्दों की तुलना करने के लिए एक उपमा लिखें: चांदनी, बर्फ, हवा।",
+        "category": null
+    },
+    {
+        "instruction": "What is the Difference between Electromagnetic and Gravitational Wave?",
+        "instruction_translated": "विद्युत चुम्बकीय और गुरुत्वाकर्षण तरंग के बीच क्या अंतर है?",
+        "category": null
+    },
+    {
+        "instruction": "What is the purpose of an aperture in a camera lens?",
+        "instruction_translated": "कैमरा लेंस में एपर्चर का उद्देश्य क्या है?",
+        "category": null
+    },
+    {
+        "instruction": "What is the scoping rule of a variable?",
+        "instruction_translated": "किसी वेरिएबल का स्कोपिंग नियम क्या है?",
+        "category": null
+    },
+    {
+        "instruction": "What is the Chinese equivalent of \"Hello\" or \"Good day\"?",
+        "instruction_translated": "\"हैलो\" या \"शुभ दिन\" का चीनी समकक्ष क्या है?",
+        "category": null
+    },
+    {
+        "instruction": "List five objects found in a kitchen.",
+        "instruction_translated": "रसोई में पाई जाने वाली पांच वस्तुओं की सूची बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Calculate the average of the following numbers: 1, 3, 7",
+        "instruction_translated": "निम्नलिखित संख्याओं का औसत ज्ञात कीजिए: 1, 3, 7",
+        "category": null
+    },
+    {
+        "instruction": "What are the potential benefits of AI in healthcare?",
+        "instruction_translated": "स्वास्थ्य देखभाल में एआई के संभावित लाभ क्या हैं?",
+        "category": null
+    },
+    {
+        "instruction": "Describe a situation where a security breach results in data being stolen.",
+        "instruction_translated": "ऐसी स्थिति का वर्णन करें जहां सुरक्षा उल्लंघन के परिणामस्वरूप डेटा चोरी हो जाता है।",
+        "category": null
+    },
+    {
+        "instruction": "Describe one way to make sure your passwords remain secure.",
+        "instruction_translated": "यह सुनिश्चित करने का एक तरीका बताएं कि आपके पासवर्ड सुरक्षित रहें।",
+        "category": null
+    },
+    {
+        "instruction": "Is the following statement true or false? Cats cannot taste sweet food.",
+        "instruction_translated": "निम्नलिखित कथन सत्य है या असत्य? बिल्लियाँ मीठे भोजन का स्वाद नहीं ले सकतीं।",
+        "category": null
+    },
+    {
+        "instruction": "Explain the different types of digital media.",
+        "instruction_translated": "डिजिटल मीडिया के विभिन्न प्रकारों को समझाइये।",
+        "category": null
+    },
+    {
+        "instruction": "List the differences between the Rich and the Poor.",
+        "instruction_translated": "अमीर और गरीब के बीच अंतर सूचीबद्ध करें।",
+        "category": null
+    },
+    {
+        "instruction": "What is the five step process of content creation?",
+        "instruction_translated": "सामग्री निर्माण की पाँच चरणीय प्रक्रिया क्या है?",
+        "category": null
+    },
+    {
+        "instruction": "Describe the setting of a spooky old house.",
+        "instruction_translated": "एक डरावने पुराने घर की सेटिंग का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Write a one-paragraph summary about Isaac Newton's mathematical discoveries.",
+        "instruction_translated": "आइजैक न्यूटन की गणितीय खोजों के बारे में एक पैराग्राफ सारांश लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Create a pun using the phrase \"adulting\".",
+        "instruction_translated": "\"वयस्क\" वाक्यांश का उपयोग करके एक यमक बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Create a list of five questions about the ocean",
+        "instruction_translated": "महासागर के बारे में पाँच प्रश्नों की एक सूची बनाएँ",
+        "category": null
+    },
+    {
+        "instruction": "Write a tweet about your favorite animal.",
+        "instruction_translated": "अपने पसंदीदा जानवर के बारे में एक ट्वीट लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Explain how a virtual assistant can help you with your daily tasks.",
+        "instruction_translated": "बताएं कि एक आभासी सहायक आपके दैनिक कार्यों में कैसे मदद कर सकता है।",
+        "category": null
+    },
+    {
+        "instruction": "Explain how deep learning works.",
+        "instruction_translated": "बताएं कि गहन शिक्षा कैसे काम करती है।",
+        "category": null
+    },
+    {
+        "instruction": "Construct a sentence that contains the word \"august\"",
+        "instruction_translated": "एक वाक्य बनाइए जिसमें \"अगस्त\" शब्द हो",
+        "category": null
+    },
+    {
+        "instruction": "Generate a sentence containing both an adjective and an adverb",
+        "instruction_translated": "एक वाक्य बनाएं जिसमें विशेषण और क्रियाविशेषण दोनों हों",
+        "category": null
+    },
+    {
+        "instruction": "How can businesses benefit from using AI?",
+        "instruction_translated": "AI के उपयोग से व्यवसायों को कैसे लाभ हो सकता है?",
+        "category": null
+    },
+    {
+        "instruction": "Explain how a modern computer system works",
+        "instruction_translated": "बताएं कि आधुनिक कंप्यूटर सिस्टम कैसे काम करता है",
+        "category": null
+    },
+    {
+        "instruction": "Rewrite the following sentence using a metaphor:\nThe sunset was beautiful",
+        "instruction_translated": "निम्नलिखित वाक्य को रूपक का प्रयोग करके पुनः लिखिए:\nसूर्यास्त सुन्दर था",
+        "category": null
+    },
+    {
+        "instruction": "Generate a web page about the history of slavery in America",
+        "instruction_translated": "अमेरिका में गुलामी के इतिहास के बारे में एक वेब पेज बनाएं",
+        "category": null
+    },
+    {
+        "instruction": "Create a bingo card with the words 'sleep', 'bath', 'movies', and 'read'.",
+        "instruction_translated": "'नींद', 'स्नान', 'फिल्में' और 'पढ़ें' शब्दों के साथ एक बिंगो कार्ड बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "List three reasons why the morning is the best time of the day.",
+        "instruction_translated": "उन तीन कारणों की सूची बनाइए जिनकी वजह से सुबह का समय दिन का सबसे अच्छा समय होता है।",
+        "category": null
+    },
+    {
+        "instruction": "Create a tool to check your understanding after taking an online course.",
+        "instruction_translated": "ऑनलाइन पाठ्यक्रम लेने के बाद अपनी समझ की जांच करने के लिए एक टूल बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Create a short story about a person who is able to use time machine.",
+        "instruction_translated": "एक ऐसे व्यक्ति के बारे में एक छोटी कहानी बनाएँ जो टाइम मशीन का उपयोग करने में सक्षम है।",
+        "category": null
+    },
+    {
+        "instruction": "Write a story about a cat that is stuck in a tree.",
+        "instruction_translated": "एक बिल्ली के बारे में एक कहानी लिखें जो एक पेड़ में फंस गई है।",
+        "category": null
+    },
+    {
+        "instruction": "Answer the question: why do we learn new languages?",
+        "instruction_translated": "प्रश्न का उत्तर दें: हम नई भाषाएँ क्यों सीखते हैं?",
+        "category": null
+    },
+    {
+        "instruction": "Explain the difference between Machine Learning and Artificial Intelligence.",
+        "instruction_translated": "मशीन लर्निंग और आर्टिफिशियल इंटेलिजेंस के बीच अंतर स्पष्ट करें।",
+        "category": null
+    },
+    {
+        "instruction": "Create an analogy for black hole",
+        "instruction_translated": "ब्लैक होल के लिए एक सादृश्य बनाएँ",
+        "category": null
+    },
+    {
+        "instruction": "Write a paragraph summarizing one of the stories in the Bible.",
+        "instruction_translated": "बाइबल की कहानियों में से किसी एक का सारांश देते हुए एक अनुच्छेद लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Identify the different types of taxes and explain briefly what each tax is used for.",
+        "instruction_translated": "विभिन्न प्रकार के करों को पहचानें और संक्षेप में बताएं कि प्रत्येक कर का उपयोग किस लिए किया जाता है।",
+        "category": null
+    },
+    {
+        "instruction": "Come up with a unique idea for a party invitation.",
+        "instruction_translated": "पार्टी निमंत्रण के लिए एक अनोखा विचार लेकर आएं।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a list of 10 computer science terms which are useful in everyday conversation.",
+        "instruction_translated": "कंप्यूटर विज्ञान के 10 शब्दों की एक सूची बनाएं जो रोजमर्रा की बातचीत में उपयोगी हों।",
+        "category": null
+    },
+    {
+        "instruction": "Create a list of 5 verbs that could be used to describe playing a sport.",
+        "instruction_translated": "5 क्रियाओं की एक सूची बनाएं जिनका उपयोग किसी खेल को खेलने का वर्णन करने के लिए किया जा सकता है।",
+        "category": null
+    },
+    {
+        "instruction": "Write a speech to the graduating class about how their hard work will pay off.",
+        "instruction_translated": "स्नातक कक्षा के लिए एक भाषण लिखें कि उनकी कड़ी मेहनत कैसे रंग लाएगी।",
+        "category": null
+    },
+    {
+        "instruction": "Explain the concept of Newton's laws of motion.",
+        "instruction_translated": "न्यूटन के गति के नियमों की अवधारणा को समझाइये।",
+        "category": null
+    },
+    {
+        "instruction": "Create a 5-minute storytelling about a newspaper delivery person.",
+        "instruction_translated": "अखबार बांटने वाले व्यक्ति के बारे में 5 मिनट की कहानी बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Create an algorithm that identifies if an object is glass or metal.",
+        "instruction_translated": "एक एल्गोरिदम बनाएं जो पहचान सके कि कोई वस्तु कांच है या धातु।",
+        "category": null
+    },
+    {
+        "instruction": "Add a conclusion to an essay about the importance of education",
+        "instruction_translated": "शिक्षा के महत्व के बारे में एक निबंध में निष्कर्ष जोड़ें",
+        "category": null
+    },
+    {
+        "instruction": "Convert 2 ounces to milliliters.",
+        "instruction_translated": "2 औंस को मिलीलीटर में बदलें।",
+        "category": null
+    },
+    {
+        "instruction": "Generate an NBA player trivia question.",
+        "instruction_translated": "एक एनबीए खिलाड़ी सामान्य ज्ञान प्रश्न उत्पन्न करें।",
+        "category": null
+    },
+    {
+        "instruction": "Generate an example of an idiom or proverb.",
+        "instruction_translated": "किसी मुहावरे या कहावत का उदाहरण तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Explain the purpose of a company's quality assurance process.",
+        "instruction_translated": "किसी कंपनी की गुणवत्ता आश्वासन प्रक्रिया का उद्देश्य स्पष्ट करें।",
+        "category": null
+    },
+    {
+        "instruction": "Compare the characteristics between an AI chatbot and a virtual assistant.",
+        "instruction_translated": "एआई चैटबॉट और वर्चुअल असिस्टेंट के बीच विशेषताओं की तुलना करें।",
+        "category": null
+    },
+    {
+        "instruction": "Create a HTML page with a table that has five cells.",
+        "instruction_translated": "एक तालिका के साथ एक HTML पृष्ठ बनाएं जिसमें पाँच कक्ष हों।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a description of a book that takes place in a small rural town.",
+        "instruction_translated": "एक छोटे से ग्रामीण शहर में होने वाली पुस्तक का विवरण तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the various components of an AI system.",
+        "instruction_translated": "AI प्रणाली के विभिन्न घटकों का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Paraphrase this sentence: \"I will always remember the day I graduated.\"",
+        "instruction_translated": "इस वाक्य की व्याख्या करें: \"मैं उस दिन को हमेशा याद रखूंगा जब मैंने स्नातक किया था।\"",
+        "category": null
+    },
+    {
+        "instruction": "Explain Islamic beliefs on fate.",
+        "instruction_translated": "भाग्य पर इस्लामी मान्यताओं की व्याख्या करें।",
+        "category": null
+    },
+    {
+        "instruction": "Identify and explain 3 characteristics of a dactyl.",
+        "instruction_translated": "डैक्टाइल की तीन विशेषताओं को पहचानें और समझाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Suggest a new podcast episode topic",
+        "instruction_translated": "एक नया पॉडकास्ट एपिसोड विषय सुझाएं",
+        "category": null
+    },
+    {
+        "instruction": "Rewrite this sentence in a more concise way: \"Cloud computing is an emerging technology which allows businesses to store and manage data and applications on servers hosted on the internet.\"",
+        "instruction_translated": "इस वाक्य को अधिक संक्षिप्त तरीके से दोबारा लिखें: \"क्लाउड कंप्यूटिंग एक उभरती हुई तकनीक है जो व्यवसायों को इंटरनेट पर होस्ट किए गए सर्वर पर डेटा और एप्लिकेशन को संग्रहीत और प्रबंधित करने की अनुमति देती है।\"",
+        "category": null
+    },
+    {
+        "instruction": "Explain why biofuels may be an important part of the renewable energy future.",
+        "instruction_translated": "बताएं कि जैव ईंधन नवीकरणीय ऊर्जा के भविष्य का एक महत्वपूर्ण हिस्सा क्यों हो सकता है।",
+        "category": null
+    },
+    {
+        "instruction": "What are the key elements to creating a successful presentation?",
+        "instruction_translated": "एक सफल प्रस्तुतिकरण बनाने के लिए प्रमुख तत्व क्या हैं?",
+        "category": null
+    },
+    {
+        "instruction": "Design an experiment to determine if smoking affects memory.",
+        "instruction_translated": "यह निर्धारित करने के लिए एक प्रयोग डिज़ाइन करें कि क्या धूम्रपान स्मृति को प्रभावित करता है।",
+        "category": null
+    },
+    {
+        "instruction": "Tell me the history of the internet.",
+        "instruction_translated": "मुझे इंटरनेट का इतिहास बताओ?",
+        "category": null
+    },
+    {
+        "instruction": "Create a description of a large, carnivorous dinosaur.",
+        "instruction_translated": "एक बड़े, मांसाहारी डायनासोर का वर्णन बनाएँ।",
+        "category": null
+    },
+    {
+        "instruction": "List some traditional Japanese dishes",
+        "instruction_translated": "कुछ पारंपरिक जापानी व्यंजनों की सूची बनाएं",
+        "category": null
+    },
+    {
+        "instruction": "Evaluate this statement: \"Genetically modified (GM) organisms are positive for the environment\".",
+        "instruction_translated": "इस कथन का मूल्यांकन करें: \"आनुवंशिक रूप से संशोधित (जीएम) जीव पर्यावरण के लिए सकारात्मक हैं\"।",
+        "category": null
+    },
+    {
+        "instruction": "Elaborate on the difference between unsupervised and supervised learning.",
+        "instruction_translated": "अपर्यवेक्षित और पर्यवेक्षित शिक्षण के बीच अंतर को विस्तार से बताएं।",
+        "category": null
+    },
+    {
+        "instruction": "Calculate the mean of the numbers 2,3,7,1",
+        "instruction_translated": "संख्याओं 2,3,7,1 का माध्य ज्ञात कीजिए",
+        "category": null
+    },
+    {
+        "instruction": "Name four states in the USA that border the Pacific Ocean.",
+        "instruction_translated": "संयुक्त राज्य अमेरिका में प्रशांत महासागर की सीमा से लगे चार राज्यों के नाम बताइए।",
+        "category": null
+    },
+    {
+        "instruction": "Compare the effect of different techniques for preventing data loss from cyber attacks.",
+        "instruction_translated": "साइबर हमलों से डेटा हानि को रोकने के लिए विभिन्न तकनीकों के प्रभाव की तुलना करें।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the sounds of a sunny summer day.",
+        "instruction_translated": "एक धूप वाले गर्मी के दिन की आवाज़ का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Make up a bedtime story for a three year old.",
+        "instruction_translated": "तीन साल के बच्चे के लिए सोते समय एक कहानी बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Complete the following sentence: \"You can't judge a book by _____.\"",
+        "instruction_translated": "निम्नलिखित वाक्य को पूरा करें: \"आप किसी पुस्तक का मूल्यांकन _____ से नहीं कर सकते।\"",
+        "category": null
+    },
+    {
+        "instruction": "Summarize the role of data scientists in a few sentences.",
+        "instruction_translated": "डेटा वैज्ञानिकों की भूमिका को कुछ वाक्यों में सारांशित करें।",
+        "category": null
+    },
+    {
+        "instruction": "Construct a query for retrieving the top 10 books in the “Mystery” genre from an online bookstore database.",
+        "instruction_translated": "ऑनलाइन बुकस्टोर डेटाबेस से \"मिस्ट्री\" शैली में शीर्ष 10 पुस्तकों को पुनः प्राप्त करने के लिए एक क्वेरी बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Explain why it is important to have meaningful conversations with your colleagues.",
+        "instruction_translated": "बताएं कि अपने सहकर्मियों के साथ सार्थक बातचीत करना क्यों महत्वपूर्ण है।",
+        "category": null
+    },
+    {
+        "instruction": "Explain what climate change is",
+        "instruction_translated": "बताएं कि जलवायु परिवर्तन क्या है?",
+        "category": null
+    },
+    {
+        "instruction": "I need to organize a picnic for a large group of people. How can I do that?",
+        "instruction_translated": "मुझे लोगों के एक बड़े समूह के लिए पिकनिक का आयोजन करना है। मेरे द्वारा ऐसा कैसे किया जा सकता है?",
+        "category": null
+    },
+    {
+        "instruction": "How do you make a Peanut Butter and Jelly Sandwich",
+        "instruction_translated": "आप मूंगफली का मक्खन और जेली सैंडविच कैसे बनाते हैं?",
+        "category": null
+    },
+    {
+        "instruction": "Think of a portmanteau word combining the words “pig” and “dog”",
+        "instruction_translated": "\"सुअर\" और \"कुत्ता\" शब्दों को मिलाकर एक पोर्टमैंटो शब्द के बारे में सोचें",
+        "category": null
+    },
+    {
+        "instruction": "Find and describe the current social trend in Gen Z.",
+        "instruction_translated": "जेन जेड में वर्तमान सामाजिक प्रवृत्ति को ढूंढें और उसका वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "You are requested to generate a list of projects that you can implement over the next 3 months.",
+        "instruction_translated": "आपसे अनुरोध है कि आप उन परियोजनाओं की एक सूची तैयार करें जिन्हें आप अगले 3 महीनों में कार्यान्वित कर सकते हैं।",
+        "category": null
+    },
+    {
+        "instruction": "Arrange the words \"rabbit\", \"sleep\", and \"shelf\" into a sentence.",
+        "instruction_translated": "\"खरगोश\", \"नींद\" और \"शेल्फ\" शब्दों को एक वाक्य में व्यवस्थित करें।",
+        "category": null
+    },
+    {
+        "instruction": "Write the comparative form of 'good'.",
+        "instruction_translated": "'अच्छा' का तुलनात्मक रूप लिखिए।",
+        "category": null
+    },
+    {
+        "instruction": "Tell me about the difference between a civil and a criminal lawsuit",
+        "instruction_translated": "मुझे दीवानी और आपराधिक मुकदमे के बीच अंतर के बारे में बताएं",
+        "category": null
+    },
+    {
+        "instruction": "Create a list of five potential questions that someone could ask the assistant.",
+        "instruction_translated": "पाँच संभावित प्रश्नों की एक सूची बनाएँ जो कोई सहायक से पूछ सकता है।",
+        "category": null
+    },
+    {
+        "instruction": "Create a table that compares and contrasts two countries of your choice",
+        "instruction_translated": "एक तालिका बनाएं जो आपकी पसंद के दो देशों की तुलना और विरोधाभास करती हो",
+        "category": null
+    },
+    {
+        "instruction": "Compile a list of 5 common misconceptions about the health effects of smoking.",
+        "instruction_translated": "धूम्रपान के स्वास्थ्य प्रभावों के बारे में 5 आम गलतफहमियों की एक सूची संकलित करें।",
+        "category": null
+    },
+    {
+        "instruction": "You need to write a persuasive article discussing the importance of coding education in schools.",
+        "instruction_translated": "आपको स्कूलों में कोडिंग शिक्षा के महत्व पर चर्चा करते हुए एक प्रेरक लेख लिखना होगा।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a headline for a news article about President Trump's policies on global warming.",
+        "instruction_translated": "ग्लोबल वार्मिंग पर राष्ट्रपति ट्रम्प की नीतियों के बारे में एक समाचार लेख के लिए एक शीर्षक बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Come up with a set of criteria for code readability",
+        "instruction_translated": "कोड पठनीयता के लिए मानदंडों का एक सेट बनाएं",
+        "category": null
+    },
+    {
+        "instruction": "List 3 benefits for eating a balanced diet.",
+        "instruction_translated": "संतुलित आहार खाने के 3 लाभ सूचीबद्ध करें।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the process for starting a business.",
+        "instruction_translated": "व्यवसाय शुरू करने की प्रक्रिया का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the energy cycle of the sun.",
+        "instruction_translated": "सूर्य के ऊर्जा चक्र का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Design an experiment that tests the reaction of a tomato's growth to different kinds of water.",
+        "instruction_translated": "एक प्रयोग डिज़ाइन करें जो विभिन्न प्रकार के पानी पर टमाटर की वृद्धि की प्रतिक्रिया का परीक्षण करता है।",
+        "category": null
+    },
+    {
+        "instruction": "Give a brief description of the historical period known as the French Revolution.",
+        "instruction_translated": "फ्रांसीसी क्रांति के नाम से प्रसिद्ध ऐतिहासिक काल का संक्षिप्त विवरण दीजिए।",
+        "category": null
+    },
+    {
+        "instruction": "Create three strategies for improving customer service in a retail store.",
+        "instruction_translated": "खुदरा स्टोर में ग्राहक सेवा में सुधार के लिए तीन रणनीतियाँ बनाएँ।",
+        "category": null
+    },
+    {
+        "instruction": "How can schools improve student safety during the covid-19 pandemic?",
+        "instruction_translated": "कोविड-19 महामारी के दौरान स्कूल छात्र सुरक्षा में कैसे सुधार कर सकते हैं?",
+        "category": null
+    },
+    {
+        "instruction": "What is the difference between hard and soft skills?",
+        "instruction_translated": "हार्ड और सॉफ्ट स्किल में क्या अंतर है?",
+        "category": null
+    },
+    {
+        "instruction": "How has the coronavirus pandemic impacted the economy in the United States?",
+        "instruction_translated": "संयुक्त राज्य अमेरिका में कोरोनोवायरस महामारी ने अर्थव्यवस्था को कैसे प्रभावित किया है?",
+        "category": null
+    },
+    {
+        "instruction": "Compare and contrast print media and digital media.",
+        "instruction_translated": "प्रिंट मीडिया और डिजिटल मीडिया की तुलना करें और अंतर बताएं।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the momentum concept of Physics in one sentence.",
+        "instruction_translated": "भौतिकी की संवेग अवधारणा का एक वाक्य में वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Given the news headline, \"New Chinese Economy Boom,\" write the opening of the article.",
+        "instruction_translated": "समाचार शीर्षक, \"नई चीनी अर्थव्यवस्था में उछाल\" को देखते हुए, लेख की शुरुआत लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Design a data visualization to show the evolution of the stock market over time.",
+        "instruction_translated": "समय के साथ शेयर बाज़ार के विकास को दिखाने के लिए एक डेटा विज़ुअलाइज़ेशन डिज़ाइन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Construct a metaphor that captures the feeling of joy.",
+        "instruction_translated": "एक ऐसे रूपक का निर्माण करें जो आनंद की अनुभूति को दर्शाता हो।",
+        "category": null
+    },
+    {
+        "instruction": "Using the noun \"boat\" write a simile",
+        "instruction_translated": "नाव संज्ञा का प्रयोग करते हुए उपमा लिखिए",
+        "category": null
+    },
+    {
+        "instruction": "Paraphrase the phrase \"She was very happy\".",
+        "instruction_translated": "\"वह बहुत खुश थी\" वाक्यांश की व्याख्या करें।",
+        "category": null
+    },
+    {
+        "instruction": "Spell the world \"pneumonia\"",
+        "instruction_translated": "दुनिया को \"निमोनिया\" लिखें",
+        "category": null
+    },
+    {
+        "instruction": "Create a function to determine whether a number is prime or not.",
+        "instruction_translated": "यह निर्धारित करने के लिए एक फ़ंक्शन बनाएं कि कोई संख्या अभाज्य है या नहीं।",
+        "category": null
+    },
+    {
+        "instruction": "Find the Wikipedia link for the historic battle of Chancellorsville.",
+        "instruction_translated": "चांसलर्सविले की ऐतिहासिक लड़ाई के लिए विकिपीडिया लिंक खोजें।",
+        "category": null
+    },
+    {
+        "instruction": "Classify a 3D printer as a consumer or industrial product.",
+        "instruction_translated": "3डी प्रिंटर को उपभोक्ता या औद्योगिक उत्पाद के रूप में वर्गीकृत करें।",
+        "category": null
+    },
+    {
+        "instruction": "Name a language spoken in Africa.",
+        "instruction_translated": "अफ़्रीका में बोली जाने वाली एक भाषा का नाम बताइये।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a list of reasons why going for a walk can be good for one's mental well-being.",
+        "instruction_translated": "उन कारणों की सूची बनाएं कि क्यों टहलना किसी के मानसिक स्वास्थ्य के लिए अच्छा हो सकता है।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the experience of using a Virtual Reality headset.",
+        "instruction_translated": "वर्चुअल रियलिटी हेडसेट का उपयोग करने के अनुभव का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the ideal workspace",
+        "instruction_translated": "आदर्श कार्यक्षेत्र का वर्णन करें",
+        "category": null
+    },
+    {
+        "instruction": "Suggest a unique and creative marketing strategy.",
+        "instruction_translated": "एक अनोखी और रचनात्मक मार्केटिंग रणनीति का सुझाव दें।",
+        "category": null
+    },
+    {
+        "instruction": "Compare and contrast two popular tourist attractions in your hometown.",
+        "instruction_translated": "अपने गृहनगर में दो लोकप्रिय पर्यटक आकर्षणों की तुलना करें और अंतर बताएं।",
+        "category": null
+    },
+    {
+        "instruction": "Outline the main points of a speech about the effects of climate change",
+        "instruction_translated": "जलवायु परिवर्तन के प्रभावों के बारे में भाषण के मुख्य बिंदुओं को रेखांकित करें",
+        "category": null
+    },
+    {
+        "instruction": "Brainstorm ideas on how to create a sustainable business model.",
+        "instruction_translated": "एक स्थायी व्यवसाय मॉडल कैसे बनाया जाए, इस पर विचार-मंथन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Edit the following sentence: He attending the party.",
+        "instruction_translated": "निम्नलिखित वाक्य संपादित करें: वह पार्टी में भाग ले रहा है।",
+        "category": null
+    },
+    {
+        "instruction": "How can machines be used to reduce carbon emissions?",
+        "instruction_translated": "कार्बन उत्सर्जन को कम करने के लिए मशीनों का उपयोग कैसे किया जा सकता है?",
+        "category": null
+    },
+    {
+        "instruction": "Name 5 TV series set in London",
+        "instruction_translated": "लंदन में स्थापित 5 टीवी श्रृंखलाओं के नाम बताइए",
+        "category": null
+    },
+    {
+        "instruction": "Compare and contrast one of the top 5 drinking games.",
+        "instruction_translated": "शीर्ष 5 शराब पीने वाले खेलों में से एक की तुलना करें और तुलना करें।",
+        "category": null
+    },
+    {
+        "instruction": "Identify a way to reduce pollution in large cities.",
+        "instruction_translated": "बड़े शहरों में प्रदूषण कम करने का तरीका पहचानें।",
+        "category": null
+    },
+    {
+        "instruction": "Pretend you are advising a friend who is going through a difficult situation. Create a positive message to give them.",
+        "instruction_translated": "मान लीजिए कि आप किसी ऐसे मित्र को सलाह दे रहे हैं जो कठिन परिस्थिति से गुज़र रहा है। उन्हें देने के लिए एक सकारात्मक संदेश बनाएँ।",
+        "category": null
+    },
+    {
+        "instruction": "Find the average of the numbers 3, 5, 9, and 11.",
+        "instruction_translated": "संख्या 3, 5, 9 और 11 का औसत ज्ञात कीजिए।",
+        "category": null
+    },
+    {
+        "instruction": "How can I learn more efficiently?",
+        "instruction_translated": "मैं और अधिक कुशलता से कैसे सीख सकता हूँ?",
+        "category": null
+    },
+    {
+        "instruction": "Name a food rich in iron.",
+        "instruction_translated": "आयरन से भरपूर भोजन का नाम बताइए।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the taste of an apple.",
+        "instruction_translated": "सेब के स्वाद का वर्णन करें.",
+        "category": null
+    },
+    {
+        "instruction": "Describe a character trait of Odysseus from the Odyssey.",
+        "instruction_translated": "ओडिसी से ओडिसीस के चरित्र लक्षण का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Construct a SQL query to select the names of customers whose orders were delivered after April 13, 2021",
+        "instruction_translated": "उन ग्राहकों के नाम चुनने के लिए एक SQL क्वेरी बनाएं जिनके ऑर्डर 13 अप्रैल, 2021 के बाद वितरित किए गए थे",
+        "category": null
+    },
+    {
+        "instruction": "Make a list of 5 budget-friendly ways to improve one's home.",
+        "instruction_translated": "अपने घर को बेहतर बनाने के 5 बजट-अनुकूल तरीकों की सूची बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Using a metaphor, describe the current economic climate in the US.",
+        "instruction_translated": "एक रूपक का उपयोग करते हुए, अमेरिका में वर्तमान आर्थिक माहौल का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Design a strategy for developing artificial intelligence.",
+        "instruction_translated": "कृत्रिम बुद्धिमत्ता विकसित करने के लिए एक रणनीति तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Explain what a simile is and give an example of one.",
+        "instruction_translated": "समझाइए कि उपमा क्या है और उसका एक उदाहरण दीजिए।",
+        "category": null
+    },
+    {
+        "instruction": "Tell us about the benefits of using encryption.",
+        "instruction_translated": "एन्क्रिप्शन का उपयोग करने के लाभों के बारे में हमें बताएं।",
+        "category": null
+    },
+    {
+        "instruction": "What is the most important step in the machine learning process?",
+        "instruction_translated": "मशीन लर्निंग प्रक्रिया में सबसे महत्वपूर्ण चरण क्या है?",
+        "category": null
+    },
+    {
+        "instruction": "Write a definition for the concept of photoynthesis.",
+        "instruction_translated": "प्रकाश संश्लेषण की अवधारणा की परिभाषा लिखिए।",
+        "category": null
+    },
+    {
+        "instruction": "Create an argument for the use of renewable energy sources.",
+        "instruction_translated": "नवीकरणीय ऊर्जा स्रोतों के उपयोग के लिए एक तर्क बनाएँ।",
+        "category": null
+    },
+    {
+        "instruction": "Determine if the following equation is valid: 2X+Y=100",
+        "instruction_translated": "निर्धारित करें कि क्या निम्नलिखित समीकरण वैध है: 2X+Y=100",
+        "category": null
+    },
+    {
+        "instruction": "Suggest some strategies to help athletes set appropriate goals.",
+        "instruction_translated": "एथलीटों को उचित लक्ष्य निर्धारित करने में मदद करने के लिए कुछ रणनीतियों का सुझाव दें।",
+        "category": null
+    },
+    {
+        "instruction": "A friend of yours is considering taking a gap year before college. Write a short paragraph in which you encourage them to take the gap year.",
+        "instruction_translated": "आपका एक दोस्त कॉलेज से पहले एक साल का अंतराल लेने पर विचार कर रहा है। एक छोटा पैराग्राफ लिखें जिसमें आप उन्हें अंतराल वर्ष लेने के लिए प्रोत्साहित करें।",
+        "category": null
+    },
+    {
+        "instruction": "Create a nursery rhyme about learning.",
+        "instruction_translated": "सीखने के बारे में एक नर्सरी कविता बनाएँ।",
+        "category": null
+    },
+    {
+        "instruction": "Back transliterate the word “yoga” from Sanskrit to English.",
+        "instruction_translated": "पीछे \"योग\" शब्द का संस्कृत से अंग्रेजी में लिप्यंतरण करें।",
+        "category": null
+    },
+    {
+        "instruction": "Formulate a hypothesis for why the language “English” has the highest share of webpages.",
+        "instruction_translated": "इस बात के लिए एक परिकल्पना तैयार करें कि वेबपेजों में \"अंग्रेजी\" भाषा की हिस्सेदारी सबसे अधिक क्यों है।",
+        "category": null
+    },
+    {
+        "instruction": "How would you describe the color orange to a blind person?",
+        "instruction_translated": "आप किसी अंधे व्यक्ति को नारंगी रंग का वर्णन कैसे करेंगे?",
+        "category": null
+    },
+    {
+        "instruction": "Compose a 5-sentence-long story about a girl who received a traditional gift.",
+        "instruction_translated": "उस लड़की के बारे में 5-वाक्य लंबी कहानी लिखें जिसे पारंपरिक उपहार मिला।",
+        "category": null
+    },
+    {
+        "instruction": "Explain why using a calculator is preferred to long division",
+        "instruction_translated": "बताएं कि लॉन्ग डिवीजन की तुलना में कैलकुलेटर का उपयोग करना क्यों पसंद किया जाता है",
+        "category": null
+    },
+    {
+        "instruction": "Generate a list of five questions to ask a friend who just moved to a new city.",
+        "instruction_translated": "किसी ऐसे मित्र से पूछने के लिए पांच प्रश्नों की एक सूची बनाएं जो अभी-अभी नए शहर में गया है।",
+        "category": null
+    },
+    {
+        "instruction": "Compare and contrast the differences between a coral reef and a tropical rainforest.",
+        "instruction_translated": "मूंगा चट्टान और उष्णकटिबंधीय वर्षावन के बीच अंतर की तुलना करें और अंतर बताएं।",
+        "category": null
+    },
+    {
+        "instruction": "Write an article for a magazine about how the average person can reduce their environmental impact.",
+        "instruction_translated": "एक पत्रिका के लिए एक लेख लिखें कि कैसे औसत व्यक्ति अपने पर्यावरणीय प्रभाव को कम कर सकता है।",
+        "category": null
+    },
+    {
+        "instruction": "Lying is often viewed negatively; come up with one scenario where lying is acceptable.",
+        "instruction_translated": "झूठ बोलना अक्सर नकारात्मक दृष्टि से देखा जाता है; एक ऐसे परिदृश्य के साथ आएं जहां झूठ बोलना स्वीकार्य हो।",
+        "category": null
+    },
+    {
+        "instruction": "Identify the main idea of the following article:\nhttps://en.wikipedia.org/wiki/Agriculture",
+        "instruction_translated": "निम्नलिखित लेख के मुख्य विचार को पहचानें:\nhttps://en.wikipedia.org/wiki/Agriculture",
+        "category": null
+    },
+    {
+        "instruction": "Construct a sentence using the words “flit”, “obscure”, and “abandoned”",
+        "instruction_translated": "\"फ़्लिट\", \"अस्पष्ट\" और \"परित्यक्त\" शब्दों का उपयोग करके एक वाक्य बनाएं",
+        "category": null
+    },
+    {
+        "instruction": "Write a narrative about a brave lion.",
+        "instruction_translated": "एक बहादुर शेर के बारे में एक कहानी लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "List five benefits of using an AI assistant.",
+        "instruction_translated": "AI सहायक का उपयोग करने के पांच लाभ सूचीबद्ध करें।",
+        "category": null
+    },
+    {
+        "instruction": "Name five medicinal plants widely used in Ayurveda.",
+        "instruction_translated": "आयुर्वेद में व्यापक रूप से उपयोग किए जाने वाले पाँच औषधीय पौधों के नाम बताइए।",
+        "category": null
+    },
+    {
+        "instruction": "How would you explain how the stock market works to a 5 year old?",
+        "instruction_translated": "आप 5 साल के बच्चे को कैसे समझाएँगे कि शेयर बाज़ार कैसे काम करता है?",
+        "category": null
+    },
+    {
+        "instruction": "Write a creative story that involves a talking tree.",
+        "instruction_translated": "एक रचनात्मक कहानी लिखें जिसमें बात करने वाला पेड़ शामिल हो।",
+        "category": null
+    },
+    {
+        "instruction": "What questions could you ask to classify an item as clothing?",
+        "instruction_translated": "किसी वस्तु को कपड़ों के रूप में वर्गीकृत करने के लिए आप कौन से प्रश्न पूछ सकते हैं?",
+        "category": null
+    },
+    {
+        "instruction": "Give an example of a city in Europe that knows for its vibrant night life.",
+        "instruction_translated": "यूरोप के किसी ऐसे शहर का उदाहरण दीजिए जो अपनी जीवंत रात्रि जीवन के लिए जाना जाता है।",
+        "category": null
+    },
+    {
+        "instruction": "Identify a weakness of using text-based dialogue with a conversational AI.",
+        "instruction_translated": "संवादी एआई के साथ पाठ-आधारित संवाद का उपयोग करने की कमजोरी को पहचानें।",
+        "category": null
+    },
+    {
+        "instruction": "Compare and contrast fresh-cooked food with packaged food",
+        "instruction_translated": "ताजे पके भोजन की तुलना पैकेज्ड भोजन से करें",
+        "category": null
+    },
+    {
+        "instruction": "Find the population of Nashville, TN",
+        "instruction_translated": "नैशविले, टीएन की जनसंख्या ज्ञात करें",
+        "category": null
+    },
+    {
+        "instruction": "Generate a list of topics to discuss in a meeting about business plans for the upcoming year.",
+        "instruction_translated": "आगामी वर्ष के लिए व्यावसायिक योजनाओं के बारे में बैठक में चर्चा करने के लिए विषयों की एक सूची तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a unique nickname for the name \"John\".",
+        "instruction_translated": "\"जॉन\" नाम के लिए एक अद्वितीय उपनाम उत्पन्न करें।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a generic URL for a website about cats",
+        "instruction_translated": "बिल्लियों के बारे में एक वेबसाइट के लिए एक सामान्य यूआरएल बनाएं",
+        "category": null
+    },
+    {
+        "instruction": "Design a logo with 3 symbols for a fictional cosmetics company.",
+        "instruction_translated": "एक काल्पनिक सौंदर्य प्रसाधन कंपनी के लिए 3 प्रतीकों वाला लोगो डिज़ाइन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Make a valid sentence using the words \"quick,\" \"brown,\" and \"fox.\"",
+        "instruction_translated": "\"त्वरित,\" \"भूरा,\" और \"लोमड़ी\" शब्दों का उपयोग करके एक वैध वाक्य बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "What is the force on a 1 kg mass due to the gravitational force?",
+        "instruction_translated": "1 किलो द्रव्यमान पर गुरुत्वाकर्षण बल के कारण कितना बल लगता है?",
+        "category": null
+    },
+    {
+        "instruction": "Create a thesis statement that must explain why Trump benefits from the US-China trade war.",
+        "instruction_translated": "एक थीसिस वक्तव्य बनाएं जिसमें स्पष्ट होना चाहिए कि अमेरिका-चीन व्यापार युद्ध से ट्रम्प को लाभ क्यों होता है।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a list of topics for a presentation about mental health.",
+        "instruction_translated": "मानसिक स्वास्थ्य के बारे में एक प्रस्तुति के लिए विषयों की एक सूची तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Create an algorithm that can determine the palindromes in a given string",
+        "instruction_translated": "एक एल्गोरिदम बनाएं जो किसी दिए गए स्ट्रिंग में पैलिंड्रोम निर्धारित कर सके",
+        "category": null
+    },
+    {
+        "instruction": "I want to buy a smartphone. What are the main features I should look for?",
+        "instruction_translated": "मैं एक स्मार्टफोन खरीदना चाहता हूं. मुझे किन मुख्य विशेषताओं पर ध्यान देना चाहिए?",
+        "category": null
+    },
+    {
+        "instruction": "Compose a text in the style of Dr. Seuss.",
+        "instruction_translated": "डॉ. सीस की शैली में एक पाठ लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Re-frame the following sentence: \"I can't bear the heat.\"",
+        "instruction_translated": "निम्नलिखित वाक्य को दोबारा फ्रेम करें: \"मैं गर्मी सहन नहीं कर सकता।\"",
+        "category": null
+    },
+    {
+        "instruction": "Create a PowerPoint presentation about the French Revolution.",
+        "instruction_translated": "फ्रांसीसी क्रांति के बारे में एक पावरपॉइंट प्रेजेंटेशन बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the behavior of a specific star in the night sky in 10 words.",
+        "instruction_translated": "रात्रि के आकाश में किसी विशिष्ट तारे के व्यवहार का 10 शब्दों में वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Predicte the stock price of Google in five years.",
+        "instruction_translated": "पाँच वर्षों में Google के शेयर मूल्य की भविष्यवाणी करें।",
+        "category": null
+    },
+    {
+        "instruction": "Tell the name of a famous mathematician.",
+        "instruction_translated": "किसी प्रसिद्ध गणितज्ञ का नाम बताओ?",
+        "category": null
+    },
+    {
+        "instruction": "Describe in two sentences the relationship between biofuels and climate change",
+        "instruction_translated": "जैव ईंधन और जलवायु परिवर्तन के बीच संबंध का दो वाक्यों में वर्णन करें",
+        "category": null
+    },
+    {
+        "instruction": "Convert 3/4 ft to inches.",
+        "instruction_translated": "3/4 फ़ुट को इंच में बदलें.",
+        "category": null
+    },
+    {
+        "instruction": "How does the use of AI influence the way businesses operate? Output less than 100 words.",
+        "instruction_translated": "एआई का उपयोग व्यवसायों के संचालन के तरीके को कैसे प्रभावित करता है? 100 शब्दों से कम आउटपुट.",
+        "category": null
+    },
+    {
+        "instruction": "Write a summary of the story \"The Three Little Pigs\".",
+        "instruction_translated": "\"द थ्री लिटिल पिग्स\" कहानी का सारांश लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Create a logic puzzle that can be solved by logic deduction.",
+        "instruction_translated": "एक तर्क पहेली बनाएं जिसे तर्क कटौती द्वारा हल किया जा सके।",
+        "category": null
+    },
+    {
+        "instruction": "Why are first aid kits important?",
+        "instruction_translated": "प्राथमिक चिकित्सा किट क्यों महत्वपूर्ण हैं?",
+        "category": null
+    },
+    {
+        "instruction": "Generate an email subject line that encourages the recipient to open the email.",
+        "instruction_translated": "एक ईमेल विषय पंक्ति बनाएं जो प्राप्तकर्ता को ईमेल खोलने के लिए प्रोत्साहित करे।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the impact of nanotechnology on medical treatments.",
+        "instruction_translated": "चिकित्सा उपचार पर नैनोटेक्नोलॉजी के प्रभाव का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Compose an email to your boss informing him that you are taking a sick leave today.",
+        "instruction_translated": "अपने बॉस को एक ईमेल लिखें जिसमें उन्हें सूचित किया जाए कि आप आज बीमार छुट्टी ले रहे हैं।",
+        "category": null
+    },
+    {
+        "instruction": "Explain how carbon dioxide contributes to global warming.",
+        "instruction_translated": "बताएं कि कार्बन डाइऑक्साइड ग्लोबल वार्मिंग में कैसे योगदान देता है।",
+        "category": null
+    },
+    {
+        "instruction": "Tell me about the latest news.",
+        "instruction_translated": "मुझे नवीनतम समाचार के बारे में बताएं.",
+        "category": null
+    },
+    {
+        "instruction": "Evaluate why the “Law of Accelerating Returns” is an important concept in the field of technological change.",
+        "instruction_translated": "मूल्यांकन करें कि तकनीकी परिवर्तन के क्षेत्र में \"त्वरित रिटर्न का कानून\" एक महत्वपूर्ण अवधारणा क्यों है।",
+        "category": null
+    },
+    {
+        "instruction": "Tell me the first celebrity to win the Nobel Peace Prize.",
+        "instruction_translated": "मुझे नोबेल शांति पुरस्कार जीतने वाली पहली हस्ती बताएं?",
+        "category": null
+    },
+    {
+        "instruction": "Suggest an eco-friendly way to travel",
+        "instruction_translated": "यात्रा करने का पर्यावरण-अनुकूल तरीका सुझाएं",
+        "category": null
+    },
+    {
+        "instruction": "List ten scientific names of animals.",
+        "instruction_translated": "जानवरों के दस वैज्ञानिक नाम सूचीबद्ध करें।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a creative writing piece about a character's summer days.",
+        "instruction_translated": "किसी पात्र के गर्मी के दिनों के बारे में एक रचनात्मक लेखन कृति तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Design a poster encouraging people to use public transport instead of cars.",
+        "instruction_translated": "लोगों को कारों के बजाय सार्वजनिक परिवहन का उपयोग करने के लिए प्रोत्साहित करने वाला एक पोस्टर डिज़ाइन करें।",
+        "category": null
+    },
+    {
+        "instruction": "List ways to improve the user experience when buying online.",
+        "instruction_translated": "ऑनलाइन खरीदारी करते समय उपयोगकर्ता अनुभव को बेहतर बनाने के तरीकों की सूची बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Determine the comparative form of the word \"happy\"",
+        "instruction_translated": "\"खुश\" शब्द का तुलनात्मक रूप निर्धारित करें",
+        "category": null
+    },
+    {
+        "instruction": "Name at least two benefits of studying computer science.",
+        "instruction_translated": "कंप्यूटर विज्ञान का अध्ययन करने के कम से कम दो लाभ बताइए।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a random password that meets the criteria of having upper case, lower case, and a number.",
+        "instruction_translated": "एक यादृच्छिक पासवर्ड बनाएं जो अपर केस, लोअर केस और एक संख्या के मानदंडों को पूरा करता हो।",
+        "category": null
+    },
+    {
+        "instruction": "What is the period of the sun's orbit around the Milky Way?",
+        "instruction_translated": "आकाशगंगा के चारों ओर सूर्य की परिक्रमा की अवधि क्या है?",
+        "category": null
+    },
+    {
+        "instruction": "Write the method for finding the area of a circle.",
+        "instruction_translated": "वृत्त का क्षेत्रफल ज्ञात करने की विधि लिखिए।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a joke that is related to physics.\nOutput the joke.",
+        "instruction_translated": "एक चुटकुला बनाएं जो भौतिकी से संबंधित हो।\nचुटकुला सुनाओ.",
+        "category": null
+    },
+    {
+        "instruction": "Create a cascading stylesheet for a website.",
+        "instruction_translated": "किसी वेबसाइट के लिए कैस्केडिंग स्टाइलशीट बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a step-by-step procedure for making a cup of tea.",
+        "instruction_translated": "एक कप चाय बनाने के लिए चरण-दर-चरण प्रक्रिया तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Describe what data science is.",
+        "instruction_translated": "वर्णन करें कि डेटा विज्ञान क्या है।",
+        "category": null
+    },
+    {
+        "instruction": "Why is Python a good language for data science?",
+        "instruction_translated": "डेटा विज्ञान के लिए पायथन एक अच्छी भाषा क्यों है?",
+        "category": null
+    },
+    {
+        "instruction": "Construct an analogy for the following sentence: \"A computer is to code what a chef is to food.\"",
+        "instruction_translated": "निम्नलिखित वाक्य के लिए एक सादृश्य बनाएं: \"एक कंप्यूटर को यह कोड करना है कि एक शेफ भोजन के लिए क्या है।\"",
+        "category": null
+    },
+    {
+        "instruction": "Describe the biome of a tropical rainforest in a few sentences.",
+        "instruction_translated": "कुछ वाक्यों में उष्णकटिबंधीय वर्षावन के बायोम का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a question that could be asked by a customer.",
+        "instruction_translated": "ऐसा प्रश्न बनाएं जो ग्राहक द्वारा पूछा जा सके।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a story about a person going on a last-minute vacation.",
+        "instruction_translated": "अंतिम समय में छुट्टी पर जा रहे किसी व्यक्ति के बारे में एक कहानी बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a list of UX best practices.",
+        "instruction_translated": "UX सर्वोत्तम प्रथाओं की एक सूची तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Find out the major differences between Java and JavaScript",
+        "instruction_translated": "जावा और जावास्क्रिप्ट के बीच प्रमुख अंतरों का पता लगाएं",
+        "category": null
+    },
+    {
+        "instruction": "Name three ways a person could reduce their carbon footprint",
+        "instruction_translated": "ऐसे तीन तरीकों के नाम बताइए जिनसे कोई व्यक्ति अपने कार्बन पदचिह्न को कम कर सकता है",
+        "category": null
+    },
+    {
+        "instruction": "Describe the negative impacts of using plastic bags.",
+        "instruction_translated": "प्लास्टिक बैग के उपयोग के नकारात्मक प्रभावों का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "List the steps involved in creating a website.",
+        "instruction_translated": "वेबसाइट बनाने में शामिल चरणों की सूची बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "Design the interior of a high-end restaurant.",
+        "instruction_translated": "एक हाई-एंड रेस्तरां का इंटीरियर डिज़ाइन करें।",
+        "category": null
+    },
+    {
+        "instruction": "What is the difference between articulatory and acoustic phonetics?",
+        "instruction_translated": "कलात्मक और ध्वनिक ध्वन्यात्मकता के बीच क्या अंतर है?",
+        "category": null
+    },
+    {
+        "instruction": "Generate a numerical expression that adds 2 and 5 and multiplies by 4.",
+        "instruction_translated": "एक संख्यात्मक अभिव्यक्ति उत्पन्न करें जो 2 और 5 को जोड़ती है और 4 से गुणा करती है।",
+        "category": null
+    },
+    {
+        "instruction": "Tell me something about a Nissan leaf.",
+        "instruction_translated": "मुझे निसान के पत्ते के बारे में कुछ बताओ?",
+        "category": null
+    },
+    {
+        "instruction": "What are the five different tastes humans can detect?",
+        "instruction_translated": "वे कौन से पांच अलग-अलग स्वाद हैं जिन्हें मनुष्य पहचान सकता है?",
+        "category": null
+    },
+    {
+        "instruction": "Generate a creative slogan that describes the benefits of using an AI assistant.",
+        "instruction_translated": "एक रचनात्मक नारा बनाएं जो एआई सहायक के उपयोग के लाभों का वर्णन करता हो।",
+        "category": null
+    },
+    {
+        "instruction": "Describe an interesting fact about giraffes",
+        "instruction_translated": "जिराफ के बारे में एक रोचक तथ्य का वर्णन करें",
+        "category": null
+    },
+    {
+        "instruction": "Compare and contrast two types of computer networks.",
+        "instruction_translated": "दो प्रकार के कंप्यूटर नेटवर्क की तुलना करें और अंतर बताएं।",
+        "category": null
+    },
+    {
+        "instruction": "Create a synopsis of the film Die Hard.",
+        "instruction_translated": "फ़िल्म डाई हार्ड का सारांश बनाएँ।",
+        "category": null
+    },
+    {
+        "instruction": "Edit the following sentence for clarity: \"I would like to go out to part with my friends\"",
+        "instruction_translated": "स्पष्टता के लिए निम्नलिखित वाक्य को संपादित करें: \"मैं अपने दोस्तों से अलग होने के लिए बाहर जाना चाहूँगा\"",
+        "category": null
+    },
+    {
+        "instruction": "Generate a list of 5 development strategies for small business owners.",
+        "instruction_translated": "छोटे व्यवसाय मालिकों के लिए 5 विकास रणनीतियों की एक सूची तैयार करें।",
+        "category": null
+    },
+    {
+        "instruction": "Brainstorm some innovative ideas for using virtual reality in marketing.",
+        "instruction_translated": "विपणन में आभासी वास्तविकता का उपयोग करने के लिए कुछ नवीन विचारों पर विचार-मंथन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Determine what international organizations have authority over the internet.",
+        "instruction_translated": "निर्धारित करें कि इंटरनेट पर किन अंतर्राष्ट्रीय संगठनों का अधिकार है।",
+        "category": null
+    },
+    {
+        "instruction": "Explain why it is important to think before you speak.",
+        "instruction_translated": "बताएं कि बोलने से पहले सोचना क्यों महत्वपूर्ण है।",
+        "category": null
+    },
+    {
+        "instruction": "Generate a tweet that explains the importance of self-care.",
+        "instruction_translated": "एक ट्वीट बनाएं जो आत्म-देखभाल के महत्व को समझाए।",
+        "category": null
+    },
+    {
+        "instruction": "List three potential online security risks",
+        "instruction_translated": "तीन संभावित ऑनलाइन सुरक्षा जोखिमों की सूची बनाएं",
+        "category": null
+    },
+    {
+        "instruction": "Explain what is meant by a recursive function.",
+        "instruction_translated": "बताएं कि पुनरावर्ती फ़ंक्शन का क्या मतलब है।",
+        "category": null
+    },
+    {
+        "instruction": "Provide a definition of the term \"self-care\".",
+        "instruction_translated": "\"स्व-देखभाल\" शब्द की परिभाषा प्रदान करें।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the effects of smoking on the respiratory system.",
+        "instruction_translated": "श्वसन तंत्र पर धूम्रपान के प्रभावों का वर्णन करें।",
+        "category": null
+    },
+    {
+        "instruction": "Describe how to clean a windowsill",
+        "instruction_translated": "वर्णन करें कि खिड़की के सिले को कैसे साफ किया जाए",
+        "category": null
+    },
+    {
+        "instruction": "Write a short story about a girl searching for a magical creature.",
+        "instruction_translated": "एक जादुई प्राणी की खोज करने वाली लड़की के बारे में एक छोटी कहानी लिखें।",
+        "category": null
+    },
+    {
+        "instruction": "Come up with a title for a sci-fi book.",
+        "instruction_translated": "एक विज्ञान कथा पुस्तक के लिए एक शीर्षक लेकर आएं।",
+        "category": null
+    },
+    {
+        "instruction": "Find simple noun forms of the following verbs: look, talk, tell",
+        "instruction_translated": "निम्नलिखित क्रियाओं के सरल संज्ञा रूप खोजें: देखो, बात करो, बताओ",
+        "category": null
+    },
+    {
+        "instruction": "What are the pros and cons of using a database management system?",
+        "instruction_translated": "डेटाबेस प्रबंधन प्रणाली का उपयोग करने के फायदे और नुकसान क्या हैं?",
+        "category": null
+    },
+    {
+        "instruction": "Create a data set containing the population of 5 countries.",
+        "instruction_translated": "5 देशों की जनसंख्या वाला एक डेटा सेट बनाएं।",
+        "category": null
+    },
+    {
+        "instruction": "State the economic theory of supply and demand.",
+        "instruction_translated": "आपूर्ति और मांग का आर्थिक सिद्धांत बताएं।",
+        "category": null
+    },
+    {
+        "instruction": "Compare and contrast the primary components of the US government.",
+        "instruction_translated": "अमेरिकी सरकार के प्राथमिक घटकों की तुलना करें और अंतर बताएं।",
+        "category": null
+    },
+    {
+        "instruction": "Describe the functionality of the Python built-in function \"range()\".",
+        "instruction_translated": "पायथन में निर्मित फ़ंक्शन \"रेंज ()\" की कार्यक्षमता का वर्णन करें।",
+        "category": null
+    }
+]
