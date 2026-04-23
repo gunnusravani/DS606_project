@@ -216,6 +216,95 @@ def main() -> None:
         help="Output path for evaluation results",
     )
     
+    # ========== EVALUATE-WITH-INITIAL SUBCOMMAND ==========
+    eval_initial_parser = subparsers.add_parser(
+        "evaluate-with-initial",
+        help="Evaluate models on prompts combined with initial malicious responses"
+    )
+    
+    eval_initial_parser.add_argument(
+        "--csv",
+        type=str,
+        required=True,
+        help="Path to CSV with question, hindi, intital_malicious_english, intital_malicious_hindi columns",
+    )
+    
+    eval_initial_parser.add_argument(
+        "--base-model",
+        type=str,
+        default="meta-llama/Meta-Llama-3-8B",
+        help="Base model name or path (default: meta-llama/Meta-Llama-3-8B)",
+    )
+    
+    eval_initial_parser.add_argument(
+        "--aligned-model",
+        type=str,
+        default="outputs/models/dpo/",
+        help="Aligned model path with LoRA adapter (default: outputs/models/dpo/)",
+    )
+    
+    eval_initial_parser.add_argument(
+        "--device-map",
+        type=str,
+        default="auto",
+        help="Device mapping for models (default: auto)",
+    )
+    
+    eval_initial_parser.add_argument(
+        "--output-dir",
+        type=str,
+        default="outputs/evaluations/",
+        help="Directory to save evaluation results (default: outputs/evaluations/)",
+    )
+    
+    eval_initial_parser.add_argument(
+        "--max-samples",
+        type=int,
+        help="Maximum number of samples to evaluate (default: all)",
+    )
+    
+    eval_initial_parser.add_argument(
+        "--english-prompt-col",
+        type=str,
+        default="question",
+        help="Column name for English prompt (default: question)",
+    )
+    
+    eval_initial_parser.add_argument(
+        "--english-initial-col",
+        type=str,
+        default="intital_malicious_english",
+        help="Column name for English initial response (default: intital_malicious_english)",
+    )
+    
+    eval_initial_parser.add_argument(
+        "--hindi-prompt-col",
+        type=str,
+        default="hindi",
+        help="Column name for Hindi prompt (default: hindi)",
+    )
+    
+    eval_initial_parser.add_argument(
+        "--hindi-initial-col",
+        type=str,
+        default="intital_malicious_hindi",
+        help="Column name for Hindi initial response (default: intital_malicious_hindi)",
+    )
+    
+    eval_initial_parser.add_argument(
+        "--fill-missing",
+        action="store_true",
+        default=True,
+        help="Fill missing/empty predictions from previous incomplete evaluation (default: True)",
+    )
+    
+    eval_initial_parser.add_argument(
+        "--no-resume",
+        dest="fill_missing",
+        action="store_false",
+        help="Force re-evaluate all samples (ignore previous incomplete results)",
+    )
+    
     # ========== PARSE ARGUMENTS ==========
     args = parser.parse_args()
     setup_logging(args.verbose)
@@ -301,6 +390,36 @@ def main() -> None:
             logger.info("✓ Model evaluation completed successfully!")
         except Exception as e:
             logger.error(f"✗ Model evaluation failed: {e}")
+            raise
+    
+    # ========== EXECUTE EVALUATE-WITH-INITIAL ==========
+    elif args.command == "evaluate-with-initial":
+        from ds606.models.evaluate import evaluate_models_with_initial_response
+        
+        logger.info("Evaluating models with initial malicious responses")
+        logger.info(f"CSV: {args.csv}")
+        logger.info(f"Base model: {args.base_model}")
+        logger.info(f"Aligned model: {args.aligned_model}")
+        logger.info(f"English: {args.english_prompt_col} + {args.english_initial_col}")
+        logger.info(f"Hindi: {args.hindi_prompt_col} + {args.hindi_initial_col}")
+        
+        try:
+            evaluate_models_with_initial_response(
+                csv_path=args.csv,
+                base_model_name=args.base_model,
+                aligned_model_path=args.aligned_model,
+                device_map=args.device_map,
+                output_path=args.output_dir,
+                max_samples=args.max_samples,
+                resume_from_saved=args.fill_missing,
+                english_prompt_col=args.english_prompt_col,
+                english_initial_col=args.english_initial_col,
+                hindi_prompt_col=args.hindi_prompt_col,
+                hindi_initial_col=args.hindi_initial_col,
+            )
+            logger.info("✓ Evaluation with initial responses completed successfully!")
+        except Exception as e:
+            logger.error(f"✗ Evaluation with initial responses failed: {e}")
             raise
     
     # ========== EXECUTE EVALUATE ==========
