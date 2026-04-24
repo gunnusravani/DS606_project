@@ -15,7 +15,7 @@ from pathlib import Path
 @dataclass
 class ModelConfig:
     """Configuration for loading the base model."""
-    name_or_path: str = "meta-llama/Llama-3.1-8B"
+    name_or_path: str = "meta-llama/Llama-3.2-3B"
     # ^ Which model to download from HuggingFace Hub
     
     torch_dtype: str = "bfloat16"
@@ -89,14 +89,14 @@ class SFTConfig:
     max_steps: int = -1
     # ^ Max training steps. -1 = go until all epochs done
     
-    per_device_train_batch_size: int = 4
-    # ^ How many examples to train on at once per GPU
+    per_device_train_batch_size: int = 8
+    # ^ How many examples to train on at once per GPU (increased for 3B model)
     # Smaller batch = less memory but noisier training
     
-    per_device_eval_batch_size: int = 8
+    per_device_eval_batch_size: int = 16
     # ^ Batch size for evaluation (can be larger, no backprop)
     
-    gradient_accumulation_steps: int = 2
+    gradient_accumulation_steps: int = 1
     # ^ Accumulate gradients over 2 batches before updating weights
     # Effect: Same as batch size 8, but using only 40GB memory
     
@@ -182,7 +182,7 @@ class DPOConfig:
     
     per_device_eval_batch_size: int = 4
     
-    gradient_accumulation_steps: int = 4
+    gradient_accumulation_steps: int = 2
     # ^ Accumulate over 4 batches (batch 2 * accumulation 4 = effective batch 8)
     
     learning_rate: float = 5e-5

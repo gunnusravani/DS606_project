@@ -8,9 +8,9 @@ use_flash_attention_2: false
 # Model Configuration (Load SFT checkpoint as base)
 # ============================================================================
 model:
-  name_or_path: meta-llama/Meta-Llama-3-8B
+  name_or_path: meta-llama/Llama-3.2-3B
   torch_dtype: bfloat16
-  device_map: cuda:3  # GPU 3 (least used)
+  device_map: cuda:3  # GPU 3
   trust_remote_code: true
 
 # ============================================================================
@@ -40,10 +40,10 @@ dpo:
   num_train_epochs: 1
   max_steps: -1
   
-  # Batch sizes (smaller than SFT, DPO needs model + ref_model)
-  per_device_train_batch_size: 1   # Reduced from 2
-  per_device_eval_batch_size: 2    # Reduced from 4
-  gradient_accumulation_steps: 1   # Reduced from 2
+  # Batch sizes (can be larger for 3B model)
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 2
   
   # Learning rate (lower than SFT: 5e-5 vs 2e-4)
   # DPO is more sensitive to learning rate

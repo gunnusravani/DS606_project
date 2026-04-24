@@ -131,42 +131,35 @@ def setup_model_and_tokenizer(
         )
         logger.info(f"✓ Tokenizer loaded")
         
-        # Load model - handle Llama 3.2 rope_scaling compatibility issue
-        try:
-            model = AutoModelForCausalLM.from_pretrained(
-                model_name,
-                device_map=device_map,
-                torch_dtype=torch_dtype_obj,
-                attn_implementation="sdpa",
-            )
-        except ValueError as e:
-            if "rope_scaling" in str(e):
-                logger.warning(f"rope_scaling compatibility issue detected, loading config and fixing...")
-                # Load config first and fix rope_scaling
-                from transformers import AutoConfig
-                config = AutoConfig.from_pretrained(model_name, trust_remote_code=True)
-                
-                # Fix rope_scaling if it has extra fields
-                if hasattr(config, 'rope_scaling') and config.rope_scaling is not None:
-                    logger.info(f"Original rope_scaling: {config.rope_scaling}")
-                    # Keep only 'type' and 'factor' fields
-                    if isinstance(config.rope_scaling, dict):
-                        old_scaling = config.rope_scaling.copy()
-                        config.rope_scaling = {
-                            'type': old_scaling.get('rope_type', 'linear'),
-                            'factor': old_scaling.get('factor', 32.0)
-                        }
-                        logger.info(f"Fixed rope_scaling: {config.rope_scaling}")
-                
-                # Now load model with fixed config
+        # Skip SDPA for Llama 3.2 due to rope_scaling compatibility issues
+        use_sdpa = "3.2" not in model_name
+        
+        if use_sdpa:
+            try:
                 model = AutoModelForCausalLM.from_pretrained(
                     model_name,
                     device_map=device_map,
                     torch_dtype=torch_dtype_obj,
-                    config=config,
+                    attn_implementation="sdpa",
                 )
-            else:
-                raise
+            except ValueError as e:
+                if "rope_scaling" in str(e):
+                    logger.warning(f"SDPA loading failed, retrying without SDPA...")
+                    model = AutoModelForCausalLM.from_pretrained(
+                        model_name,
+                        device_map=device_map,
+                        torch_dtype=torch_dtype_obj,
+                    )
+                else:
+                    raise
+        else:
+            logger.info(f"Detected Llama 3.2 - loading without SDPA to avoid rope_scaling issues")
+            model = AutoModelForCausalLM.from_pretrained(
+                model_name,
+                device_map=device_map,
+                torch_dtype=torch_dtype_obj,
+            )
+        
         logger.info(f"✓ Model loaded")
     
     tokenizer.pad_token = tokenizer.eos_token
