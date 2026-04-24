@@ -1,8 +1,13 @@
 import argparse
 import logging
+import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
+
+# Load environment variables from .env file on startup
+load_dotenv()
 
 
 def setup_logging(verbose: bool = False) -> None:

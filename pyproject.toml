@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ds606"
+version = "0.0.1"
+description = "DS606: Cross-lingual safety alignment transfer in LLMs"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    {name = "Sravani Gunnu, Aryan Kashyap, Shahab Ahmad", email = "sravani.gunnu@iitb.ac.in"}
+]
+license = {text = "MIT"}
+
+dependencies = [
+    "torch>=2.0.0",
+    "transformers>=4.30.0",
+    "peft>=0.4.0",
+    "trl>=0.6.0",
+    "datasets>=2.10.0",
+    "pandas>=1.5.0",
+    "pyyaml>=6.0",
+    "tqdm>=4.60.0",
+    "bitsandbytes>=0.35.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "black", "isort", "flake8"]
+notebooks = ["jupyter", "notebook", "ipython"]
+translation = ["googletrans>=4.0.0rc1"]
+
+[project.urls]
+"Repository" = "https://github.com/your-repo/ds606"
+"Documentation" = "https://github.com/your-repo/ds606/wiki"
+
+[tool.setuptools]
+packages = ["ds606"]
+
+[tool.setuptools.package-dir]
+ds606 = "src/ds606"
+
+[tool.black]
+line-length = 100
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+line_length = 100

@@ -11,6 +11,8 @@ import pandas as pd
 from typing import Dict, List, Tuple
 from pathlib import Path
 from tqdm import tqdm
+from dotenv import load_dotenv
+from huggingface_hub import login
 
 from transformers import (
     AutoModelForCausalLM,
@@ -18,8 +20,17 @@ from transformers import (
 )
 from peft import PeftModel
 
+# Load environment variables from .env file
+load_dotenv()
+
 # Setup logging
 logger = logging.getLogger(__name__)
+
+# Authenticate with HuggingFace if HF_TOKEN is available
+hf_token = os.getenv("HF_TOKEN")
+if hf_token:
+    login(token=hf_token)
+    logger.info("✓ Authenticated with HuggingFace using token from .env")
 
 
 def setup_model_and_tokenizer(

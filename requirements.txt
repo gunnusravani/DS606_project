@@ -6,6 +6,7 @@ tqdm
 pandas
 numpy
 scipy
+python-dotenv
 peft>=0.7.0
 trl>=0.7.0
 bitsandbytes>=0.41.0
