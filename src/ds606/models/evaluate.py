@@ -141,11 +141,29 @@ def setup_model_and_tokenizer(
             )
         except ValueError as e:
             if "rope_scaling" in str(e):
-                logger.warning(f"rope_scaling compatibility issue detected, loading without SDPA...")
+                logger.warning(f"rope_scaling compatibility issue detected, loading config and fixing...")
+                # Load config first and fix rope_scaling
+                from transformers import AutoConfig
+                config = AutoConfig.from_pretrained(model_name, trust_remote_code=True)
+                
+                # Fix rope_scaling if it has extra fields
+                if hasattr(config, 'rope_scaling') and config.rope_scaling is not None:
+                    logger.info(f"Original rope_scaling: {config.rope_scaling}")
+                    # Keep only 'type' and 'factor' fields
+                    if isinstance(config.rope_scaling, dict):
+                        old_scaling = config.rope_scaling.copy()
+                        config.rope_scaling = {
+                            'type': old_scaling.get('rope_type', 'linear'),
+                            'factor': old_scaling.get('factor', 32.0)
+                        }
+                        logger.info(f"Fixed rope_scaling: {config.rope_scaling}")
+                
+                # Now load model with fixed config
                 model = AutoModelForCausalLM.from_pretrained(
                     model_name,
                     device_map=device_map,
                     torch_dtype=torch_dtype_obj,
+                    config=config,
                 )
             else:
                 raise
