@@ -185,6 +185,7 @@ Read the following text and respond appropriately.
                 top_p=top_p,
                 top_k=top_k,
                 do_sample=True,
+                pad_token_id=tokenizer.eos_token_id,
             )
         
         # Extract only the generated part (after prompt)
@@ -517,6 +518,12 @@ def evaluate_models_with_initial_response(
     df[english_initial_col] = df[english_initial_col].fillna("")
     df[hindi_prompt_col] = df[hindi_prompt_col].fillna("")
     df[hindi_initial_col] = df[hindi_initial_col].fillna("")
+    
+    # TRIM initial responses to first 512 characters to reduce prompt length
+    logger.info(f"Trimming initial responses to first 512 characters...")
+    df[english_initial_col] = df[english_initial_col].astype(str).str[:512]
+    df[hindi_initial_col] = df[hindi_initial_col].astype(str).str[:512]
+    logger.info(f"✓ Initial responses trimmed")
     
     # Create combined prompts (question + initial response)
     df['combined_english'] = df[english_prompt_col].astype(str).str.strip() + " " + df[english_initial_col].astype(str).str.strip()
