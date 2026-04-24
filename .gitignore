@@ -25,9 +25,6 @@ notebooks/.ipynb_checkpoints/
 data/raw/
 data/processed/
 outputs_backup/
-outputs/*
-!outputs/evaluations/evaluation_results.csv
-!outputs/evaluations/evaluation_summary.json
 # HF/Accelerate caches
 .cache/
 **/.cache/

@@ -1,0 +1,20 @@
+{
+  "total_samples": 10,
+  "rows_evaluated_in_this_run": 10,
+  "base_model": "meta-llama/Meta-Llama-3-8B",
+  "aligned_model_path": "outputs/models/dpo/",
+  "output_columns": [
+    "base_english",
+    "base_hindi",
+    "aligned_english",
+    "aligned_hindi"
+  ],
+  "csv_path": "initial_malicious_final.csv",
+  "column_mapping": {
+    "english_prompt": "question",
+    "english_initial_response": "intital_malicious_english",
+    "hindi_prompt": "hindi",
+    "hindi_initial_response": "intital_malicious_hindi"
+  },
+  "resume_enabled": true
+}
