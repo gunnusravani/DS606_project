@@ -118,26 +118,22 @@ def generate_response(
     model: AutoModelForCausalLM,
     tokenizer: AutoTokenizer,
     prompt: str,
-    max_new_tokens: int = 512,  # Increased since we're truncating prompt
+    max_new_tokens: int = 512,
     temperature: float = 0.7,
     top_p: float = 0.95,
     top_k: int = 50,
-    no_repeat_ngram_size: int = 3,
-    repetition_penalty: float = 1.2,
 ) -> str:
     """
-    Generate model response for a given prompt with repetition control.
+    Generate model response for a given prompt.
     
     Args:
         model: Language model
         tokenizer: Tokenizer
         prompt: Input prompt (will be truncated to 5000 tokens)
         max_new_tokens: Maximum tokens to generate (default: 512)
-        temperature: Sampling temperature (0.7 = good balance of randomness vs coherence)
-        top_p: Nucleus sampling parameter (0.95 = keep top 95% probability mass)
+        temperature: Sampling temperature (0.7 = good balance)
+        top_p: Nucleus sampling parameter (0.95)
         top_k: Top-K filtering (50 = filter to top 50 tokens)
-        no_repeat_ngram_size: Prevent n-grams of this size from repeating (3 = no 3-grams repeat)
-        repetition_penalty: Penalty for repeating tokens (1.2 = 20% penalty for repeats)
     
     Returns:
         Generated text (response only, without prompt)
@@ -155,22 +151,23 @@ def generate_response(
         input_ids_len = inputs['input_ids'].shape[1]
         
         # Truncate prompt to 5000 tokens to leave room for generation
-        # 8000 total - 5000 prompt = 3000 tokens available for generation
         max_prompt_tokens = 5000
         if input_ids_len > max_prompt_tokens:
             logger.debug(f"Truncating prompt from {input_ids_len} to {max_prompt_tokens} tokens")
             inputs['input_ids'] = inputs['input_ids'][:, :max_prompt_tokens]
-            inputs['attention_mask'] = inputs['attention_mask'][:, :max_prompt_tokens]
+            if 'attention_mask' in inputs:
+                inputs['attention_mask'] = inputs['attention_mask'][:, :max_prompt_tokens]
             input_ids_len = max_prompt_tokens
         
         # Calculate safe max_new_tokens
-        context_limit = 8000  # Llama 3 approximate context
+        context_limit = 8000  # Conservative estimate for most models
         safe_max_new_tokens = min(max_new_tokens, context_limit - input_ids_len - 50)
         
         if safe_max_new_tokens < 50:
             return f"ERROR: Insufficient space for generation (input_len={input_ids_len})"
         
         # Generate with torch.no_grad() for efficiency
+        # Use minimal/no repetition control to avoid early stopping
         with torch.no_grad():
             outputs = model.generate(
                 **inputs,
@@ -179,40 +176,40 @@ def generate_response(
                 top_p=top_p,
                 top_k=top_k,
                 do_sample=True,
-                no_repeat_ngram_size=no_repeat_ngram_size,
-                repetition_penalty=repetition_penalty,
-                pad_token_id=tokenizer.eos_token_id,
-                eos_token_id=tokenizer.eos_token_id,
+                # Remove aggressive repetition control that causes early stopping
+                # repetition_penalty removed - let model generate naturally
+                # no_repeat_ngram_size removed - causes early termination
             )
         
         # Extract only the generated part (after prompt)
         response_tokens = outputs[0][input_ids_len:]
-        output_seq_len = outputs[0].shape[0]
+        output_len = outputs[0].shape[0]
         
-        # Debug info
-        if output_seq_len <= input_ids_len:
-            logger.debug(f"Output length ({output_seq_len}) <= input length ({input_ids_len}), no generation occurred")
+        logger.debug(f"Generation complete: input_len={input_ids_len}, output_len={output_len}, response_tokens={len(response_tokens)}")
         
-        if len(response_tokens) > 0:
-            response_only = tokenizer.decode(response_tokens, skip_special_tokens=True).strip()
-        else:
-            response_only = ""
+        if len(response_tokens) == 0:
+            return f"ERROR: No tokens generated (input_len={input_ids_len}, output_len={output_len})"
         
-        # If no response generated, try full decoding fallback
-        if not response_only or response_only.strip() == "":
-            full_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-            if full_response.startswith(prompt):
-                response_only = full_response[len(prompt):].strip()
-            else:
-                response_only = full_response.strip()
+        # Decode response WITHOUT skipping special tokens first
+        # Then clean up if needed
+        response_only = tokenizer.decode(response_tokens, skip_special_tokens=False).strip()
+        
+        # Remove any EOS or PAD tokens that might appear
+        response_only = response_only.replace(tokenizer.eos_token, "").strip()
+        if tokenizer.pad_token:
+            response_only = response_only.replace(tokenizer.pad_token, "").strip()
+        
+        # Remove special tokens manually
+        response_only = response_only.replace("<s>", "").replace("</s>", "").strip()
         
         # Final check
         if not response_only or response_only.strip() == "":
-            return f"ERROR: No tokens generated (input_len={input_ids_len}, output_len={output_seq_len}, max_new={safe_max_new_tokens})"
+            return f"ERROR: Response empty after decoding (input_len={input_ids_len}, output_len={output_len})"
         
         return response_only
         
     except Exception as e:
+        logger.error(f"Generation error: {type(e).__name__}: {str(e)}")
         return f"ERROR: {type(e).__name__}: {str(e)[:80]}"
 
 
