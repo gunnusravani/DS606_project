@@ -150,8 +150,8 @@ def main() -> None:
     eval_models_parser.add_argument(
         "--aligned-model",
         type=str,
-        default="outputs/models/dpo/",
-        help="Aligned model path with LoRA adapter (default: outputs/models/dpo/)",
+        default="models/dpo/",
+        help="Aligned model path with LoRA adapter (default: models/dpo/)",
     )
     
     eval_models_parser.add_argument(
@@ -244,8 +244,8 @@ def main() -> None:
     eval_initial_parser.add_argument(
         "--aligned-model",
         type=str,
-        default="outputs/models/dpo/",
-        help="Aligned model path with LoRA adapter (default: outputs/models/dpo/)",
+        default="models/dpo/",
+        help="Aligned model path with LoRA adapter (default: models/dpo/)",
     )
     
     eval_initial_parser.add_argument(

@@ -66,7 +66,7 @@ sft:
   push_to_hub: false
   
   # Output
-  output_dir: outputs/models/sft
+  output_dir: models/sft
   report_to: []  # Disabled: WandB auth failed
 
 # ============================================================================

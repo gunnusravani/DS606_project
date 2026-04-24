@@ -63,7 +63,7 @@ dpo:
   beta: 0.1
   
   # Output
-  output_dir: outputs/models/dpo
+  output_dir: models/dpo
 
 
 # ============================================================================

@@ -157,7 +157,7 @@ def generate_response(
 def evaluate_models(
     csv_path: str,
     base_model_name: str = "meta-llama/Llama-3.1-8B",
-    aligned_model_path: str = "outputs/models/dpo/",
+    aligned_model_path: str = "models/dpo/",
     device_map: str = "auto",
     output_path: str = "outputs/evaluations/",
     max_samples: int = None,
@@ -324,9 +324,9 @@ def evaluate_models(
 def evaluate_models_with_initial_response(
     csv_path: str,
     base_model_name: str = "meta-llama/Llama-3.1-8B",
-    aligned_model_path: str = "outputs/models/dpo/",
+    aligned_model_path: str = "models/dpo/",
     device_map: str = "auto",
-    output_path: str = "outputs/evaluations/",
+    output_path: str = "outputs/evaluations_malicious/",
     max_samples: int = None,
     resume_from_saved: bool = True,
     english_prompt_col: str = "question",
@@ -521,7 +521,7 @@ if __name__ == "__main__":
     evaluate_models(
         csv_path="jailbreak_just_question.csv",
         base_model_name="meta-llama/Llama-3.1-8B",
-        aligned_model_path="outputs/models/dpo/",
+        aligned_model_path="models/dpo/",
         device_map="auto",
         output_path="outputs/evaluations/",
         max_samples=None,  # Set to small number for testing

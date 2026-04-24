@@ -145,7 +145,7 @@ class SFTConfig:
     # ^ Don't automatically upload final model to HF Hub
     
     # Output
-    output_dir: str = "outputs/models/sft"
+    output_dir: str = "models/sft"
     # ^ Where to save model checkpoints
     
     report_to: list[str] = field(default_factory=lambda: ["wandb"])
@@ -225,7 +225,7 @@ class DPOConfig:
     preprocessing_num_workers: int = 4
     
     # Output
-    output_dir: str = "outputs/models/dpo"
+    output_dir: str = "models/dpo"
     report_to: list[str] = field(default_factory=lambda: ["wandb"])
 
 
