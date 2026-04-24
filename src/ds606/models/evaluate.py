@@ -131,13 +131,24 @@ def setup_model_and_tokenizer(
         )
         logger.info(f"✓ Tokenizer loaded")
         
-        # Load model
-        model = AutoModelForCausalLM.from_pretrained(
-            model_name,
-            device_map=device_map,
-            torch_dtype=torch_dtype_obj,
-            attn_implementation="sdpa",
-        )
+        # Load model - handle Llama 3.2 rope_scaling compatibility issue
+        try:
+            model = AutoModelForCausalLM.from_pretrained(
+                model_name,
+                device_map=device_map,
+                torch_dtype=torch_dtype_obj,
+                attn_implementation="sdpa",
+            )
+        except ValueError as e:
+            if "rope_scaling" in str(e):
+                logger.warning(f"rope_scaling compatibility issue detected, loading without SDPA...")
+                model = AutoModelForCausalLM.from_pretrained(
+                    model_name,
+                    device_map=device_map,
+                    torch_dtype=torch_dtype_obj,
+                )
+            else:
+                raise
         logger.info(f"✓ Model loaded")
     
     tokenizer.pad_token = tokenizer.eos_token
