@@ -102,11 +102,15 @@ def load_aligned_model(
             adapter_path,
             is_trainable=False,
         )
+        # CRITICAL: Ensure model is in eval mode after loading adapter
+        model.eval()
         logger.info("✓ LoRA adapter loaded successfully")
         return model
     except Exception as e:
         logger.warning(f"Failed to load adapter from {adapter_path}: {e}")
         logger.warning("Using base model without adapter")
+        # Ensure base model is also in eval mode
+        base_model.eval()
         return base_model
 
 
@@ -142,6 +146,9 @@ def generate_response(
         # Validate prompt
         if not prompt or prompt.strip() == "":
             return "ERROR: Empty prompt"
+        
+        # Ensure model is in eval mode for generation
+        model.eval()
         
         # Tokenize input
         inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
@@ -180,6 +187,12 @@ def generate_response(
         
         # Extract only the generated part (after prompt)
         response_tokens = outputs[0][input_ids_len:]
+        output_seq_len = outputs[0].shape[0]
+        
+        # Debug info
+        if output_seq_len <= input_ids_len:
+            logger.debug(f"Output length ({output_seq_len}) <= input length ({input_ids_len}), no generation occurred")
+        
         if len(response_tokens) > 0:
             response_only = tokenizer.decode(response_tokens, skip_special_tokens=True).strip()
         else:
@@ -195,7 +208,7 @@ def generate_response(
         
         # Final check
         if not response_only or response_only.strip() == "":
-            return f"ERROR: No tokens generated (input_len={input_ids_len}, max_new={safe_max_new_tokens})"
+            return f"ERROR: No tokens generated (input_len={input_ids_len}, output_len={output_seq_len}, max_new={safe_max_new_tokens})"
         
         return response_only
         
@@ -523,6 +536,10 @@ def evaluate_models_with_initial_response(
     
     # Load aligned model (with adapter)
     aligned_model = load_aligned_model(base_model, aligned_model_path)
+    
+    # CRITICAL: Ensure models are in eval mode
+    base_model.eval()
+    aligned_model.eval()
     
     logger.info("=" * 80)
     logger.info("STEP 4: Generating Predictions for Missing Rows")
