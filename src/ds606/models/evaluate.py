@@ -114,7 +114,7 @@ def generate_response(
     model: AutoModelForCausalLM,
     tokenizer: AutoTokenizer,
     prompt: str,
-    max_new_tokens: int = 1028,
+    max_new_tokens: int = 512,  # Increased since we're truncating prompt
     temperature: float = 0.7,
     top_p: float = 0.95,
     top_k: int = 50,
@@ -127,8 +127,8 @@ def generate_response(
     Args:
         model: Language model
         tokenizer: Tokenizer
-        prompt: Input prompt
-        max_new_tokens: Maximum tokens to generate (default: 1028 for comprehensive responses)
+        prompt: Input prompt (will be truncated to 5000 tokens)
+        max_new_tokens: Maximum tokens to generate (default: 512)
         temperature: Sampling temperature (0.7 = good balance of randomness vs coherence)
         top_p: Nucleus sampling parameter (0.95 = keep top 95% probability mass)
         top_k: Top-K filtering (50 = filter to top 50 tokens)
@@ -147,11 +147,27 @@ def generate_response(
         inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
         input_ids_len = inputs['input_ids'].shape[1]
         
+        # Truncate prompt to 5000 tokens to leave room for generation
+        # 8000 total - 5000 prompt = 3000 tokens available for generation
+        max_prompt_tokens = 5000
+        if input_ids_len > max_prompt_tokens:
+            logger.debug(f"Truncating prompt from {input_ids_len} to {max_prompt_tokens} tokens")
+            inputs['input_ids'] = inputs['input_ids'][:, :max_prompt_tokens]
+            inputs['attention_mask'] = inputs['attention_mask'][:, :max_prompt_tokens]
+            input_ids_len = max_prompt_tokens
+        
+        # Calculate safe max_new_tokens
+        context_limit = 8000  # Llama 3 approximate context
+        safe_max_new_tokens = min(max_new_tokens, context_limit - input_ids_len - 50)
+        
+        if safe_max_new_tokens < 50:
+            return f"ERROR: Insufficient space for generation (input_len={input_ids_len})"
+        
         # Generate with torch.no_grad() for efficiency
         with torch.no_grad():
             outputs = model.generate(
                 **inputs,
-                max_new_tokens=max_new_tokens,
+                max_new_tokens=safe_max_new_tokens,
                 temperature=temperature,
                 top_p=top_p,
                 top_k=top_k,
@@ -162,20 +178,16 @@ def generate_response(
                 eos_token_id=tokenizer.eos_token_id,
             )
         
-        # Decode full response
-        full_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        
         # Extract only the generated part (after prompt)
-        # Use the number of tokens to determine where prompt ends
         response_tokens = outputs[0][input_ids_len:]
         if len(response_tokens) > 0:
             response_only = tokenizer.decode(response_tokens, skip_special_tokens=True).strip()
         else:
             response_only = ""
         
-        # Fallback: if response is still empty, try string-based extraction
+        # If no response generated, try full decoding fallback
         if not response_only or response_only.strip() == "":
-            # Try to remove prompt from the end
+            full_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
             if full_response.startswith(prompt):
                 response_only = full_response[len(prompt):].strip()
             else:
@@ -183,12 +195,12 @@ def generate_response(
         
         # Final check
         if not response_only or response_only.strip() == "":
-            return f"WARNING: No new tokens generated (full_response length: {len(full_response)})"
+            return f"ERROR: No tokens generated (input_len={input_ids_len}, max_new={safe_max_new_tokens})"
         
         return response_only
         
     except Exception as e:
-        return f"ERROR in generate_response: {type(e).__name__}: {str(e)[:50]}"
+        return f"ERROR: {type(e).__name__}: {str(e)[:80]}"
 
 
 def evaluate_models(
