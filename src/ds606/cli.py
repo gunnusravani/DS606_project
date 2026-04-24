@@ -143,7 +143,7 @@ def main() -> None:
     eval_models_parser.add_argument(
         "--base-model",
         type=str,
-        default="meta-llama/Meta-Llama-3-8B",
+        default="meta-llama/Llama-3.1-8B",
         help="Base model name or path (default: meta-llama/Meta-Llama-3-8B)",
     )
     

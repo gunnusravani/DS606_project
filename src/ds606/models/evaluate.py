@@ -34,7 +34,7 @@ if hf_token:
 
 
 def setup_model_and_tokenizer(
-    model_name: str = "meta-llama/Meta-Llama-3-8B",
+    model_name: str = "meta-llama/Llama-3.1-8B",
     device_map: str = "auto",
     torch_dtype: str = "bfloat16",
 ) -> Tuple[AutoModelForCausalLM, AutoTokenizer]:
@@ -156,7 +156,7 @@ def generate_response(
 
 def evaluate_models(
     csv_path: str,
-    base_model_name: str = "meta-llama/Meta-Llama-3-8B",
+    base_model_name: str = "meta-llama/Llama-3.1-8B",
     aligned_model_path: str = "outputs/models/dpo/",
     device_map: str = "auto",
     output_path: str = "outputs/evaluations/",
@@ -323,7 +323,7 @@ def evaluate_models(
 
 def evaluate_models_with_initial_response(
     csv_path: str,
-    base_model_name: str = "meta-llama/Meta-Llama-3-8B",
+    base_model_name: str = "meta-llama/Llama-3.1-8B",
     aligned_model_path: str = "outputs/models/dpo/",
     device_map: str = "auto",
     output_path: str = "outputs/evaluations/",
@@ -520,7 +520,7 @@ if __name__ == "__main__":
     # Example usage
     evaluate_models(
         csv_path="jailbreak_just_question.csv",
-        base_model_name="meta-llama/Meta-Llama-3-8B",
+        base_model_name="meta-llama/Llama-3.1-8B",
         aligned_model_path="outputs/models/dpo/",
         device_map="auto",
         output_path="outputs/evaluations/",

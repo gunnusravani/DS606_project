@@ -15,7 +15,7 @@ from pathlib import Path
 @dataclass
 class ModelConfig:
     """Configuration for loading the base model."""
-    name_or_path: str = "meta-llama/Meta-Llama-3-8B"
+    name_or_path: str = "meta-llama/Llama-3.1-8B"
     # ^ Which model to download from HuggingFace Hub
     
     torch_dtype: str = "bfloat16"
