@@ -124,7 +124,7 @@ def generate_response(
     top_k: int = 50,
 ) -> str:
     """
-    Generate model response for a given prompt.
+    Generate model response for a given prompt using instruction format.
     
     Args:
         model: Language model
@@ -146,8 +146,18 @@ def generate_response(
         # Ensure model is in eval mode for generation
         model.eval()
         
+        # Wrap prompt with instruction format
+        formatted_prompt = f"""### Instruction:
+Read the following text and respond appropriately.
+
+### Input:
+{prompt}
+
+### Response:
+"""
+        
         # Tokenize input
-        inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+        inputs = tokenizer(formatted_prompt, return_tensors="pt").to(model.device)
         input_ids_len = inputs['input_ids'].shape[1]
         
         # Truncate prompt to 5000 tokens to leave room for generation
@@ -160,14 +170,13 @@ def generate_response(
             input_ids_len = max_prompt_tokens
         
         # Calculate safe max_new_tokens
-        context_limit = 8000  # Conservative estimate for most models
+        context_limit = 8000
         safe_max_new_tokens = min(max_new_tokens, context_limit - input_ids_len - 50)
         
         if safe_max_new_tokens < 50:
             return f"ERROR: Insufficient space for generation (input_len={input_ids_len})"
         
-        # Generate with torch.no_grad() for efficiency
-        # Use minimal/no repetition control to avoid early stopping
+        # Generate with torch.no_grad()
         with torch.no_grad():
             outputs = model.generate(
                 **inputs,
@@ -176,41 +185,41 @@ def generate_response(
                 top_p=top_p,
                 top_k=top_k,
                 do_sample=True,
-                # Remove aggressive repetition control that causes early stopping
-                # repetition_penalty removed - let model generate naturally
-                # no_repeat_ngram_size removed - causes early termination
             )
         
         # Extract only the generated part (after prompt)
         response_tokens = outputs[0][input_ids_len:]
         output_len = outputs[0].shape[0]
         
-        logger.debug(f"Generation complete: input_len={input_ids_len}, output_len={output_len}, response_tokens={len(response_tokens)}")
-        
         if len(response_tokens) == 0:
-            return f"ERROR: No tokens generated (input_len={input_ids_len}, output_len={output_len})"
+            return f"ERROR: No tokens generated (input={input_ids_len}, output={output_len})"
         
-        # Decode response WITHOUT skipping special tokens first
-        # Then clean up if needed
-        response_only = tokenizer.decode(response_tokens, skip_special_tokens=False).strip()
+        # Decode response
+        full_response = tokenizer.decode(response_tokens, skip_special_tokens=True).strip()
         
-        # Remove any EOS or PAD tokens that might appear
-        response_only = response_only.replace(tokenizer.eos_token, "").strip()
-        if tokenizer.pad_token:
-            response_only = response_only.replace(tokenizer.pad_token, "").strip()
+        # Extract response after "### Response:" marker if present
+        if "### Response:" in full_response:
+            response_only = full_response.split("### Response:")[-1].strip()
+        else:
+            response_only = full_response
         
-        # Remove special tokens manually
-        response_only = response_only.replace("<s>", "").replace("</s>", "").strip()
+        # If empty after extraction, try alternative decoding
+        if not response_only:
+            full_response = tokenizer.decode(response_tokens, skip_special_tokens=False).strip()
+            if "### Response:" in full_response:
+                response_only = full_response.split("### Response:")[-1].strip()
+            else:
+                response_only = full_response
         
         # Final check
-        if not response_only or response_only.strip() == "":
-            return f"ERROR: Response empty after decoding (input_len={input_ids_len}, output_len={output_len})"
+        if not response_only:
+            return f"ERROR: Empty response (input={input_ids_len}, output={output_len}, tokens={len(response_tokens)})"
         
         return response_only
         
     except Exception as e:
         logger.error(f"Generation error: {type(e).__name__}: {str(e)}")
-        return f"ERROR: {type(e).__name__}: {str(e)[:80]}"
+        return f"ERROR: {type(e).__name__}: {str(e)[:60]}"
 
 
 def evaluate_models(
