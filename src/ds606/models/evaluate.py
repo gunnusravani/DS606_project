@@ -64,23 +64,64 @@ def setup_model_and_tokenizer(
     
     if is_sarvam:
         logger.info(f"Detected Sarvam model - using special loading configuration")
-        # For Sarvam models, use slower tokenizer and simpler model loading
+        # For Sarvam models, load model first, then get tokenizer from model
         try:
+            logger.info(f"Loading Sarvam model...")
+            model = AutoModelForCausalLM.from_pretrained(
+                model_name,
+                device_map=device_map,
+                torch_dtype=torch_dtype_obj,
+                trust_remote_code=True,
+                low_cpu_mem_usage=True,
+            )
+            logger.info(f"✓ Sarvam model loaded")
+            
+            # Get tokenizer from model config
+            logger.info(f"Getting tokenizer from model...")
             tokenizer = AutoTokenizer.from_pretrained(
                 model_name,
                 trust_remote_code=True,
                 use_fast=False,
+                local_files_only=False,
             )
-            logger.info(f"✓ Loaded Sarvam tokenizer")
+            logger.info(f"✓ Tokenizer loaded")
+            
         except Exception as e:
-            logger.warning(f"Failed to load tokenizer with use_fast=False: {e}")
-            logger.info(f"Trying alternative tokenizer loading...")
-            import tokenizers
+            logger.error(f"Failed to load Sarvam model properly: {type(e).__name__}: {e}")
+            logger.info(f"Trying fallback: Clear cache and reload...")
+            
+            # Try clearing cache and reloading
+            import shutil
+            from pathlib import Path
+            cache_dir = Path.home() / ".cache" / "huggingface" / "hub"
+            
+            # Find and remove the problematic model cache
+            for item in cache_dir.glob(f"*{model_name.split('/')[-1]}*"):
+                if item.is_dir():
+                    logger.info(f"Clearing cache for {item}")
+                    try:
+                        shutil.rmtree(item)
+                    except Exception as clear_err:
+                        logger.warning(f"Could not clear cache: {clear_err}")
+            
+            # Retry with fresh download
+            logger.info(f"Retrying model load with fresh download...")
+            model = AutoModelForCausalLM.from_pretrained(
+                model_name,
+                device_map=device_map,
+                torch_dtype=torch_dtype_obj,
+                trust_remote_code=True,
+                low_cpu_mem_usage=True,
+                force_download=True,
+            )
+            
             tokenizer = AutoTokenizer.from_pretrained(
                 model_name,
                 trust_remote_code=True,
+                use_fast=False,
+                force_download=True,
             )
-            logger.info(f"✓ Loaded tokenizer with default settings")
+            logger.info(f"✓ Model and tokenizer loaded after cache clear")
     else:
         # Load tokenizer for standard models
         tokenizer = AutoTokenizer.from_pretrained(
@@ -88,29 +129,20 @@ def setup_model_and_tokenizer(
             trust_remote_code=True,
             use_fast=False,
         )
-    
-    tokenizer.pad_token = tokenizer.eos_token
-    
-    # Load base model with appropriate settings
-    if is_sarvam:
-        logger.info(f"Loading Sarvam model with reduced precision...")
-        model = AutoModelForCausalLM.from_pretrained(
-            model_name,
-            device_map=device_map,
-            torch_dtype=torch_dtype_obj,
-            trust_remote_code=True,
-            low_cpu_mem_usage=True,
-        )
-    else:
+        logger.info(f"✓ Tokenizer loaded")
+        
+        # Load model
         model = AutoModelForCausalLM.from_pretrained(
             model_name,
             device_map=device_map,
             torch_dtype=torch_dtype_obj,
             attn_implementation="sdpa",
         )
+        logger.info(f"✓ Model loaded")
     
+    tokenizer.pad_token = tokenizer.eos_token
     model.eval()
-    logger.info(f"✓ Base model loaded on {device_map}")
+    logger.info(f"✓ Base model ready on {device_map}")
     
     return model, tokenizer
 
