@@ -116,18 +116,24 @@ def generate_response(
     prompt: str,
     max_new_tokens: int = 1028,
     temperature: float = 0.7,
-    top_p: float = 0.9,
+    top_p: float = 0.95,
+    top_k: int = 50,
+    no_repeat_ngram_size: int = 3,
+    repetition_penalty: float = 1.2,
 ) -> str:
     """
-    Generate model response for a given prompt.
+    Generate model response for a given prompt with repetition control.
     
     Args:
         model: Language model
         tokenizer: Tokenizer
         prompt: Input prompt
         max_new_tokens: Maximum tokens to generate (default: 1028 for comprehensive responses)
-        temperature: Sampling temperature
-        top_p: Nucleus sampling parameter
+        temperature: Sampling temperature (0.7 = good balance of randomness vs coherence)
+        top_p: Nucleus sampling parameter (0.95 = keep top 95% probability mass)
+        top_k: Top-K filtering (50 = filter to top 50 tokens)
+        no_repeat_ngram_size: Prevent n-grams of this size from repeating (3 = no 3-grams repeat)
+        repetition_penalty: Penalty for repeating tokens (1.2 = 20% penalty for repeats)
     
     Returns:
         Generated text (response only, without prompt)
@@ -142,7 +148,10 @@ def generate_response(
             max_new_tokens=max_new_tokens,
             temperature=temperature,
             top_p=top_p,
+            top_k=top_k,
             do_sample=True,
+            no_repeat_ngram_size=no_repeat_ngram_size,
+            repetition_penalty=repetition_penalty,
             pad_token_id=tokenizer.eos_token_id,
             eos_token_id=tokenizer.eos_token_id,
         )
@@ -156,7 +165,7 @@ def generate_response(
 
 def evaluate_models(
     csv_path: str,
-    base_model_name: str = "meta-llama/Llama-3.1-8B",
+    base_model_name: str = "meta-llama/Meta-Llama-3-8B",
     aligned_model_path: str = "models/dpo/",
     device_map: str = "auto",
     output_path: str = "outputs/evaluations/",
@@ -323,7 +332,7 @@ def evaluate_models(
 
 def evaluate_models_with_initial_response(
     csv_path: str,
-    base_model_name: str = "meta-llama/Llama-3.1-8B",
+    base_model_name: str = "meta-llama/Meta-Llama-3-8B",
     aligned_model_path: str = "models/dpo/",
     device_map: str = "auto",
     output_path: str = "outputs/evaluations_malicious/",
