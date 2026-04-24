@@ -59,21 +59,55 @@ def setup_model_and_tokenizer(
     }
     torch_dtype_obj = dtype_map.get(torch_dtype, torch.bfloat16)
     
-    # Load tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(
-        model_name,
-        trust_remote_code=True,
-        use_fast=True,
-    )
+    # SPECIAL HANDLING FOR SARVAM MODELS
+    is_sarvam = "sarvam" in model_name.lower()
+    
+    if is_sarvam:
+        logger.info(f"Detected Sarvam model - using special loading configuration")
+        # For Sarvam models, use slower tokenizer and simpler model loading
+        try:
+            tokenizer = AutoTokenizer.from_pretrained(
+                model_name,
+                trust_remote_code=True,
+                use_fast=False,
+            )
+            logger.info(f"✓ Loaded Sarvam tokenizer")
+        except Exception as e:
+            logger.warning(f"Failed to load tokenizer with use_fast=False: {e}")
+            logger.info(f"Trying alternative tokenizer loading...")
+            import tokenizers
+            tokenizer = AutoTokenizer.from_pretrained(
+                model_name,
+                trust_remote_code=True,
+            )
+            logger.info(f"✓ Loaded tokenizer with default settings")
+    else:
+        # Load tokenizer for standard models
+        tokenizer = AutoTokenizer.from_pretrained(
+            model_name,
+            trust_remote_code=True,
+            use_fast=False,
+        )
+    
     tokenizer.pad_token = tokenizer.eos_token
     
-    # Load base model with bfloat16 (no 8-bit quantization to avoid device_map conflicts)
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        device_map=device_map,
-        torch_dtype=torch_dtype_obj,
-        attn_implementation="sdpa",  # Use SDPA instead of FlashAttention2
-    )
+    # Load base model with appropriate settings
+    if is_sarvam:
+        logger.info(f"Loading Sarvam model with reduced precision...")
+        model = AutoModelForCausalLM.from_pretrained(
+            model_name,
+            device_map=device_map,
+            torch_dtype=torch_dtype_obj,
+            trust_remote_code=True,
+            low_cpu_mem_usage=True,
+        )
+    else:
+        model = AutoModelForCausalLM.from_pretrained(
+            model_name,
+            device_map=device_map,
+            torch_dtype=torch_dtype_obj,
+            attn_implementation="sdpa",
+        )
     
     model.eval()
     logger.info(f"✓ Base model loaded on {device_map}")
