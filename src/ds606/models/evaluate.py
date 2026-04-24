@@ -443,7 +443,18 @@ def evaluate_models_with_initial_response(
             results_df[col] = ""
     
     logger.info("=" * 80)
-    logger.info("STEP 2: Setting Up Models")
+    logger.info("STEP 2: Creating Combined Prompts")
+    logger.info("=" * 80)
+    
+    # Create combined prompts (question + initial response)
+    df['combined_english'] = df[english_prompt_col].astype(str) + " " + df[english_initial_col].astype(str)
+    df['combined_hindi'] = df[hindi_prompt_col].astype(str) + " " + df[hindi_initial_col].astype(str)
+    
+    logger.info(f"Sample combined English prompt: {df['combined_english'].iloc[0][:100]}...")
+    logger.info(f"Sample combined Hindi prompt: {df['combined_hindi'].iloc[0][:100]}...")
+    
+    logger.info("=" * 80)
+    logger.info("STEP 3: Setting Up Models")
     logger.info("=" * 80)
     
     # Load base model and tokenizer
@@ -456,7 +467,7 @@ def evaluate_models_with_initial_response(
     aligned_model = load_aligned_model(base_model, aligned_model_path)
     
     logger.info("=" * 80)
-    logger.info("STEP 3: Generating Predictions for Missing Rows")
+    logger.info("STEP 4: Generating Predictions for Missing Rows")
     logger.info("=" * 80)
     
     total_rows = len(rows_to_evaluate)
