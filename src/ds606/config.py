@@ -21,8 +21,8 @@ class ModelConfig:
     torch_dtype: str = "bfloat16"
     # ^ Data type: bfloat16 is 16-bit (faster, less memory) vs float32 (slower, more memory)
     
-    device_map: str = "cuda:0"
-    # ^ "auto" = automatically split model across available GPUs/CPUs
+    device_map: str = "auto"
+    # ^ "auto" = automatically use available GPUs/CPUs (works with SLURM)
     
     trust_remote_code: bool = True
     # ^ Allow downloading custom code from HF Hub (some models need this)
