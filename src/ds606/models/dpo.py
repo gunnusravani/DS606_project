@@ -298,14 +298,27 @@ def train_dpo(
     logger.info("STEP 6: Creating DPO Trainer")
     logger.info("=" * 80)
     
-    trainer = DPOTrainer(
-        model=model,
-        ref_model=None,
-        args=training_config,
-        train_dataset=train_dataset,
-        eval_dataset=eval_dataset,
-        tokenizer=tokenizer,
-    )
+    # DPOTrainer initialization (newer TRL versions don't accept tokenizer separately)
+    try:
+        trainer = DPOTrainer(
+            model=model,
+            args=training_config,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset,
+            tokenizer=tokenizer,
+            peft_config=None,
+        )
+    except TypeError as e:
+        if "tokenizer" in str(e):
+            logger.warning(f"Current TRL version doesn't accept tokenizer argument, retrying without it")
+            trainer = DPOTrainer(
+                model=model,
+                args=training_config,
+                train_dataset=train_dataset,
+                eval_dataset=eval_dataset,
+            )
+        else:
+            raise
     
     # ========== STEP 7: Start Training ==========
     logger.info("\n" + "=" * 80)
