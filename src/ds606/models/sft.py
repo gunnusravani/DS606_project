@@ -391,7 +391,16 @@ def train_sft(
     
     logger.info(f"Training Results:")
     logger.info(f"  • Final training loss: {train_result.training_loss:.4f}")
-    logger.info(f"  • Training time: {train_result.training_runtime / 3600:.2f} hours")
+    
+    # Get training time if available
+    if hasattr(train_result, 'training_runtime'):
+        training_hours = train_result.training_runtime / 3600
+        logger.info(f"  • Training time: {training_hours:.2f} hours")
+    elif hasattr(trainer, 'state') and hasattr(trainer.state, 'training_runtime'):
+        training_hours = trainer.state.training_runtime / 3600
+        logger.info(f"  • Training time: {training_hours:.2f} hours")
+    else:
+        logger.info(f"  • Training time: (not available in this version)")
     
     return model, trainer
 
