@@ -7,7 +7,13 @@ from dotenv import load_dotenv
 logger = logging.getLogger(__name__)
 
 # Load environment variables from .env file on startup
-load_dotenv()
+# Try loading from current directory and workspace root
+load_dotenv()  # Load from current directory first
+workspace_root = Path(__file__).parent.parent.parent  # project root
+env_file = workspace_root / ".env"
+if env_file.exists():
+    load_dotenv(str(env_file))
+    logger.debug(f"Loaded .env from {env_file}")
 
 
 def setup_logging(verbose: bool = False) -> None:
@@ -351,6 +357,7 @@ def main() -> None:
         
         if Path(args.config).exists():
             config = load_config_from_yaml(args.config)
+            logger.info(f"✓ Config loaded: base_model={config.model.name_or_path}")
         else:
             logger.warning(f"Config file {args.config} not found, using defaults")
             config = TrainingConfig()

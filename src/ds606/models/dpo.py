@@ -15,16 +15,29 @@ https://arxiv.org/abs/2305.18290
 
 import logging
 import argparse
+import os
 from pathlib import Path
 from typing import Tuple, Optional
+from dotenv import load_dotenv
 
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from trl import DPOTrainer, DPOConfig
 from peft import LoraConfig, get_peft_model, TaskType
+from huggingface_hub import login
 
 from ds606.config import TrainingConfig, load_config_from_yaml
 from ds606.data.hh_rlhf import load_hh_rlhf_dataset, prepare_dataset_for_dpo
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Authenticate with HuggingFace if HF_TOKEN is available
+hf_token = os.getenv("HF_TOKEN")
+if hf_token:
+    login(token=hf_token)
+    logger = logging.getLogger(__name__)
+    logger.info("✓ Authenticated with HuggingFace using token from .env")
 
 # ============================================================================
 # LOGGING
@@ -69,13 +82,37 @@ def setup_model_and_tokenizer_for_dpo(
     # Load base model
     torch_dtype = torch.bfloat16 if model_config.torch_dtype == "bfloat16" else torch.float32
     
-    model = AutoModelForCausalLM.from_pretrained(
-        model_config.name_or_path,
-        torch_dtype=torch_dtype,
-        device_map=model_config.device_map,
-        trust_remote_code=model_config.trust_remote_code,
-        attn_implementation="sdpa",
-    )
+    # Skip SDPA for Llama 3.2 due to rope_scaling compatibility issues
+    use_sdpa = "3.2" not in model_config.name_or_path
+    
+    if use_sdpa:
+        try:
+            model = AutoModelForCausalLM.from_pretrained(
+                model_config.name_or_path,
+                torch_dtype=torch_dtype,
+                device_map=model_config.device_map,
+                trust_remote_code=model_config.trust_remote_code,
+                attn_implementation="sdpa",
+            )
+        except ValueError as e:
+            if "rope_scaling" in str(e):
+                logger.warning(f"SDPA loading failed due to rope_scaling, retrying without SDPA...")
+                model = AutoModelForCausalLM.from_pretrained(
+                    model_config.name_or_path,
+                    torch_dtype=torch_dtype,
+                    device_map=model_config.device_map,
+                    trust_remote_code=model_config.trust_remote_code,
+                )
+            else:
+                raise
+    else:
+        logger.info(f"Detected Llama 3.2 - loading without SDPA to avoid rope_scaling issues")
+        model = AutoModelForCausalLM.from_pretrained(
+            model_config.name_or_path,
+            torch_dtype=torch_dtype,
+            device_map=model_config.device_map,
+            trust_remote_code=model_config.trust_remote_code,
+        )
     
     logger.info(f"Model loaded: {model.config.model_type}")
     logger.info(f"Model size: {model.get_memory_footprint() / 1e9:.2f} GB")
