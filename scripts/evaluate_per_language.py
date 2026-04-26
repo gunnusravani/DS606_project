@@ -238,6 +238,9 @@ def evaluate_language(
         # Initialize result columns
         for model_name in MODELS.keys():
             results_df[f"{model_name}_response"] = ""
+        # Save initial file
+        results_df.to_csv(output_file, index=False)
+        logger.info(f"Created new results file: {output_file}")
     
     # Evaluate each model
     for model_name, model_path in MODELS.items():
