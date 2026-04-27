@@ -54,7 +54,7 @@ LANGUAGE_COLUMNS = {
     "marathi": ("marathi", "intital_malicious_marathi"),
     "telugu": ("telegu", "intital_malicious_telugu"),
     "assamese": ("assamese", "intital_malicious_english"),  # Use English initial for Assamese
-    "english": ("english", "intital_malicious_english"),
+    "english": ("question", "intital_malicious_english"),
 }
 
 # Model configurations
@@ -247,6 +247,7 @@ def evaluate_language(
         response_col = f"{model_name}_response"
         
         # Check if already evaluated
+        print("nan values:",results_df[response_col].notna().sum())
         if response_col in results_df.columns and results_df[response_col].notna().sum() > 0:
             completed = results_df[response_col].notna().sum()
             logger.info(f"✓ Model '{model_name}' already evaluated ({completed}/{len(results_df)} rows)")
