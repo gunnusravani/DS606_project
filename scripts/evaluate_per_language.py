@@ -18,6 +18,7 @@ This script:
 import argparse
 import logging
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -27,6 +28,10 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
 from huggingface_hub import login
 from tqdm import tqdm
+
+# Import Llama Guard classifier
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from src.ds606.eval.llama_guard import LlamaGuardClassifier
 
 # Setup paths
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -189,15 +194,98 @@ Read the following text and respond appropriately.
         return f"ERROR: {type(e).__name__}: {str(e)[:60]}"
 
 
+def apply_llama_guard_classification(
+    responses: list,
+    model_name: str = "meta-llama/Llama-Guard-3-8B",
+    batch_size: int = 8
+) -> list:
+    """
+    Apply Llama Guard safety classification to responses.
+    
+    Args:
+        responses: List of response strings to classify
+        model_name: Llama Guard model to use
+        batch_size: Batch size for classification
+    
+    Returns:
+        List of classification results with keys: label, violated_categories, score
+    """
+    logger.info(f"\n{'=' * 80}")
+    logger.info("APPLYING LLAMA GUARD SAFETY CLASSIFICATION")
+    logger.info(f"Model: {model_name}")
+    logger.info(f"Batch size: {batch_size}")
+    logger.info("=" * 80)
+    
+    try:
+        classifier = LlamaGuardClassifier(model_name=model_name)
+        
+        # Filter out error responses
+        valid_responses = []
+        error_indices = []
+        for idx, resp in enumerate(responses):
+            if str(resp).startswith("ERROR:"):
+                error_indices.append(idx)
+                logger.warning(f"Skipping error response at index {idx}: {resp}")
+            else:
+                valid_responses.append(resp)
+        
+        if not valid_responses:
+            logger.warning("No valid responses to classify!")
+            # Return placeholder results for all
+            return [
+                {"label": "unknown", "violated_categories": [], "score": 0.0, "error": "No valid responses"}
+                for _ in responses
+            ]
+        
+        logger.info(f"Classifying {len(valid_responses)} valid responses (skipped {len(error_indices)} errors)")
+        
+        # Classify valid responses
+        classifications = classifier.classify_batch(valid_responses, batch_size=batch_size)
+        
+        # Reconstruct full results list with error placeholders
+        full_results = []
+        valid_idx = 0
+        for idx, resp in enumerate(responses):
+            if idx in error_indices:
+                full_results.append({"label": "unknown", "violated_categories": [], "score": 0.0, "error": "Response generation failed"})
+            else:
+                full_results.append(classifications[valid_idx])
+                valid_idx += 1
+        
+        # Log statistics
+        unsafe_count = sum(1 for r in full_results if r.get("label") == "unsafe")
+        safe_count = sum(1 for r in full_results if r.get("label") == "safe")
+        unknown_count = sum(1 for r in full_results if r.get("label") == "unknown")
+        
+        asr = (unsafe_count / len(full_results)) * 100 if full_results else 0
+        logger.info(f"Classification Results:")
+        logger.info(f"  - Unsafe: {unsafe_count}/{len(full_results)} ({asr:.2f}% ASR)")
+        logger.info(f"  - Safe: {safe_count}/{len(full_results)}")
+        logger.info(f"  - Unknown: {unknown_count}/{len(full_results)}")
+        
+        return full_results
+    
+    except Exception as e:
+        logger.error(f"Llama Guard classification failed: {e}")
+        logger.warning("Returning placeholder results...")
+        return [
+            {"label": "unknown", "violated_categories": [], "score": 0.0, "error": str(e)}
+            for _ in responses
+        ]
+
+
 def evaluate_language(
     csv_path: str,
     language: str,
     device_map: str = "auto",
+    use_llama_guard: bool = False,
+    llama_guard_model: str = "meta-llama/Llama-Guard-3-8B",
 ):
     """Evaluate all models for a specific language."""
     
     logger.info("=" * 80)
     logger.info(f"LANGUAGE EVALUATION: {language.upper()}")
+    logger.info(f"Llama Guard Classification: {'ENABLED' if use_llama_guard else 'DISABLED'}")
     logger.info("=" * 80)
     
     # Validate language
@@ -238,6 +326,10 @@ def evaluate_language(
         # Initialize result columns
         for model_name in MODELS.keys():
             results_df[f"{model_name}_response"] = ""
+            if use_llama_guard:
+                results_df[f"{model_name}_safety_label"] = ""
+                results_df[f"{model_name}_violated_categories"] = ""
+                results_df[f"{model_name}_safety_score"] = 0.0
         # Save initial file
         results_df.to_csv(output_file, index=False)
         logger.info(f"Created new results file: {output_file}")
@@ -247,11 +339,16 @@ def evaluate_language(
         response_col = f"{model_name}_response"
         
         # Check if already evaluated
-        print("nan values:",results_df[response_col].notna().sum())
-        if response_col in results_df.columns and results_df[response_col].notna().sum() > 0:
-            completed = results_df[response_col].notna().sum()
+        completed = results_df[response_col].notna().sum() if response_col in results_df.columns else 0
+        if response_col in results_df.columns and completed > 0:
             logger.info(f"✓ Model '{model_name}' already evaluated ({completed}/{len(results_df)} rows)")
-            continue
+            
+            # Check if Llama Guard already applied
+            if use_llama_guard:
+                safety_col = f"{model_name}_safety_label"
+                if safety_col in results_df.columns and results_df[safety_col].notna().sum() > 0:
+                    logger.info(f"  ✓ Llama Guard classification already complete")
+                    continue
         
         logger.info(f"\n{'=' * 80}")
         logger.info(f"EVALUATING MODEL: {model_name.upper()}")
@@ -264,7 +361,7 @@ def evaluate_language(
         # Generate responses
         responses = []
         for idx, row in tqdm(results_df.iterrows(), total=len(results_df), desc=f"Generating {model_name}"):
-            if pd.notna(row[response_col]) and row[response_col] != "":
+            if pd.notna(row.get(response_col)) and row.get(response_col) != "":
                 # Already has response
                 responses.append(row[response_col])
             else:
@@ -273,8 +370,32 @@ def evaluate_language(
                 response = generate_response(model, tokenizer, prompt)
                 responses.append(response)
         
-        # Update results
+        # Update responses
         results_df[response_col] = responses
+        
+        # Apply Llama Guard if enabled
+        if use_llama_guard:
+            safety_label_col = f"{model_name}_safety_label"
+            violated_cat_col = f"{model_name}_violated_categories"
+            safety_score_col = f"{model_name}_safety_score"
+            
+            # Ensure columns exist
+            if safety_label_col not in results_df.columns:
+                results_df[safety_label_col] = ""
+                results_df[violated_cat_col] = ""
+                results_df[safety_score_col] = 0.0
+            
+            # Classify responses
+            classifications = apply_llama_guard_classification(
+                responses,
+                model_name=llama_guard_model,
+                batch_size=8
+            )
+            
+            # Update dataframe
+            results_df[safety_label_col] = [c.get("label", "unknown") for c in classifications]
+            results_df[violated_cat_col] = [",".join(c.get("violated_categories", [])) for c in classifications]
+            results_df[safety_score_col] = [c.get("score", 0.0) for c in classifications]
         
         # Save after each model
         results_df.to_csv(output_file, index=False)
@@ -325,6 +446,19 @@ Examples:
         help="Device mapping for models (default: auto)",
     )
     
+    parser.add_argument(
+        "--use-llama-guard",
+        action="store_true",
+        help="Enable Llama Guard safety classification",
+    )
+    
+    parser.add_argument(
+        "--llama-guard-model",
+        type=str,
+        default="meta-llama/Llama-Guard-3-8B",
+        help="Llama Guard model to use (default: meta-llama/Llama-Guard-3-8B)",
+    )
+    
     args = parser.parse_args()
     
     # Run evaluation
@@ -333,6 +467,8 @@ Examples:
             csv_path=args.input,
             language=args.language,
             device_map=args.device_map,
+            use_llama_guard=args.use_llama_guard,
+            llama_guard_model=args.llama_guard_model,
         )
         logger.info("✓ Successfully completed evaluation!")
     except Exception as e:
