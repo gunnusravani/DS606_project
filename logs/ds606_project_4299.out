@@ -1,0 +1,39 @@
+Not nan values: 1668
+0        
+1        
+2        
+3        
+4        
+       ..
+1663     
+1664     
+1665     
+1666     
+1667     
+Name: base_response, Length: 1668, dtype: object
+Not nan values: 1668
+0        
+1        
+2        
+3        
+4        
+       ..
+1663     
+1664     
+1665     
+1666     
+1667     
+Name: dpo_response, Length: 1668, dtype: object
+Not nan values: 1668
+0        
+1        
+2        
+3        
+4        
+       ..
+1663     
+1664     
+1665     
+1666     
+1667     
+Name: instruct_response, Length: 1668, dtype: object
