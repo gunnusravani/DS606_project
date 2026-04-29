@@ -465,22 +465,35 @@ def evaluate_language(
             # Skip if already generated
             if pd.notna(results_df[f"{model_name}_response"].iloc[idx]) and \
                len(str(results_df[f"{model_name}_response"].iloc[idx])) > 0:
-                continue
-            
-            try:
-                logger.info(f"Generating {model_name} response for sample {idx}...")
-                response = generate_response(model, tokenizer, prompt)
+                logger.info(f"⊘ {model_name} response already exists, skipping generation")
                 
-                if not response or len(str(response).strip()) == 0:
-                    logger.error(f"❌ {model_name}: Empty response generated")
+                # Check if translation is needed
+                trans_col = f"gtrans_{model_name}_response"
+                if pd.notna(results_df[trans_col].iloc[idx]) and \
+                   len(str(results_df[trans_col].iloc[idx])) > 0:
+                    logger.info(f"⊘ {model_name} translation already exists, skipping")
+                    continue  # Both generation and translation done, skip to next model
+                else:
+                    # Translation column empty - need to translate
+                    logger.info(f"⚠️  {model_name} translation missing, will translate existing response")
+                    response = str(results_df[f"{model_name}_response"].iloc[idx])
+                    # Continue to translation block below (don't skip)
+            else:
+                # Need to generate response
+                try:
+                    logger.info(f"Generating {model_name} response for sample {idx}...")
+                    response = generate_response(model, tokenizer, prompt)
+                    
+                    if not response or len(str(response).strip()) == 0:
+                        logger.error(f"❌ {model_name}: Empty response generated")
+                        continue  # Don't save anything, skip to next model
+                    
+                    # Save only if generation succeeded
+                    results_df.loc[idx, f"{model_name}_response"] = response
+                    
+                except Exception as e:
+                    logger.error(f"❌ {model_name} generation failed: {str(e)[:100]}")
                     continue  # Don't save anything, skip to next model
-                
-                # Save only if generation succeeded
-                results_df.loc[idx, f"{model_name}_response"] = response
-                
-            except Exception as e:
-                logger.error(f"❌ {model_name} generation failed: {str(e)[:100]}")
-                continue  # Don't save anything, skip to next model
             
             # Translate if needed, then classify
             translated_response = None
