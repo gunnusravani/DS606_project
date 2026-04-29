@@ -15,7 +15,7 @@ Usage:
     python scripts/evaluate_multilingual_with_translation.py \
         --input initial_malicious_final.csv \
         --language bengali \
-        --output outputs/evaluation_results/
+        --output outputs/llama3.2_3b/
 """
 
 import argparse
@@ -529,7 +529,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Multilingual Safety Evaluation with Translation")
     parser.add_argument("--input", required=True, help="Input CSV file path")
     parser.add_argument("--language", required=True, help="Language to evaluate")
-    parser.add_argument("--output", default="outputs/evaluation_results/", help="Output directory")
+    parser.add_argument("--output", default="outputs/llama3.2_3b/", help="Output directory")
     
     args = parser.parse_args()
     
