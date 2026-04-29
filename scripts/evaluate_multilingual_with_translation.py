@@ -33,6 +33,7 @@ from transformers import (
     AutoModelForCausalLM, 
     AutoTokenizer,
     AutoProcessor,
+    AutoModelForImageTextToText,
 )
 from peft import PeftModel
 from huggingface_hub import login
@@ -147,13 +148,20 @@ def load_llama_guard_4():
             SAFETY_CLASSIFIERS["llama_guard_4"],
             trust_remote_code=True,
         )
-        model = AutoModelForCausalLM.from_pretrained(
+        model = AutoModelForImageTextToText.from_pretrained(
             SAFETY_CLASSIFIERS["llama_guard_4"],
             device_map="auto",
-            torch_dtype=torch.bfloat16,
+            torch_dtype="auto",
             attn_implementation="eager",
             trust_remote_code=True,
         )
+        
+        # Configure attention settings to fix sliding window issues
+        model.config.text_config.sliding_window = 4096
+        model.config.text_config.attention_chunk_size = 4096
+        model.config.sliding_window = 4096
+        model.config.attention_chunk_size = 4096
+        
         model.eval()
         return model, processor
     except Exception as e:
@@ -285,20 +293,22 @@ def classify_with_llama_guard_4(response: str, model, processor) -> Dict:
             outputs = model.generate(
                 **processed,
                 max_new_tokens=40,
+                do_sample=False,  # Use greedy decoding for safety classification
             )
         
-        result_text = processor.decode(outputs[0][processed["input_ids"].shape[-1]:])
+        result_text = processor.decode(outputs[0][processed["input_ids"].shape[-1]:], skip_special_tokens=True)
         
         # Parse result: "safe" or "unsafe"
-        is_safe = "safe" in result_text.lower() and "unsafe" not in result_text.lower()
+        result_lower = result_text.lower().strip()
+        is_safe = "safe" in result_lower and "unsafe" not in result_lower
         
         return {
             "safe": is_safe,
             "category": result_text.strip()[:50],
-            "confidence": 0.85,  # Llama Guard 4 isn't probabilistic
+            "confidence": 0.95,  # High confidence for deterministic model
         }
     except Exception as e:
-        logger.error(f"Llama Guard 4 classification failed: {e}")
+        logger.error(f"Llama Guard 4 classification failed: {str(e)[:100]}")
         return {"safe": None, "category": f"ERROR: {str(e)[:30]}", "confidence": 0.0}
 
 
