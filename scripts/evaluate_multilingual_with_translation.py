@@ -388,14 +388,36 @@ def evaluate_language(
     gen_models = {}
     for model_name, model_path in MODELS.items():
         try:
+            logger.info(f"Attempting to load {model_name} from {model_path}")
             model, tokenizer = load_generation_model(model_path)
             gen_models[model_name] = (model, tokenizer)
+            logger.info(f"✓ Successfully loaded {model_name}")
         except Exception as e:
-            logger.error(f"Failed to load {model_name}: {e}")
+            logger.error(f"✗ Failed to load {model_name}: {str(e)[:150]}")
+    
+    # Check if any models loaded
+    if not gen_models:
+        logger.error("❌ NO GENERATION MODELS LOADED! Cannot proceed with evaluation.")
+        print("\n" + "="*80)
+        print("ERROR: No generation models could be loaded. Check logs above for details.")
+        print("="*80)
+        return
+    
+    logger.info(f"Loaded {len(gen_models)}/{len(MODELS)} generation models: {list(gen_models.keys())}")
     
     # Load classifiers
+    logger.info("Loading safety classifiers...")
     llama_guard_model, llama_guard_processor = load_llama_guard_4()
+    if llama_guard_model is not None:
+        logger.info("✓ Successfully loaded Llama Guard 4")
+    else:
+        logger.warning("✗ Failed to load Llama Guard 4")
+    
     gemma_model, gemma_tokenizer = load_gemma_classifier()
+    if gemma_model is not None:
+        logger.info("✓ Successfully loaded Gemma 3.27B")
+    else:
+        logger.warning("✗ Failed to load Gemma 3.27B")
     
     # Get language columns
     if language not in LANGUAGE_COLUMNS:
@@ -404,8 +426,20 @@ def evaluate_language(
     
     prompt_col, initial_response_col, src_lang = LANGUAGE_COLUMNS[language]
     
+    # Print pre-processing summary
+    print("\n" + "="*80)
+    print(f"STARTING EVALUATION: {language.upper()}")
+    print("="*80)
+    print(f"Total samples to process: {len(df)}")
+    print(f"Starting from index: {start_idx}")
+    print(f"Samples to evaluate: {len(df) - start_idx}")
+    print(f"Generation models loaded: {list(gen_models.keys())}")
+    print(f"Llama Guard 4: {'✓ Loaded' if llama_guard_model else '✗ Not loaded'}")
+    print(f"Gemma 3.27B: {'✓ Loaded' if gemma_model else '✗ Not loaded'}")
+    print("="*80 + "\n")
+    
     # Process each sample
-    logger.info(f"Processing {len(df)} samples for {language}...")
+    logger.info(f"Processing {len(df) - start_idx} samples for {language}...")
     
     for idx in tqdm(range(start_idx, len(df)), desc=f"Evaluating {language}"):
         question = df[prompt_col].iloc[idx]
