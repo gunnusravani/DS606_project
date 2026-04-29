@@ -350,6 +350,7 @@ def evaluate_language(
     input_file: str,
     language: str,
     output_dir: str = "outputs/llama3.2_3b/",
+    force: bool = False,
 ):
     """Main evaluation pipeline."""
     
@@ -363,12 +364,24 @@ def evaluate_language(
     df = pd.read_csv(input_file)
     
     # Check if we have a partial result to resume from
-    if output_path.exists():
+    if output_path.exists() and not force:
         results_df = pd.read_csv(output_path)
         start_idx = len(results_df)
-        logger.info(f"Resuming from index {start_idx}")
+        logger.info(f"Found existing results with {start_idx} samples. Resuming from index {start_idx}")
+        if start_idx >= len(df):
+            logger.warning(f"All {len(df)} samples already processed! Use --force to re-evaluate.")
+            print("\n" + "="*80)
+            print(f"⚠️  EVALUATION ALREADY COMPLETE: {language.upper()}")
+            print(f"   {len(df)} samples already processed in {output_path}")
+            print(f"   Use --force flag to re-evaluate: --language {language} --force")
+            print("="*80 + "\n")
+            return
     else:
-        # Initialize result columns
+        # Initialize result columns (either new run or --force flag)
+        if force and output_path.exists():
+            logger.info(f"--force flag set: re-evaluating (deleting {output_path})")
+            output_path.unlink()
+            summary_path.unlink(missing_ok=True)
         results_df = df.copy()
         start_idx = 0
     
@@ -469,52 +482,59 @@ def evaluate_language(
                 logger.error(f"❌ {model_name} generation failed: {str(e)[:100]}")
                 continue  # Don't save anything, skip to next model
             
-            # Translate if needed
+            # Translate if needed, then classify
+            translated_response = None
             try:
                 if src_lang != "en":
+                    # Non-English: translate first
                     translated = translate_to_english(response, src_lang)
                     
                     if "[TRANSLATION_ERROR" in translated:
-                        logger.warning(f"⚠️  {model_name} translation failed - not saving")
-                        # Don't save anything - leave columns empty
+                        logger.warning(f"⚠️  {model_name} translation failed - skipping all classifications")
+                        # Don't save anything - leave all columns empty
                         continue  # Skip to next model
                     
-                    # Save only if translation succeeded
-                    results_df.loc[idx, f"gtrans_{model_name}_response"] = translated
+                    translated_response = translated
+                    results_df.loc[idx, f"gtrans_{model_name}_response"] = translated_response
+                    logger.info(f"✓ {model_name} translated to English")
                 else:
-                    results_df.loc[idx, f"gtrans_{model_name}_response"] = response
+                    # English: no translation needed
+                    translated_response = response
+                    results_df.loc[idx, f"gtrans_{model_name}_response"] = translated_response
                     
             except Exception as e:
                 logger.error(f"❌ {model_name} translation failed: {str(e)[:100]}")
                 continue  # Don't save anything, skip to next model
             
-            # Classify with Llama Guard 4
-            try:
-                classification = classify_with_llama_guard_4(
-                    results_df.loc[idx, f"gtrans_{model_name}_response"],
-                    llama_guard_model,
-                    llama_guard_processor
-                )
-                results_df.loc[idx, f"llama_guard4_{model_name}"] = \
-                    "UNSAFE" if not classification["safe"] else "SAFE"
-            except Exception as e:
-                logger.error(f"❌ {model_name} Llama Guard 4 classification failed: {str(e)[:100]}")
-                # Don't save classification result
-                pass
-            
-            # Classify with Gemma
-            try:
-                classification = classify_with_gemma(
-                    results_df.loc[idx, f"gtrans_{model_name}_response"],
-                    gemma_model,
-                    gemma_tokenizer
-                )
-                results_df.loc[idx, f"gemma_{model_name}"] = \
-                    "UNSAFE" if not classification["safe"] else "SAFE"
-            except Exception as e:
-                logger.error(f"❌ {model_name} Gemma classification failed: {str(e)[:100]}")
-                # Don't save classification result
-                pass
+            # Now classify the translated response using both classifiers
+            if translated_response is not None:
+                # Classify with Llama Guard 4 (using translated response)
+                try:
+                    classification = classify_with_llama_guard_4(
+                        translated_response,
+                        llama_guard_model,
+                        llama_guard_processor
+                    )
+                    results_df.loc[idx, f"llama_guard4_{model_name}"] = \
+                        "UNSAFE" if not classification["safe"] else "SAFE"
+                    logger.info(f"✓ {model_name} classified by Llama Guard 4")
+                except Exception as e:
+                    logger.error(f"❌ {model_name} Llama Guard 4 classification failed: {str(e)[:100]}")
+                    pass
+                
+                # Classify with Gemma (using translated response)
+                try:
+                    classification = classify_with_gemma(
+                        translated_response,
+                        gemma_model,
+                        gemma_tokenizer
+                    )
+                    results_df.loc[idx, f"gemma_{model_name}"] = \
+                        "UNSAFE" if not classification["safe"] else "SAFE"
+                    logger.info(f"✓ {model_name} classified by Gemma")
+                except Exception as e:
+                    logger.error(f"❌ {model_name} Gemma classification failed: {str(e)[:100]}")
+                    pass
         
         # Save incrementally after each sample
         results_df.to_csv(output_path, index=False)
@@ -582,7 +602,8 @@ if __name__ == "__main__":
     parser.add_argument("--input", required=True, help="Input CSV file path")
     parser.add_argument("--language", required=True, help="Language to evaluate")
     parser.add_argument("--output", default="outputs/llama3.2_3b/", help="Output directory")
+    parser.add_argument("--force", action="store_true", help="Force re-evaluation (ignore existing results)")
     
     args = parser.parse_args()
     
-    evaluate_language(args.input, args.language, args.output)
+    evaluate_language(args.input, args.language, args.output, args.force)
