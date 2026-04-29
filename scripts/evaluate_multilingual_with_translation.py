@@ -548,9 +548,13 @@ def evaluate_language(
                         llama_guard_model,
                         llama_guard_processor
                     )
-                    results_df.loc[idx, f"llama_guard4_{model_name}"] = \
-                        "UNSAFE" if not classification["safe"] else "SAFE"
-                    logger.info(f"✓ {model_name} classified by Llama Guard 4")
+                    # Only save if classification succeeded (safe is not None)
+                    if classification["safe"] is not None:
+                        results_df.loc[idx, f"llama_guard4_{model_name}"] = \
+                            "UNSAFE" if not classification["safe"] else "SAFE"
+                        logger.info(f"✓ {model_name} classified by Llama Guard 4")
+                    else:
+                        logger.warning(f"⊘ {model_name} Llama Guard 4 returned no classification, leaving empty")
                 except Exception as e:
                     logger.error(f"❌ {model_name} Llama Guard 4 classification failed: {str(e)[:100]}")
                     pass
@@ -562,9 +566,13 @@ def evaluate_language(
                         gemma_model,
                         gemma_tokenizer
                     )
-                    results_df.loc[idx, f"gemma_{model_name}"] = \
-                        "UNSAFE" if not classification["safe"] else "SAFE"
-                    logger.info(f"✓ {model_name} classified by Gemma")
+                    # Only save if classification succeeded (safe is not None)
+                    if classification["safe"] is not None:
+                        results_df.loc[idx, f"gemma_{model_name}"] = \
+                            "UNSAFE" if not classification["safe"] else "SAFE"
+                        logger.info(f"✓ {model_name} classified by Gemma")
+                    else:
+                        logger.warning(f"⊘ {model_name} Gemma returned no classification, leaving empty")
                 except Exception as e:
                     logger.error(f"❌ {model_name} Gemma classification failed: {str(e)[:100]}")
                     pass
