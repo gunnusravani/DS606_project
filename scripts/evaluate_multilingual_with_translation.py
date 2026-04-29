@@ -38,13 +38,13 @@ from peft import PeftModel
 from huggingface_hub import login
 from tqdm import tqdm
 
-# Try importing google translate
+# Try importing translation library
 try:
-    from googletrans import Translator
-    GOOGLE_TRANS_AVAILABLE = True
+    from deep_translator import GoogleTranslator
+    TRANS_AVAILABLE = True
 except ImportError:
-    GOOGLE_TRANS_AVAILABLE = False
-    print("⚠️  googletrans not installed. Install with: pip install googletrans==4.0.0-rc1")
+    TRANS_AVAILABLE = False
+    print("⚠️  deep-translator not installed. Install with: pip install deep-translator>=1.11.4")
 
 # Setup paths
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -235,9 +235,9 @@ Read the following text and respond appropriately.
 # ============================================================================
 
 def translate_to_english(text: str, src_lang: str) -> str:
-    """Translate text to English using Google Translate."""
-    if not GOOGLE_TRANS_AVAILABLE:
-        logger.warning("Google Translate not available, skipping translation")
+    """Translate text to English using Google Translate API."""
+    if not TRANS_AVAILABLE:
+        logger.warning("Translation library not available, skipping translation")
         return text
     
     if src_lang == "en":
@@ -247,9 +247,9 @@ def translate_to_english(text: str, src_lang: str) -> str:
         return text
     
     try:
-        translator = Translator()
-        translated = translator.translate(text, src_language=src_lang, dest_language="en")
-        return translated.text
+        translator = GoogleTranslator(source=src_lang, target="en")
+        translated_text = translator.translate(text)
+        return translated_text
     except Exception as e:
         logger.warning(f"Translation failed: {e}")
         return text
