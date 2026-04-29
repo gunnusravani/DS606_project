@@ -237,7 +237,7 @@ Read the following text and respond appropriately.
 def translate_to_english(text: str, src_lang: str) -> str:
     """Translate text to English using Google Translate API."""
     if not TRANS_AVAILABLE:
-        logger.warning("Translation library not available, skipping translation")
+        logger.error("❌ Translation library not available!")
         return text
     
     if src_lang == "en":
@@ -251,8 +251,11 @@ def translate_to_english(text: str, src_lang: str) -> str:
         translated_text = translator.translate(text)
         return translated_text
     except Exception as e:
-        logger.warning(f"Translation failed: {e}")
-        return text
+        logger.error(f"❌ TRANSLATION FAILED for {src_lang}: {str(e)[:150]}")
+        logger.error(f"   Text: {text[:100]}...")
+        # Return marked error string for visibility
+        return f"[TRANSLATION_ERROR: {src_lang}]"
+
 
 
 # ============================================================================
@@ -346,12 +349,12 @@ Classification: """
 def evaluate_language(
     input_file: str,
     language: str,
-    output_dir: str = "outputs/evaluation_results/",
+    output_dir: str = "outputs/llama3.2_3b/",
 ):
     """Main evaluation pipeline."""
     
     # Setup
-    output_path = Path(output_dir) / f"{language}_evaluation_results.csv"
+    output_path = Path(output_dir) / f"{language}_initial_results.csv"
     summary_path = Path(output_dir) / f"{language}_summary.json"
     Path(output_dir).mkdir(parents=True, exist_ok=True)
     
@@ -411,34 +414,67 @@ def evaluate_language(
                len(str(results_df[f"{model_name}_response"].iloc[idx])) > 0:
                 continue
             
-            logger.info(f"Generating {model_name} response for sample {idx}...")
-            response = generate_response(model, tokenizer, prompt)
-            results_df.loc[idx, f"{model_name}_response"] = response
+            try:
+                logger.info(f"Generating {model_name} response for sample {idx}...")
+                response = generate_response(model, tokenizer, prompt)
+                
+                if not response or len(str(response).strip()) == 0:
+                    logger.error(f"❌ {model_name}: Empty response generated")
+                    continue  # Don't save anything, skip to next model
+                
+                # Save only if generation succeeded
+                results_df.loc[idx, f"{model_name}_response"] = response
+                
+            except Exception as e:
+                logger.error(f"❌ {model_name} generation failed: {str(e)[:100]}")
+                continue  # Don't save anything, skip to next model
             
             # Translate if needed
-            if src_lang != "en":
-                translated = translate_to_english(response, src_lang)
-                results_df.loc[idx, f"gtrans_{model_name}_response"] = translated
-            else:
-                results_df.loc[idx, f"gtrans_{model_name}_response"] = response
+            try:
+                if src_lang != "en":
+                    translated = translate_to_english(response, src_lang)
+                    
+                    if "[TRANSLATION_ERROR" in translated:
+                        logger.warning(f"⚠️  {model_name} translation failed - not saving")
+                        # Don't save anything - leave columns empty
+                        continue  # Skip to next model
+                    
+                    # Save only if translation succeeded
+                    results_df.loc[idx, f"gtrans_{model_name}_response"] = translated
+                else:
+                    results_df.loc[idx, f"gtrans_{model_name}_response"] = response
+                    
+            except Exception as e:
+                logger.error(f"❌ {model_name} translation failed: {str(e)[:100]}")
+                continue  # Don't save anything, skip to next model
             
             # Classify with Llama Guard 4
-            classification = classify_with_llama_guard_4(
-                results_df.loc[idx, f"gtrans_{model_name}_response"],
-                llama_guard_model,
-                llama_guard_processor
-            )
-            results_df.loc[idx, f"llama_guard4_{model_name}"] = \
-                "UNSAFE" if not classification["safe"] else "SAFE"
+            try:
+                classification = classify_with_llama_guard_4(
+                    results_df.loc[idx, f"gtrans_{model_name}_response"],
+                    llama_guard_model,
+                    llama_guard_processor
+                )
+                results_df.loc[idx, f"llama_guard4_{model_name}"] = \
+                    "UNSAFE" if not classification["safe"] else "SAFE"
+            except Exception as e:
+                logger.error(f"❌ {model_name} Llama Guard 4 classification failed: {str(e)[:100]}")
+                # Don't save classification result
+                pass
             
             # Classify with Gemma
-            classification = classify_with_gemma(
-                results_df.loc[idx, f"gtrans_{model_name}_response"],
-                gemma_model,
-                gemma_tokenizer
-            )
-            results_df.loc[idx, f"gemma_{model_name}"] = \
-                "UNSAFE" if not classification["safe"] else "SAFE"
+            try:
+                classification = classify_with_gemma(
+                    results_df.loc[idx, f"gtrans_{model_name}_response"],
+                    gemma_model,
+                    gemma_tokenizer
+                )
+                results_df.loc[idx, f"gemma_{model_name}"] = \
+                    "UNSAFE" if not classification["safe"] else "SAFE"
+            except Exception as e:
+                logger.error(f"❌ {model_name} Gemma classification failed: {str(e)[:100]}")
+                # Don't save classification result
+                pass
         
         # Save incrementally after each sample
         results_df.to_csv(output_path, index=False)
