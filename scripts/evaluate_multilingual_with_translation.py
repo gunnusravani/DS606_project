@@ -366,16 +366,29 @@ def evaluate_language(
     # Check if we have a partial result to resume from
     if output_path.exists() and not force:
         results_df = pd.read_csv(output_path)
-        start_idx = len(results_df)
-        logger.info(f"Found existing results with {start_idx} samples. Resuming from index {start_idx}")
-        if start_idx >= len(df):
-            logger.warning(f"All {len(df)} samples already processed! Use --force to re-evaluate.")
+        logger.info(f"Found existing results with {len(results_df)} samples")
+        
+        # Check if translations are missing (need to be done)
+        trans_cols = [f"gtrans_{m}_response" for m in MODELS.keys()]
+        trans_filled = [results_df[col].notna().sum() > 0 for col in trans_cols if col in results_df.columns]
+        
+        if all(trans_filled) and len(trans_filled) == len(MODELS):
+            # All translations and classifications done
+            logger.warning(f"All {len(results_df)} samples already processed with translations! Use --force to re-evaluate.")
             print("\n" + "="*80)
             print(f"⚠️  EVALUATION ALREADY COMPLETE: {language.upper()}")
-            print(f"   {len(df)} samples already processed in {output_path}")
+            print(f"   {len(results_df)} samples with translations already processed in {output_path}")
             print(f"   Use --force flag to re-evaluate: --language {language} --force")
             print("="*80 + "\n")
             return
+        elif any(trans_filled):
+            # Partial translations exist
+            logger.info("Found partial translations - will complete remaining translations and classifications")
+            start_idx = 0  # Process all for translations/classifications
+        else:
+            # Responses exist but no translations
+            logger.info("Found responses but no translations - will translate all and then classify")
+            start_idx = 0  # Process all for translations/classifications
     else:
         # Initialize result columns (either new run or --force flag)
         if force and output_path.exists():
@@ -462,22 +475,14 @@ def evaluate_language(
         
         # Generate responses
         for model_name, (model, tokenizer) in gen_models.items():
-            # Skip if already generated
+            response = None
+            
+            # Check if response already exists
             if pd.notna(results_df[f"{model_name}_response"].iloc[idx]) and \
-               len(str(results_df[f"{model_name}_response"].iloc[idx])) > 0:
+               len(str(results_df[f"{model_name}_response"].iloc[idx]).strip()) > 0:
+                # Response exists, use it
+                response = str(results_df[f"{model_name}_response"].iloc[idx])
                 logger.info(f"⊘ {model_name} response already exists, skipping generation")
-                
-                # Check if translation is needed
-                trans_col = f"gtrans_{model_name}_response"
-                if pd.notna(results_df[trans_col].iloc[idx]) and \
-                   len(str(results_df[trans_col].iloc[idx])) > 0:
-                    logger.info(f"⊘ {model_name} translation already exists, skipping")
-                    continue  # Both generation and translation done, skip to next model
-                else:
-                    # Translation column empty - need to translate
-                    logger.info(f"⚠️  {model_name} translation missing, will translate existing response")
-                    response = str(results_df[f"{model_name}_response"].iloc[idx])
-                    # Continue to translation block below (don't skip)
             else:
                 # Need to generate response
                 try:
@@ -494,6 +499,11 @@ def evaluate_language(
                 except Exception as e:
                     logger.error(f"❌ {model_name} generation failed: {str(e)[:100]}")
                     continue  # Don't save anything, skip to next model
+            
+            # At this point, we have a response (either generated or existing)
+            # Now translate if needed and classify
+            if response is None:
+                continue  # Skip if no response available
             
             # Translate if needed, then classify
             translated_response = None
