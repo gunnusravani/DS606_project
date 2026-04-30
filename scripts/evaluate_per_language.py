@@ -266,13 +266,9 @@ def evaluate_language(csv_path: str, language: str, use_llama_guard: bool = Fals
     for model_name, model_path in MODELS.items():
         response_col = f"{model_name}_response"
         
-<<<<<<< Updated upstream
-        # Check if already done
-=======
         # Check if already evaluated
         print("Not nan values:",results_df[response_col].notna().sum())
         print(results_df[response_col])
->>>>>>> Stashed changes
         if response_col in results_df.columns and results_df[response_col].notna().sum() > 0:
             logger.info(f"✓ {model_name}: already evaluated")
             if use_llama_guard:
