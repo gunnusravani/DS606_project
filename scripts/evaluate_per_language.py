@@ -186,6 +186,100 @@ Read the following text and respond appropriately.
         return f"ERROR: {type(e).__name__}: {str(e)[:60]}"
 
 
+def generate_responses_batch(
+    model: AutoModelForCausalLM,
+    tokenizer: AutoTokenizer,
+    prompts: list,
+    batch_size: int = 8,
+) -> list:
+    """Generate responses for prompts using batched inference."""
+    if not prompts:
+        return []
+
+    model.eval()
+    all_responses = []
+    max_prompt_tokens = 5000
+    context_limit = 8000
+
+    for start in tqdm(range(0, len(prompts), batch_size), desc="Batches"):
+        batch_prompts = prompts[start:start + batch_size]
+
+        # Keep per-item handling robust for missing/empty prompts.
+        valid_indices = []
+        formatted_prompts = []
+        batch_responses = ["ERROR: Empty prompt"] * len(batch_prompts)
+
+        for i, prompt in enumerate(batch_prompts):
+            if not prompt or str(prompt).strip() == "":
+                continue
+            formatted_prompts.append(
+                "### Instruction:\n"
+                "Read the following text and respond appropriately.\n\n"
+                "### Input:\n"
+                f"{prompt}\n\n"
+                "### Response:\n"
+            )
+            valid_indices.append(i)
+
+        if not formatted_prompts:
+            all_responses.extend(batch_responses)
+            continue
+
+        try:
+            inputs = tokenizer(
+                formatted_prompts,
+                return_tensors="pt",
+                padding=True,
+                truncation=True,
+                max_length=max_prompt_tokens,
+            ).to(model.device)
+
+            input_lens = inputs["attention_mask"].sum(dim=1)
+            max_input_len = int(input_lens.max().item())
+            safe_max_new_tokens = min(512, context_limit - max_input_len - 50)
+
+            if safe_max_new_tokens < 50:
+                for i in valid_indices:
+                    batch_responses[i] = "ERROR: Prompt too long"
+                all_responses.extend(batch_responses)
+                continue
+
+            with torch.no_grad():
+                outputs = model.generate(
+                    **inputs,
+                    max_new_tokens=safe_max_new_tokens,
+                    temperature=0.7,
+                    top_p=0.95,
+                    top_k=50,
+                    do_sample=True,
+                    pad_token_id=tokenizer.eos_token_id,
+                )
+
+            for out_i, batch_i in enumerate(valid_indices):
+                input_len = int(input_lens[out_i].item())
+                response_tokens = outputs[out_i][input_len:]
+
+                if len(response_tokens) == 0:
+                    batch_responses[batch_i] = "ERROR: No tokens generated"
+                    continue
+
+                response = tokenizer.decode(response_tokens, skip_special_tokens=True).strip()
+
+                if "### Response:" in response:
+                    response = response.split("### Response:")[-1].strip()
+
+                batch_responses[batch_i] = response if response else "ERROR: Empty response"
+
+        except Exception as e:
+            error_msg = f"ERROR: {type(e).__name__}: {str(e)[:60]}"
+            for i in valid_indices:
+                batch_responses[i] = error_msg
+
+        all_responses.extend(batch_responses)
+
+    return all_responses
+
+
 # ============================================================================
 # LLAMA GUARD CLASSIFICATION
 # ============================================================================
@@ -215,7 +309,12 @@ def classify_with_llama_guard(responses: list, batch_size: int = 4) -> list:
 # ============================================================================
 # MAIN EVALUATION
 # ============================================================================
-def evaluate_language(csv_path: str, language: str, use_llama_guard: bool = False):
+def evaluate_language(
+    csv_path: str,
+    language: str,
+    use_llama_guard: bool = False,
+    batch_size: int = 8,
+):
     """Evaluate all models for a specific language."""
     
     logger.info("=" * 80)
@@ -267,15 +366,21 @@ def evaluate_language(csv_path: str, language: str, use_llama_guard: bool = Fals
         response_col = f"{model_name}_response"
         
         # Check if already evaluated
-        print("Not nan values:",results_df[response_col].notna().sum())
-        print(results_df[response_col])
-        if response_col in results_df.columns and results_df[response_col].notna().sum() > 0:
-            logger.info(f"✓ {model_name}: already evaluated")
-            if use_llama_guard:
-                safety_col = f"{model_name}_safety_label"
-                if safety_col in results_df.columns and results_df[safety_col].notna().sum() > 0:
-                    logger.info(f"✓ {model_name}: Llama Guard already done")
-                    continue
+        if response_col in results_df.columns:
+            completed = results_df[response_col].fillna("").astype(str).str.strip() != ""
+            if completed.all():
+                logger.info(f"✓ {model_name}: already evaluated")
+                if use_llama_guard:
+                    safety_col = f"{model_name}_safety_label"
+                    if safety_col in results_df.columns:
+                        safety_completed = results_df[safety_col].fillna("").astype(str).str.strip() != ""
+                        if safety_completed.all():
+                            logger.info(f"✓ {model_name}: Llama Guard already done")
+                            continue
+            else:
+                logger.info(
+                    f"↺ {model_name}: resuming ({completed.sum()}/{len(completed)} responses already generated)"
+                )
         
         logger.info(f"\n{'=' * 80}")
         logger.info(f"MODEL: {model_name.upper()}")
@@ -286,15 +391,29 @@ def evaluate_language(csv_path: str, language: str, use_llama_guard: bool = Fals
         model, tokenizer = load_model_and_tokenizer(model_path)
         
         # Generate responses
-        logger.info("Generating responses...")
-        responses = []
-        for idx, row in tqdm(results_df.iterrows(), total=len(results_df)):
-            if pd.notna(row.get(response_col)) and row.get(response_col) != "":
-                responses.append(row[response_col])
-            else:
-                prompt = row["prompt"]
-                response = generate_response(model, tokenizer, prompt)
-                responses.append(response)
+        logger.info(f"Generating responses in batches of {batch_size}...")
+        responses = results_df[response_col].tolist() if response_col in results_df.columns else [""] * len(results_df)
+
+        pending_indices = []
+        pending_prompts = []
+        for idx, row in results_df.iterrows():
+            existing = row.get(response_col, "")
+            if pd.notna(existing) and str(existing).strip() != "":
+                continue
+            pending_indices.append(idx)
+            pending_prompts.append(row["prompt"])
+
+        if pending_prompts:
+            batched_outputs = generate_responses_batch(
+                model=model,
+                tokenizer=tokenizer,
+                prompts=pending_prompts,
+                batch_size=batch_size,
+            )
+            for idx, response in zip(pending_indices, batched_outputs):
+                responses[idx] = response
+        else:
+            logger.info("No pending prompts; skipping generation")
         
         results_df[response_col] = responses
         
@@ -351,6 +470,13 @@ def main():
         action="store_true",
         help="Enable Llama Guard safety classification",
     )
+
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=8,
+        help="Batch size for response generation",
+    )
     
     args = parser.parse_args()
     
@@ -359,6 +485,7 @@ def main():
             csv_path=args.input,
             language=args.language,
             use_llama_guard=args.use_llama_guard,
+            batch_size=max(1, args.batch_size),
         )
         logger.info("✓ Evaluation successful!")
     except Exception as e:
