@@ -320,7 +320,7 @@ def train_dpo(
         report_to=[],
         seed=dpo_config.seed,
         dataloader_pin_memory=True,
-        optim="adamw_8bit",
+        optim="adamw_torch",  # Use standard Adam instead of 8-bit (bitsandbytes not available)
     )
     
     logger.info("DPO Config created:")
