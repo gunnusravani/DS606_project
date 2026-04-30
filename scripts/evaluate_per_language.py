@@ -73,6 +73,8 @@ def load_model_and_tokenizer(model_path: str, device_map: str = "auto"):
     )
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
+    # Decoder-only models should use left padding for batched generation.
+    tokenizer.padding_side = "left"
     
     # Load model (skip SDPA for Llama 3.2)
     use_sdpa = "3.2" not in model_path
@@ -226,13 +228,39 @@ def generate_responses_batch(
             continue
 
         try:
-            inputs = tokenizer(
-                formatted_prompts,
-                return_tensors="pt",
-                padding=True,
-                truncation=True,
-                max_length=max_prompt_tokens,
-            ).to(model.device)
+            # Tokenize per prompt and left-pad manually to guarantee decoder-only correctness.
+            encoded = [
+                tokenizer(
+                    text,
+                    return_tensors="pt",
+                    truncation=True,
+                    max_length=max_prompt_tokens,
+                )
+                for text in formatted_prompts
+            ]
+
+            input_id_tensors = [e["input_ids"][0] for e in encoded]
+            max_len = max(t.shape[0] for t in input_id_tensors)
+
+            padded_input_ids = []
+            padded_attention_masks = []
+            for ids in input_id_tensors:
+                pad_len = max_len - ids.shape[0]
+                if pad_len > 0:
+                    pad_ids = torch.full(
+                        (pad_len,),
+                        tokenizer.pad_token_id,
+                        dtype=ids.dtype,
+                    )
+                    ids = torch.cat([pad_ids, ids], dim=0)
+                attn = (ids != tokenizer.pad_token_id).long()
+                padded_input_ids.append(ids)
+                padded_attention_masks.append(attn)
+
+            inputs = {
+                "input_ids": torch.stack(padded_input_ids).to(model.device),
+                "attention_mask": torch.stack(padded_attention_masks).to(model.device),
+            }
 
             input_lens = inputs["attention_mask"].sum(dim=1)
             max_input_len = int(input_lens.max().item())
