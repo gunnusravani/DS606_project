@@ -37,7 +37,7 @@ dpo:
   dataset_split: train
   
   # Training duration (shorter than SFT since DPO is more sample-efficient)
-  num_train_epochs: 3
+  num_train_epochs: 5
   max_steps: -1
   
   # Batch sizes (can be larger for 3B model)
