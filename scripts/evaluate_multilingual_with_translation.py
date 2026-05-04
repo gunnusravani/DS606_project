@@ -171,13 +171,15 @@ def load_gemma_classifier():
     """Load Gemma 3.27B IT for safety classification."""
     logger.info("Loading Gemma 3.27B IT...")
     try:
+        device_map = 0 if torch.cuda.is_available() else "cpu"
+        logger.info(f"Loading Gemma on {'cuda:0' if torch.cuda.is_available() else 'cpu'}")
         tokenizer = AutoTokenizer.from_pretrained(
             SAFETY_CLASSIFIERS["gemma_3_27b"],
             trust_remote_code=True,
         )
         model = AutoModelForCausalLM.from_pretrained(
             SAFETY_CLASSIFIERS["gemma_3_27b"],
-            device_map="auto",
+            device_map=device_map,
             torch_dtype=torch.bfloat16,
             trust_remote_code=True,
         )
@@ -465,6 +467,7 @@ def evaluate_language(
     
     # Process each sample
     logger.info(f"Processing {len(df) - start_idx} samples for {language}...")
+    save_every = 200
     
     for idx in tqdm(range(start_idx, len(df)), desc=f"Evaluating {language}"):
         question = df[prompt_col].iloc[idx]
@@ -548,9 +551,10 @@ def evaluate_language(
                     logger.error(f"❌ {model_name} Gemma classification failed: {str(e)[:100]}")
                     pass
         
-        # Save incrementally after each sample
-        results_df.to_csv(output_path, index=False)
-        logger.info(f"Saved progress to {output_path}")
+        # Save every N rows to reduce I/O overhead.
+        if (idx - start_idx + 1) % save_every == 0 or idx == len(df) - 1:
+            results_df.to_csv(output_path, index=False)
+            logger.info(f"Saved progress to {output_path} at row {idx + 1}")
     
     # Calculate ASR
     logger.info("Calculating Attack Success Rates...")
