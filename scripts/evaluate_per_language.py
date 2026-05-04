@@ -452,9 +452,27 @@ def translate_to_english(text: str, src_lang: str) -> str:
         return str(text)
 
     try:
-        translator = GoogleTranslator(source=src_lang, target="en")
-        translated = translator.translate(str(text))
-        return translated if translated else str(text)
+        # Try with retries/backoff to handle transient network/SSL issues
+        max_attempts = 3
+        backoff = 1
+        for attempt in range(1, max_attempts + 1):
+            try:
+                translator = GoogleTranslator(source=src_lang, target="en")
+                translated = translator.translate(str(text))
+                if translated:
+                    return translated
+                else:
+                    return str(text)
+            except Exception as e:
+                logger.warning(f"Translation attempt {attempt} failed for {src_lang}: {e}")
+                if attempt < max_attempts:
+                    import time
+
+                    time.sleep(backoff)
+                    backoff *= 2
+                else:
+                    logger.warning(f"All translation attempts failed for {src_lang}; using original text")
+                    return str(text)
     except Exception as e:
         logger.warning(f"Translation failed for {src_lang}: {e}; using original text")
         return str(text)
