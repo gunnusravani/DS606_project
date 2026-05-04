@@ -21,6 +21,13 @@ from peft import PeftModel
 from huggingface_hub import login
 from tqdm import tqdm
 
+try:
+    from deep_translator import GoogleTranslator
+    TRANS_AVAILABLE = True
+except ImportError:
+    TRANS_AVAILABLE = False
+    GoogleTranslator = None
+
 # Setup paths
 PROJECT_ROOT = Path(__file__).parent.parent
 os.chdir(PROJECT_ROOT)
@@ -59,12 +66,12 @@ if hf_local_files_only:
 # TYPES AND MODELS
 # ============================================================================
 LANGUAGE_COLUMNS = {
-    "hindi": ("hindi", "intital_malicious_hindi"),
-    "bengali": ("bengali", "intital_malicious_bengali"),
-    "marathi": ("marathi", "intital_malicious_marathi"),
-    "telugu": ("telegu", "intital_malicious_telugu"),
-    "assamese": ("assamese", "intital_malicious_english"),
-    "english": ("question", "intital_malicious_english"),
+    "hindi": ("hindi", "intital_malicious_hindi", "hi"),
+    "bengali": ("bengali", "intital_malicious_bengali", "bn"),
+    "marathi": ("marathi", "intital_malicious_marathi", "mr"),
+    "telugu": ("telegu", "intital_malicious_telugu", "te"),
+    "assamese": ("assamese", "intital_malicious_english", "as"),
+    "english": ("question", "intital_malicious_english", "en"),
 }
 
 MODELS = {
@@ -397,6 +404,27 @@ def classify_with_model(responses: list, model_path: str, batch_size: int = 8) -
         return None
 
 
+def translate_to_english(text: str, src_lang: str) -> str:
+    """Translate text to English using Google Translate when needed."""
+    if not text or not str(text).strip():
+        return ""
+
+    if src_lang == "en":
+        return str(text)
+
+    if not TRANS_AVAILABLE:
+        logger.warning("Translation library not available; using original text for classification")
+        return str(text)
+
+    try:
+        translator = GoogleTranslator(source=src_lang, target="en")
+        translated = translator.translate(str(text))
+        return translated if translated else str(text)
+    except Exception as e:
+        logger.warning(f"Translation failed for {src_lang}: {e}; using original text")
+        return str(text)
+
+
 # ============================================================================
 # MAIN EVALUATION
 # ============================================================================
@@ -423,6 +451,8 @@ def evaluate_language(
     logger.info(f"Loading: {csv_path}")
     df = pd.read_csv(csv_path)
     logger.info(f"Loaded {len(df)} rows")
+
+    _, _, src_lang = LANGUAGE_COLUMNS[language]
     
     # Prepare data
     results_df = df[["num", "question", "category", "sub_category"]].copy()
@@ -452,8 +482,23 @@ def evaluate_language(
                 # store score for Llama Guard or raw for classifier
                 results_df[f"{model_name}_safety_score"] = 0.0
                 results_df[f"{model_name}_safety_raw"] = ""
+                results_df[f"{model_name}_translated"] = ""
         results_df.to_csv(output_file, index=False)
         logger.info(f"Created: {output_file}")
+
+    # Ensure all expected columns exist even when resuming older outputs.
+    for model_name in MODELS.keys():
+        if f"{model_name}_response" not in results_df.columns:
+            results_df[f"{model_name}_response"] = ""
+        if use_llama_guard or classifier_model:
+            if f"{model_name}_safety_label" not in results_df.columns:
+                results_df[f"{model_name}_safety_label"] = ""
+            if f"{model_name}_safety_score" not in results_df.columns:
+                results_df[f"{model_name}_safety_score"] = 0.0
+            if f"{model_name}_safety_raw" not in results_df.columns:
+                results_df[f"{model_name}_safety_raw"] = ""
+            if f"{model_name}_translated" not in results_df.columns:
+                results_df[f"{model_name}_translated"] = ""
     
     # Evaluate each model
     for model_name, model_path in MODELS.items():
@@ -533,7 +578,9 @@ def evaluate_language(
                 results_df[safety_raw_col] = ""
 
             if classifier_model:
-                classifications = classify_with_model(responses, classifier_model, batch_size=4)
+                translated_responses = [translate_to_english(r, src_lang) for r in responses]
+                results_df[f"{model_name}_translated"] = translated_responses
+                classifications = classify_with_model(translated_responses, classifier_model, batch_size=batch_size)
                 if classifications:
                     results_df[safety_label_col] = [c.get("label", "unknown") for c in classifications]
                     results_df[safety_raw_col] = [c.get("raw", "") for c in classifications]

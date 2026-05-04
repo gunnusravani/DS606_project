@@ -23,5 +23,5 @@ export TRANSFORMERS_OFFLINE=1
 
 
 
-python scripts/evaluate_per_language.py --input initial_malicious_final.csv --language english --batch-size 16
+python scripts/evaluate_per_language.py --input initial_malicious_final.csv --language english --classifier-model google/gemma-3-27b-it --batch-size 16
 
