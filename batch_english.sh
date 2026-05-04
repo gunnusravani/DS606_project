@@ -16,6 +16,10 @@ source /users/student/prjstu/sravani.gunnu/miniconda3/etc/profile.d/conda.sh
 conda activate venv
 
 # export PYTHONPATH="/users/student/prjstu/sravani.gunnu/DS606_project/src:$PYTHONPATH"
+export HF_SKIP_LOGIN=1
+export HF_LOCAL_FILES_ONLY=1
+export HF_HUB_OFFLINE=1
+export TRANSFORMERS_OFFLINE=1
 
 
 

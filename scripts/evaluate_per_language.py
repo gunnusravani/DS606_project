@@ -26,18 +26,34 @@ PROJECT_ROOT = Path(__file__).parent.parent
 os.chdir(PROJECT_ROOT)
 sys.path.insert(0, str(PROJECT_ROOT))
 
-# Load environment
-load_dotenv()
-hf_token = os.getenv("HF_TOKEN")
-if hf_token:
-    login(token=hf_token)
-
 # Setup logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# Load environment
+load_dotenv()
+hf_token = os.getenv("HF_TOKEN")
+hf_skip_login = os.getenv("HF_SKIP_LOGIN", "0") == "1"
+hf_local_files_only = (
+    os.getenv("HF_LOCAL_FILES_ONLY", "0") == "1"
+    or os.getenv("HF_HUB_OFFLINE", "0") == "1"
+    or os.getenv("TRANSFORMERS_OFFLINE", "0") == "1"
+)
+
+if hf_token and not hf_skip_login:
+    try:
+        # This can fail on HPC compute nodes without outbound internet.
+        login(token=hf_token, add_to_git_credential=False)
+    except Exception as e:
+        logger.warning(f"HF login skipped due to connectivity/auth issue: {e}")
+elif hf_skip_login:
+    logger.info("HF login skipped because HF_SKIP_LOGIN=1")
+
+if hf_local_files_only:
+    logger.info("HF local-files-only mode enabled")
 
 # ============================================================================
 # TYPES AND MODELS
@@ -68,6 +84,8 @@ def load_model_and_tokenizer(model_path: str, device_map: str = "auto"):
     # Load tokenizer
     tokenizer = AutoTokenizer.from_pretrained(
         model_path,
+        token=hf_token,
+        local_files_only=hf_local_files_only,
         trust_remote_code=True,
         use_fast=False,
     )
@@ -83,6 +101,8 @@ def load_model_and_tokenizer(model_path: str, device_map: str = "auto"):
         if use_sdpa:
             model = AutoModelForCausalLM.from_pretrained(
                 model_path,
+                token=hf_token,
+                local_files_only=hf_local_files_only,
                 device_map=device_map,
                 torch_dtype=torch.bfloat16,
                 attn_implementation="sdpa",
@@ -91,6 +111,8 @@ def load_model_and_tokenizer(model_path: str, device_map: str = "auto"):
         else:
             model = AutoModelForCausalLM.from_pretrained(
                 model_path,
+                token=hf_token,
+                local_files_only=hf_local_files_only,
                 device_map=device_map,
                 torch_dtype=torch.bfloat16,
                 trust_remote_code=True,
@@ -100,6 +122,8 @@ def load_model_and_tokenizer(model_path: str, device_map: str = "auto"):
             logger.warning("SDPA failed, retrying without it...")
             model = AutoModelForCausalLM.from_pretrained(
                 model_path,
+                token=hf_token,
+                local_files_only=hf_local_files_only,
                 device_map=device_map,
                 torch_dtype=torch.bfloat16,
                 trust_remote_code=True,
