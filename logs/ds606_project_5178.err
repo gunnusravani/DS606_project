@@ -1,0 +1,57 @@
+Traceback (most recent call last):
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpcore/_sync/connection.py", line 101, in handle_request
+    raise exc
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpcore/_sync/connection.py", line 78, in handle_request
+    stream = self._connect(request)
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpcore/_sync/connection.py", line 124, in _connect
+    stream = self._network_backend.connect_tcp(**kwargs)
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpcore/_backends/sync.py", line 207, in connect_tcp
+    with map_exceptions(exc_map):
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 101] Network is unreachable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/users/student/prjstu/sravani.gunnu/DS606_project/scripts/evaluate_per_language.py", line 33, in <module>
+    login(token=hf_token)
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/huggingface_hub/_login.py", line 112, in login
+    _login(token, add_to_git_credential=add_to_git_credential)
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/huggingface_hub/_login.py", line 378, in _login
+    token_info = whoami(token)
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/huggingface_hub/hf_api.py", line 2278, in whoami
+    output = self._inner_whoami(token=token)
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/huggingface_hub/hf_api.py", line 2286, in _inner_whoami
+    r = get_session().get(
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpx/_client.py", line 1053, in get
+    return self.request(
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpx/_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpx/_transports/default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/users/student/prjstu/sravani.gunnu/miniconda3/envs/venv/lib/python3.10/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 101] Network is unreachable

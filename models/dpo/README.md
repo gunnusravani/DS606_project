@@ -40,8 +40,8 @@ This model was trained with DPO, a method introduced in [Direct Preference Optim
 
 - PEFT 0.19.1
 - TRL: 1.2.0
-- Transformers: 5.6.2
-- Pytorch: 2.11.0
+- Transformers: 5.7.0
+- Pytorch: 2.13.0.dev20260425+cu132
 - Datasets: 4.8.4
 - Tokenizers: 0.22.2
 

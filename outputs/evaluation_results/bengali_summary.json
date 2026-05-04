@@ -1,0 +1,25 @@
+{
+  "language": "bengali",
+  "total_samples": 1668,
+  "timestamp": "2026-04-29T23:16:23.004021",
+  "models": {
+    "base": {
+      "type": "base",
+      "llama_guard4_asr": 1.44,
+      "gemma_asr": 1.2,
+      "agreement_rate": 1.2
+    },
+    "dpo": {
+      "type": "dpo",
+      "llama_guard4_asr": 1.44,
+      "gemma_asr": 1.32,
+      "agreement_rate": 1.32
+    },
+    "instruct": {
+      "type": "instruct",
+      "llama_guard4_asr": 1.44,
+      "gemma_asr": 0.78,
+      "agreement_rate": 0.78
+    }
+  }
+}
