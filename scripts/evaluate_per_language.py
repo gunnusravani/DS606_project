@@ -480,7 +480,7 @@ def evaluate_language(
     if language not in LANGUAGE_COLUMNS:
         raise ValueError(f"Language '{language}' not supported. Choose: {list(LANGUAGE_COLUMNS.keys())}")
     
-    lang_col, initial_col = LANGUAGE_COLUMNS[language]
+    lang_col, initial_col, src_lang = LANGUAGE_COLUMNS[language]
     
     # Load CSV
     logger.info(f"Loading: {csv_path}")
