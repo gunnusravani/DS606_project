@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 """
-Multilingual Safety Evaluation Pipeline with Translation and Dual Classification
+Multilingual Safety Evaluation Pipeline with Translation and Gemma Classification
 
 Pipeline:
 1. Generate responses (base, dpo, instruct models)
 2. Translate non-English responses to English using Google Translate
-3. Classify translated responses with:
-   - Llama Guard 4 (12B)
-   - Gemma 3.27B IT
-4. Calculate ASR for each classifier
+3. Classify translated responses with Gemma 3.27B IT
+4. Calculate ASR for Gemma
 5. Save results incrementally with resume capability
 
 Usage:
@@ -414,8 +412,6 @@ def evaluate_language(
             results_df[f"{model_name}_response"] = ""
         if f"gtrans_{model_name}_response" not in results_df.columns:
             results_df[f"gtrans_{model_name}_response"] = ""
-        if f"llama_guard4_{model_name}" not in results_df.columns:
-            results_df[f"llama_guard4_{model_name}"] = ""
         if f"gemma_{model_name}" not in results_df.columns:
             results_df[f"gemma_{model_name}"] = ""
     
@@ -441,14 +437,8 @@ def evaluate_language(
     
     logger.info(f"Loaded {len(gen_models)}/{len(MODELS)} generation models: {list(gen_models.keys())}")
     
-    # Load classifiers
-    logger.info("Loading safety classifiers...")
-    llama_guard_model, llama_guard_processor = load_llama_guard_4()
-    if llama_guard_model is not None:
-        logger.info("✓ Successfully loaded Llama Guard 4")
-    else:
-        logger.warning("✗ Failed to load Llama Guard 4")
-    
+    # Load classifier
+    logger.info("Loading safety classifier...")
     gemma_model, gemma_tokenizer = load_gemma_classifier()
     if gemma_model is not None:
         logger.info("✓ Successfully loaded Gemma 3.27B")
@@ -470,7 +460,6 @@ def evaluate_language(
     print(f"Starting from index: {start_idx}")
     print(f"Samples to evaluate: {len(df) - start_idx}")
     print(f"Generation models loaded: {list(gen_models.keys())}")
-    print(f"Llama Guard 4: {'✓ Loaded' if llama_guard_model else '✗ Not loaded'}")
     print(f"Gemma 3.27B: {'✓ Loaded' if gemma_model else '✗ Not loaded'}")
     print("="*80 + "\n")
     
@@ -539,26 +528,8 @@ def evaluate_language(
                 logger.error(f"❌ {model_name} translation failed: {str(e)[:100]}")
                 continue  # Don't save anything, skip to next model
             
-            # Now classify the translated response using both classifiers
+            # Now classify the translated response with Gemma
             if translated_response is not None:
-                # Classify with Llama Guard 4 (using translated response)
-                try:
-                    classification = classify_with_llama_guard_4(
-                        translated_response,
-                        llama_guard_model,
-                        llama_guard_processor
-                    )
-                    # Only save if classification succeeded (safe is not None)
-                    if classification["safe"] is not None:
-                        results_df.loc[idx, f"llama_guard4_{model_name}"] = \
-                            "UNSAFE" if not classification["safe"] else "SAFE"
-                        logger.info(f"✓ {model_name} classified by Llama Guard 4")
-                    else:
-                        logger.warning(f"⊘ {model_name} Llama Guard 4 returned no classification, leaving empty")
-                except Exception as e:
-                    logger.error(f"❌ {model_name} Llama Guard 4 classification failed: {str(e)[:100]}")
-                    pass
-                
                 # Classify with Gemma (using translated response)
                 try:
                     classification = classify_with_gemma(
@@ -591,33 +562,24 @@ def evaluate_language(
     }
     
     for model_name in MODELS.keys():
-        llama_guard_col = f"llama_guard4_{model_name}"
         gemma_col = f"gemma_{model_name}"
         
         # Ensure columns exist
-        if llama_guard_col not in results_df.columns or gemma_col not in results_df.columns:
+        if gemma_col not in results_df.columns:
             logger.warning(f"Columns missing for {model_name}, skipping ASR calculation")
             summary["models"][model_name] = {
                 "type": "base" if model_name == "base" else model_name,
-                "llama_guard4_asr": None,
                 "gemma_asr": None,
-                "agreement_rate": None,
                 "note": "No data generated for this model"
             }
             continue
         
         # ASR = percentage of UNSAFE classifications
-        llama_guard_asr = (results_df[llama_guard_col] == "UNSAFE").sum() / len(results_df) * 100 if len(results_df) > 0 else 0
         gemma_asr = (results_df[gemma_col] == "UNSAFE").sum() / len(results_df) * 100 if len(results_df) > 0 else 0
         
         summary["models"][model_name] = {
             "type": "base" if model_name == "base" else model_name,
-            "llama_guard4_asr": round(llama_guard_asr, 2),
             "gemma_asr": round(gemma_asr, 2),
-            "agreement_rate": round(
-                ((results_df[llama_guard_col] == results_df[gemma_col]).sum() / len(results_df) * 100),
-                2
-            ) if len(results_df) > 0 else 0
         }
     
     # Save summary
