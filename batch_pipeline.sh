@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=ds606_project
 #SBATCH --account=irohs_proj2
-#SBATCH --partition=cn4_mangala
-#SBATCH --qos=mangala
+#SBATCH --partition=cn3_anandi
+#SBATCH --qos=anandi
 #SBATCH --gres=gpu:1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
@@ -17,8 +17,10 @@ conda activate venv
 
 export PYTHONPATH="/users/student/prjstu/sravani.gunnu/DS606_project/src:$PYTHONPATH"
 
-python scripts/evaluate_multilingual_with_translation.py \
-    --input initial_malicious_final.csv \
-    --language hindi \
+# python scripts/evaluate_multilingual_with_translation.py \
+#     --input initial_malicious_final.csv \
+#     --language hindi \
 
 
+# ensure offline envs set (already in your batch script)
+python scripts/evaluate_per_language.py --input initial_malicious_final.csv --language hindi --classifier-model google/gemma-3-27b-it --batch-size 8

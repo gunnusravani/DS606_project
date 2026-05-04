@@ -505,6 +505,7 @@ def evaluate_language(
         response_col = f"{model_name}_response"
         
         # Check if already evaluated
+<<<<<<< Updated upstream
         if response_col in results_df.columns:
             completed = results_df[response_col].fillna("").astype(str).str.strip() != ""
             if completed.all():
@@ -527,6 +528,14 @@ def evaluate_language(
                 logger.info(
                     f"↺ {model_name}: resuming ({completed.sum()}/{len(completed)} responses already generated)"
                 )
+=======
+        print("Not nan values:",results_df[response_col].notna().sum())
+        print(results_df[response_col])
+        if response_col in results_df.columns and results_df[response_col].notna().sum() > 0:
+            completed = results_df[response_col].notna().sum()
+            logger.info(f"✓ Model '{model_name}' already evaluated ({completed}/{len(results_df)} rows)")
+            continue
+>>>>>>> Stashed changes
         
         logger.info(f"\n{'=' * 80}")
         logger.info(f"MODEL: {model_name.upper()}")
